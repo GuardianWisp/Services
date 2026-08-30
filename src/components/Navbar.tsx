@@ -17,8 +17,8 @@ export function Navbar() {
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-4 z-50 px-4 sm:top-6 sm:px-6">
-      <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between rounded-full bg-[#f5f3ee] px-3 pl-5 text-[#121110] shadow-[0_16px_40px_-16px_rgba(0,0,0,0.6)] sm:h-16 sm:pl-6">
+    <header className="fixed inset-x-0 top-4 z-50 px-5 sm:top-6 sm:px-8 lg:px-12 xl:px-[60px]">
+      <div className="mx-auto flex h-14 w-full items-center justify-between rounded-full bg-[#f5f3ee] px-3 pl-5 text-[#121110] shadow-[0_16px_40px_-16px_rgba(0,0,0,0.6)] sm:h-16 sm:pl-6">
         <a href="#top" className="text-sm font-semibold tracking-tight uppercase">
           {siteConfig.name}
         </a>
@@ -64,7 +64,7 @@ export function Navbar() {
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              "mx-auto mt-3 flex max-w-5xl flex-col gap-1 rounded-3xl bg-[#f5f3ee] p-3 text-[#121110] shadow-[0_16px_40px_-16px_rgba(0,0,0,0.6)] md:hidden",
+              "mx-auto mt-3 flex w-full flex-col gap-1 rounded-3xl bg-[#f5f3ee] p-3 text-[#121110] shadow-[0_16px_40px_-16px_rgba(0,0,0,0.6)] md:hidden",
             )}
           >
             {navLinks.map((link) => (
