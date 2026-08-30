@@ -123,11 +123,13 @@ export function LeadForm() {
             style={{ accentColor: "var(--color-accent)" }}
             className="mt-0.5 h-4 w-4 shrink-0 rounded border-paper/30"
           />
-          Согласен с{" "}
-          <Link href="/privacy" className="underline hover:text-paper">
-            политикой конфиденциальности
-          </Link>{" "}
-          и обработкой персональных данных
+          <span>
+            Согласен с{" "}
+            <Link href="/privacy" className="underline hover:text-paper">
+              политикой конфиденциальности
+            </Link>{" "}
+            и обработкой персональных данных
+          </span>
         </label>
 
         <button
