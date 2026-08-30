@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { HeroArt } from "@/components/ui/HeroArt";
+import { HeroScene } from "@/components/three/HeroScene";
 import { BurstDoodle, HeartDoodle } from "@/components/ui/Doodles";
 
 export function Hero() {
@@ -36,9 +36,9 @@ export function Hero() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full"
+              className="aspect-square w-full drop-shadow-[0_30px_70px_rgba(255,45,130,0.3)]"
             >
-              <HeroArt className="w-full drop-shadow-[0_30px_70px_rgba(255,45,130,0.3)]" />
+              <HeroScene className="h-full w-full" />
             </motion.div>
           </div>
 
