@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { GlossyAccent } from "@/components/ui/GlossyAccent";
 
 const flows = [
   ["Клиент", "Сайт", "Заявка", "Telegram", "Вы"],
@@ -29,11 +30,20 @@ export function TelegramBots() {
   return (
     <section id="bots" className="bg-paper-alt py-24 sm:py-32">
       <Container>
-        <SectionHeading
-          eyebrow="Telegram-боты"
-          title="Меньше ручной работы"
-          description="Telegram-бот берёт на себя часть переписки с клиентами и приём заявок — без сложных CRM."
-        />
+        <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
+          <SectionHeading
+            eyebrow="Telegram-боты"
+            title="Меньше ручной работы"
+            description="Telegram-бот берёт на себя часть переписки с клиентами и приём заявок — без сложных CRM."
+            className="max-w-2xl"
+          />
+          <GlossyAccent
+            variant="twist"
+            from="#5ec8ff"
+            to="#1a5cff"
+            className="h-28 w-28 shrink-0 drop-shadow-[0_20px_40px_rgba(26,92,255,0.3)] sm:h-36 sm:w-36"
+          />
+        </div>
 
         <div className="mt-14 flex flex-col gap-5">
           {flows.map((steps, i) => (

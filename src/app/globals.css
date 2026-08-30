@@ -1,31 +1,21 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+/* The whole site is now permanently dark, so treat every `dark:` utility
+   already sprinkled through the components as always-on rather than tied
+   to the OS color-scheme preference. */
+@custom-variant dark (&);
 
 :root {
-  --color-ink: #121110;
-  --color-paper: #fbfaf8;
-  --color-paper-alt: #f2f0ec;
-  --color-card: #ffffff;
-  --color-line: #e7e4de;
-  --color-accent: #c6ff1a;
-  --color-accent-ink: #83b300;
-  --color-accent-soft: #eeffc2;
-  --color-accent-contrast: #16220a;
-  --color-muted: #6f6b64;
-}
-
-:root[data-theme="dark"] {
-  --color-ink: #f4f3f0;
-  --color-paper: #0a0a0d;
-  --color-paper-alt: #111116;
-  --color-card: #16161c;
-  --color-line: #27272f;
-  --color-accent: #3dffc2;
-  --color-accent-ink: #6dffd6;
-  --color-accent-soft: #0f3a2e;
-  --color-accent-contrast: #062019;
-  --color-muted: #9c99a5;
+  --color-ink: #f5f3ee;
+  --color-paper: #070707;
+  --color-paper-alt: #101010;
+  --color-card: #161616;
+  --color-line: #2a2a28;
+  --color-accent: #ff4d94;
+  --color-accent-ink: #ff8fc0;
+  --color-accent-soft: #3a1626;
+  --color-accent-contrast: #1a0510;
+  --color-muted: #a8a49c;
 }
 
 @theme inline {

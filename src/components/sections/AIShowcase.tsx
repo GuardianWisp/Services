@@ -25,9 +25,9 @@ export function AIShowcase() {
           </Reveal>
         </div>
 
-        <div className="no-scrollbar mt-14 -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-2 sm:-mx-8 sm:gap-6 sm:px-8">
+        <div className="mt-14 grid grid-cols-2 gap-5 sm:grid-cols-4 sm:gap-6">
           {aiShowcaseExamples.map((example, i) => (
-            <Reveal key={example.id} delay={i * 0.06} className="shrink-0">
+            <Reveal key={example.id} delay={i * 0.06}>
               <BeforeAfterSlider
                 icon={<example.icon className="h-7 w-7" strokeWidth={1.5} />}
                 label={example.label}
