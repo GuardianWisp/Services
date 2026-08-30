@@ -20,7 +20,7 @@ export function BeforeAfterSlider({
   const sliderId = useId();
 
   return (
-    <div className="w-[220px] shrink-0 snap-center sm:w-[260px]">
+    <div className="w-full">
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border border-line bg-paper-alt">
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[linear-gradient(160deg,#e4e1da,#f2f0ec_55%,#dedad2)] grayscale dark:bg-[linear-gradient(160deg,#232228,#2b2a30_55%,#1c1b20)]">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/70 text-neutral-500 backdrop-blur-sm dark:bg-black/30 dark:text-neutral-400">
