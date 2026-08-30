@@ -1,4 +1,4 @@
-# Nikita Isaev — сайт-визитка
+# Isaeva — сайт-визитка
 
 Next.js 16 · TypeScript · Tailwind CSS v4 · Framer Motion · Lucide Icons.
 
