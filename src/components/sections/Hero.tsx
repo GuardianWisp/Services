@@ -1,44 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Bot, Globe, MapPin, Send, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, MapPin, Send } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-
-const floatingCards = [
-  {
-    icon: Globe,
-    label: "Website",
-    sub: "Сайт-визитка",
-    className: "left-[4%] top-[10%] sm:left-[6%]",
-    float: "animate-float",
-  },
-  {
-    icon: Sparkles,
-    label: "AI Photo",
-    sub: "Рекламный визуал",
-    className: "right-[2%] top-[34%] sm:right-[0%]",
-    float: "animate-float-slow",
-  },
-  {
-    icon: Bot,
-    label: "Telegram Bot",
-    sub: "Запись клиентов",
-    className: "left-[14%] bottom-[6%] sm:left-[16%]",
-    float: "animate-float",
-  },
-];
+import { HeroArt } from "@/components/ui/HeroArt";
+import { BurstDoodle, HeartDoodle } from "@/components/ui/Doodles";
 
 export function Hero() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28"
+      className="relative overflow-hidden pt-36 pb-24 sm:pt-44 sm:pb-32"
     >
-      <Container className="relative grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
-        <div>
+      <Container className="relative">
+        <div className="flex flex-col items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -50,20 +28,35 @@ export function Hero() {
             </Badge>
           </motion.div>
 
+          <div className="relative mt-8 flex w-full max-w-xs items-center justify-center sm:max-w-sm">
+            <BurstDoodle className="absolute -left-8 top-0 h-14 w-14 text-ink/60 sm:-left-14 sm:h-20 sm:w-20" />
+            <HeartDoodle className="absolute -right-2 -top-2 h-10 w-10 text-ink/60 sm:right-2 sm:h-14 sm:w-14" />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full"
+            >
+              <HeroArt className="w-full drop-shadow-[0_30px_70px_rgba(255,45,130,0.3)]" />
+            </motion.div>
+          </div>
+
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-6 text-balance text-4xl font-medium leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl lg:text-[3.75rem]"
+            initial={{ opacity: 0, y: 24, filter: "blur(18px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8 text-balance text-5xl font-medium leading-[0.95] tracking-tight text-ink sm:text-7xl md:text-8xl"
           >
-            Дизайн, сайты и AI-контент{" "}
-            <span className="text-accent-ink">для вашего бизнеса</span>
+            Дизайн, сайты и{" "}
+            <span className="text-accent-ink">AI-контент</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-muted"
           >
             Дизайн и сайты, продающие тексты, Telegram-боты и 3D-контент —
@@ -74,8 +67,8 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-9 flex flex-wrap items-center gap-3"
+            transition={{ duration: 0.7, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-9 flex flex-wrap items-center justify-center gap-3"
           >
             <Button href="#contact" variant="primary">
               <Send className="h-4 w-4" />
@@ -87,37 +80,22 @@ export function Hero() {
             </Button>
           </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative mx-auto h-[360px] w-full max-w-md sm:h-[440px] lg:mx-0 lg:h-[480px]"
-        >
-          <div className="absolute inset-8 rounded-[2.5rem] border border-line bg-gradient-to-br from-card to-paper-alt shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)] sm:inset-10" />
-
-          {floatingCards.map((card) => (
-            <div
-              key={card.label}
-              className={`absolute w-[168px] rounded-2xl border border-line bg-card/90 p-4 shadow-[0_16px_32px_-16px_rgba(18,17,16,0.25)] backdrop-blur-sm sm:w-[188px] ${card.className} ${card.float}`}
-              style={
-                {
-                  "--float-rotate":
-                    card.label === "AI Photo" ? "1.5deg" : "-1.5deg",
-                } as React.CSSProperties
-              }
-            >
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent-soft text-accent-ink">
-                <card.icon className="h-[18px] w-[18px]" />
-              </div>
-              <p className="mt-3 text-sm font-medium text-ink">
-                {card.label}
-              </p>
-              <p className="text-xs text-muted">{card.sub}</p>
-            </div>
-          ))}
-        </motion.div>
       </Container>
+
+      <a
+        href="#top"
+        aria-label="В начало"
+        className="absolute left-4 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line text-ink transition-colors hover:bg-paper-alt lg:flex"
+      >
+        <ArrowLeft className="h-4 w-4" />
+      </a>
+      <a
+        href="#services"
+        aria-label="К услугам"
+        className="absolute right-4 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line text-ink transition-colors hover:bg-paper-alt lg:flex"
+      >
+        <ArrowRight className="h-4 w-4" />
+      </a>
     </section>
   );
 }

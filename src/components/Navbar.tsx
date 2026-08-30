@@ -2,22 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, Send, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { navLinks, siteConfig } from "@/config/site";
-import { Container } from "@/components/ui/Container";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -27,88 +17,73 @@ export function Navbar() {
   }, [open]);
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled || open
-          ? "bg-paper/80 backdrop-blur-md border-b border-line"
-          : "bg-transparent border-b border-transparent",
-      )}
-    >
-      <Container className="flex h-16 items-center justify-between sm:h-20">
-        <a
-          href="#top"
-          className="text-sm font-semibold tracking-tight text-ink"
-        >
+    <header className="fixed inset-x-0 top-4 z-50 px-4 sm:top-6 sm:px-6">
+      <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between rounded-full bg-[#f5f3ee] px-3 pl-5 text-[#121110] shadow-[0_16px_40px_-16px_rgba(0,0,0,0.6)] sm:h-16 sm:pl-6">
+        <a href="#top" className="text-sm font-semibold tracking-tight uppercase">
           {siteConfig.name}
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-7 md:flex">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-muted transition-colors hover:text-ink"
+              className="text-sm text-[#121110]/60 transition-colors hover:text-[#121110]"
             >
               {link.label}
             </a>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
-          <ThemeToggle />
+        <div className="hidden md:block">
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-colors duration-300 hover:bg-accent hover:text-accent-contrast"
+            className="group inline-flex items-center gap-1.5 rounded-full bg-[#121110] px-5 py-2.5 text-sm font-medium text-[#f5f3ee] transition-transform duration-300 hover:scale-[1.03]"
           >
-            <Send className="h-4 w-4" />
             Оставить заявку
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
         </div>
 
-        <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle />
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink"
-            aria-label={open ? "Закрыть меню" : "Открыть меню"}
-            aria-expanded={open}
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-      </Container>
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#121110]/5 text-[#121110] md:hidden"
+          aria-label={open ? "Закрыть меню" : "Открыть меню"}
+          aria-expanded={open}
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
 
       <AnimatePresence>
         {open ? (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden border-t border-line bg-paper md:hidden"
+            className={cn(
+              "mx-auto mt-3 flex max-w-5xl flex-col gap-1 rounded-3xl bg-[#f5f3ee] p-3 text-[#121110] shadow-[0_16px_40px_-16px_rgba(0,0,0,0.6)] md:hidden",
+            )}
           >
-            <Container className="flex flex-col gap-1 py-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-xl px-3 py-3 text-base text-ink/80 transition-colors hover:bg-paper-alt hover:text-ink"
-                >
-                  {link.label}
-                </a>
-              ))}
+            {navLinks.map((link) => (
               <a
-                href="#contact"
+                key={link.href}
+                href={link.href}
                 onClick={() => setOpen(false)}
-                className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-3.5 text-sm font-medium text-paper"
+                className="rounded-xl px-3 py-3 text-base text-[#121110]/80 transition-colors hover:bg-[#121110]/5 hover:text-[#121110]"
               >
-                <Send className="h-4 w-4" />
-                Оставить заявку
+                {link.label}
               </a>
-            </Container>
+            ))}
+            <a
+              href="#contact"
+              onClick={() => setOpen(false)}
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#121110] px-5 py-3.5 text-sm font-medium text-[#f5f3ee]"
+            >
+              Оставить заявку
+            </a>
           </motion.div>
         ) : null}
       </AnimatePresence>
