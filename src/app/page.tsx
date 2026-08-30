@@ -11,6 +11,7 @@ import { Portfolio } from "@/components/sections/Portfolio";
 import { Process } from "@/components/sections/Process";
 import { FAQ } from "@/components/sections/FAQ";
 import { CTA } from "@/components/sections/CTA";
+import { ColorLab } from "@/components/dev/ColorLab";
 
 export default function Home() {
   return (
@@ -30,6 +31,7 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingTelegramButton />
+      {process.env.NODE_ENV !== "production" ? <ColorLab /> : null}
     </>
   );
 }
