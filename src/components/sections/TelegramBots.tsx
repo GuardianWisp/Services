@@ -25,14 +25,14 @@ function FlowRow({ steps }: { steps: string[] }) {
   );
 }
 
-export function Automation() {
+export function TelegramBots() {
   return (
-    <section id="automation" className="bg-paper-alt py-24 sm:py-32">
+    <section id="bots" className="bg-paper-alt py-24 sm:py-32">
       <Container>
         <SectionHeading
-          eyebrow="Автоматизация"
+          eyebrow="Telegram-боты"
           title="Меньше ручной работы"
-          description="Можно автоматизировать часть общения с клиентами и приёма заявок, не внедряя сложную CRM."
+          description="Telegram-бот берёт на себя часть переписки с клиентами и приём заявок — без сложных CRM."
         />
 
         <div className="mt-14 flex flex-col gap-5">

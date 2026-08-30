@@ -16,7 +16,7 @@ export const siteConfig = {
   url: "https://nikita-digital.vercel.app",
   year: 2026,
   description:
-    "Сайты, профессиональный AI-контент и Telegram-автоматизация для небольшого бизнеса, мастеров и частных специалистов.",
+    "Дизайн и сайты, продающие тексты, Telegram-боты и AI/3D-контент для небольшого бизнеса, мастеров и частных специалистов.",
 } as const;
 
 export const navLinks = [
@@ -26,5 +26,4 @@ export const navLinks = [
   { href: "#pricing", label: "Цены" },
   { href: "#portfolio", label: "Работы" },
   { href: "#faq", label: "Вопросы" },
-  { href: "#contact", label: "Заявка" },
 ] as const;

@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, Send, X } from "lucide-react";
 import { navLinks, siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
-import { TelegramIcon } from "@/components/ui/TelegramIcon";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
 
@@ -59,13 +58,11 @@ export function Navbar() {
         <div className="hidden items-center gap-3 md:flex">
           <ThemeToggle />
           <a
-            href={siteConfig.telegramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#contact"
             className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-colors duration-300 hover:bg-accent hover:text-accent-contrast"
           >
-            <TelegramIcon className="h-4 w-4" />
-            Написать в Telegram
+            <Send className="h-4 w-4" />
+            Оставить заявку
           </a>
         </div>
 
@@ -104,14 +101,12 @@ export function Navbar() {
                 </a>
               ))}
               <a
-                href={siteConfig.telegramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#contact"
                 onClick={() => setOpen(false)}
                 className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-3.5 text-sm font-medium text-paper"
               >
-                <TelegramIcon className="h-4 w-4" />
-                Написать в Telegram
+                <Send className="h-4 w-4" />
+                Оставить заявку
               </a>
             </Container>
           </motion.div>

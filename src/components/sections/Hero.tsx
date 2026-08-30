@@ -1,12 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Bot, Globe, MapPin, Sparkles } from "lucide-react";
+import { ArrowRight, Bot, Globe, MapPin, Send, Sparkles } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { TelegramIcon } from "@/components/ui/TelegramIcon";
 
 const floatingCards = [
   {
@@ -38,15 +37,6 @@ export function Hero() {
       id="top"
       className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 right-[-10%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,var(--color-accent-soft)_0%,transparent_70%)] blur-2xl"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/3 left-[-15%] h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,var(--color-paper-alt)_0%,transparent_70%)] blur-2xl"
-      />
-
       <Container className="relative grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
         <div>
           <motion.div
@@ -66,7 +56,7 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
             className="mt-6 text-balance text-4xl font-medium leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl lg:text-[3.75rem]"
           >
-            Сайты, AI-контент и автоматизация{" "}
+            Дизайн, сайты и AI-контент{" "}
             <span className="text-accent-ink">для вашего бизнеса</span>
           </motion.h1>
 
@@ -76,8 +66,9 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
             className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-muted"
           >
-            Создаю сайты, профессиональные изображения и Telegram-инструменты,
-            которые помогают бизнесу выглядеть лучше и получать больше заявок.
+            Дизайн и сайты, продающие тексты, Telegram-боты и 3D-контент —
+            помогаю бизнесу выглядеть профессионально и получать больше
+            заявок.
           </motion.p>
 
           <motion.div
@@ -86,14 +77,9 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
             className="mt-9 flex flex-wrap items-center gap-3"
           >
-            <Button
-              href={siteConfig.telegramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="primary"
-            >
-              <TelegramIcon className="h-4 w-4" />
-              Обсудить проект
+            <Button href="#contact" variant="primary">
+              <Send className="h-4 w-4" />
+              Оставить заявку
             </Button>
             <Button href="#services" variant="secondary">
               Посмотреть услуги

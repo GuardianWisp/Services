@@ -55,7 +55,7 @@ export default function OpengraphImage() {
               display: "flex",
             }}
           >
-            Сайты, AI-контент и автоматизация
+            Дизайн, сайты и AI-контент
           </div>
           <div style={{ fontSize: 30, color: "#6f6b64", display: "flex" }}>
             для вашего бизнеса — в одном месте

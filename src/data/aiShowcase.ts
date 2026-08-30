@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Cake, Package, Car, Home as HomeIcon, ImageOff } from "lucide-react";
+import { Cake, Package, Car, Home as HomeIcon } from "lucide-react";
 
 export interface AiShowcaseExample {
   id: string;
@@ -37,12 +37,5 @@ export const aiShowcaseExamples: AiShowcaseExample[] = [
     icon: HomeIcon,
     before: "Тёмное фото комнаты",
     after: "Светлый, чёткий кадр",
-  },
-  {
-    id: "object",
-    label: "Без лишнего",
-    icon: ImageOff,
-    before: "Человек / предмет на фоне",
-    after: "Чистая композиция товара",
   },
 ];

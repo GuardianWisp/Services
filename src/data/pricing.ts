@@ -11,4 +11,6 @@ export const pricingItems: PricingItem[] = [
   { title: "Telegram-бот", price: "от 10 000 ₽" },
   { title: "AI-фото", price: "от 500 ₽", note: "за фото" },
   { title: "AI-контент под задачу", price: "от 3 000 ₽" },
+  { title: "Продающие тексты", price: "от 2 000 ₽" },
+  { title: "3D-контент", price: "по запросу" },
 ];
