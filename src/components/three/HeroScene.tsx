@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 // A matcap is a texture that already has lighting "baked" into it — the
 // material just samples it by the fragment's view-space normal, so there's
@@ -73,7 +74,11 @@ function Blob() {
   const reducedMotion = useRef(false);
 
   const geometry = useMemo(() => {
-    const geo = new THREE.IcosahedronGeometry(1.3, 5);
+    // IcosahedronGeometry doesn't share vertices between adjacent faces, so
+    // computeVertexNormals() alone only ever produces flat per-face
+    // normals. Weld the coincident vertices into an indexed geometry first
+    // so normals actually average across shared corners.
+    const geo = mergeVertices(new THREE.IcosahedronGeometry(1.3, 5));
     const pos = geo.attributes.position;
     const v = new THREE.Vector3();
     for (let i = 0; i < pos.count; i++) {
