@@ -9,6 +9,7 @@ import { websiteExamples, websiteFeatures } from "@/data/websites";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { GlossyAccent } from "@/components/ui/GlossyAccent";
 
 const featureIcons = [Smartphone, Send, Send, Calendar, Search];
 
@@ -54,11 +55,20 @@ export function Websites() {
   return (
     <section id="websites" className="py-24 sm:py-32">
       <Container>
-        <SectionHeading
-          eyebrow="Сайты"
-          title="Сайт, который работает на вас"
-          description="Понятная структура, быстрая загрузка и прямой путь от посетителя до заявки."
-        />
+        <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
+          <SectionHeading
+            eyebrow="Сайты"
+            title="Сайт, который работает на вас"
+            description="Понятная структура, быстрая загрузка и прямой путь от посетителя до заявки."
+            className="max-w-2xl"
+          />
+          <GlossyAccent
+            variant="drop"
+            from="#ffd166"
+            to="#ff8a3d"
+            className="h-28 w-28 shrink-0 drop-shadow-[0_20px_40px_rgba(255,138,61,0.3)] sm:h-36 sm:w-36"
+          />
+        </div>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2">
           {websiteExamples.map((site, i) => (
