@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, MapPin, Send } from "lucide-react";
+import { ArrowRight, MapPin, Send } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
@@ -81,21 +81,6 @@ export function Hero() {
           </motion.div>
         </div>
       </Container>
-
-      <a
-        href="#top"
-        aria-label="В начало"
-        className="absolute left-4 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line text-ink transition-colors hover:bg-paper-alt lg:flex"
-      >
-        <ArrowLeft className="h-4 w-4" />
-      </a>
-      <a
-        href="#services"
-        aria-label="К услугам"
-        className="absolute right-4 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line text-ink transition-colors hover:bg-paper-alt lg:flex"
-      >
-        <ArrowRight className="h-4 w-4" />
-      </a>
     </section>
   );
 }

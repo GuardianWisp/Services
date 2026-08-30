@@ -57,7 +57,7 @@ export function LeadForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-2xl border border-paper/15 bg-paper/5 p-6 text-center">
+      <div className="mx-auto w-full max-w-md rounded-2xl border border-paper/15 bg-paper/5 p-6 text-center lg:max-w-xl">
         <p className="text-base font-medium text-paper">Заявка отправлена</p>
         <p className="mt-1 text-sm text-paper/70">
           Отвечу в течение дня. Спасибо!
@@ -67,7 +67,10 @@ export function LeadForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md space-y-3">
+    <form
+      onSubmit={handleSubmit}
+      className="mx-auto w-full max-w-md space-y-3 lg:max-w-3xl"
+    >
       <input
         type="text"
         value={honeypot}
@@ -107,37 +110,39 @@ export function LeadForm() {
         className="w-full resize-none rounded-xl border border-paper/20 bg-paper/10 px-4 py-3 text-sm text-paper placeholder:text-paper/45 outline-none transition-colors focus:border-accent"
       />
 
-      <label className="flex items-start gap-2.5 text-xs leading-relaxed text-paper/60">
-        <input
-          type="checkbox"
-          checked={consent}
-          onChange={(e) => setConsent(e.target.checked)}
-          style={{ accentColor: "var(--color-accent)" }}
-          className="mt-0.5 h-4 w-4 shrink-0 rounded border-paper/30"
-        />
-        Согласен с{" "}
-        <Link href="/privacy" className="underline hover:text-paper">
-          политикой конфиденциальности
-        </Link>{" "}
-        и обработкой персональных данных
-      </label>
-
       {status === "error" ? (
         <p className="text-xs text-red-300">{error}</p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-medium text-accent-contrast transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:hover:scale-100 sm:w-auto"
-      >
-        {status === "loading" ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <Send className="h-4 w-4" />
-        )}
-        Отправить заявку
-      </button>
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+        <label className="flex items-start gap-2.5 text-xs leading-relaxed text-paper/60 lg:max-w-sm">
+          <input
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            style={{ accentColor: "var(--color-accent)" }}
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-paper/30"
+          />
+          Согласен с{" "}
+          <Link href="/privacy" className="underline hover:text-paper">
+            политикой конфиденциальности
+          </Link>{" "}
+          и обработкой персональных данных
+        </label>
+
+        <button
+          type="submit"
+          disabled={status === "loading"}
+          className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-medium text-accent-contrast transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:hover:scale-100 lg:w-auto"
+        >
+          {status === "loading" ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Send className="h-4 w-4" />
+          )}
+          Отправить заявку
+        </button>
+      </div>
     </form>
   );
 }
