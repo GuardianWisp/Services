@@ -68,28 +68,36 @@ function bump(x: number, y: number, z: number) {
   );
 }
 
+const BLOB_RADIUS = 1.3;
+
 function Blob() {
   const meshRef = useRef<THREE.Mesh>(null);
   const pointer = useRef({ x: 0, y: 0 });
   const reducedMotion = useRef(false);
+  const frame = useRef(0);
 
-  const geometry = useMemo(() => {
-    // IcosahedronGeometry doesn't share vertices between adjacent faces, so
-    // computeVertexNormals() alone only ever produces flat per-face
-    // normals. Weld the coincident vertices into an indexed geometry first
-    // so normals actually average across shared corners.
-    const geo = mergeVertices(new THREE.IcosahedronGeometry(1.3, 5));
+  // IcosahedronGeometry doesn't share vertices between adjacent faces, so
+  // computeVertexNormals() alone only ever produces flat per-face normals.
+  // Weld the coincident vertices into an indexed geometry first so normals
+  // actually average across shared corners. Also bakes the initial (t=0)
+  // bump displacement here, so the blob has its organic shape immediately —
+  // and permanently, for prefers-reduced-motion — independent of whether
+  // useFrame ever gets to animate it further.
+  const { geometry, directions } = useMemo(() => {
+    const geo = mergeVertices(new THREE.IcosahedronGeometry(BLOB_RADIUS, 6));
     const pos = geo.attributes.position;
+    const dirs = new Float32Array(pos.count * 3);
     const v = new THREE.Vector3();
     for (let i = 0; i < pos.count; i++) {
-      v.fromBufferAttribute(pos, i);
-      const n = v.clone().normalize();
-      const displacement = bump(n.x * 2, n.y * 2, n.z * 2) * 0.16;
-      v.addScaledVector(n, displacement);
-      pos.setXYZ(i, v.x, v.y, v.z);
+      v.fromBufferAttribute(pos, i).normalize();
+      dirs[i * 3] = v.x;
+      dirs[i * 3 + 1] = v.y;
+      dirs[i * 3 + 2] = v.z;
+      const d = BLOB_RADIUS + bump(v.x * 2, v.y * 2, v.z * 2) * 0.16;
+      pos.setXYZ(i, v.x * d, v.y * d, v.z * d);
     }
     geo.computeVertexNormals();
-    return geo;
+    return { geometry: geo, directions: dirs };
   }, []);
 
   const matcap = useMemo(
@@ -110,11 +118,34 @@ function Blob() {
     return () => window.removeEventListener("pointermove", handlePointerMove);
   }, []);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     const mesh = meshRef.current;
     if (!mesh) return;
 
     if (!reducedMotion.current) {
+      // Re-derive the displacement from the pristine sphere each update
+      // (rather than nudging the previous frame's result) so the noise
+      // gently flows across the surface instead of drifting/accumulating.
+      // Updated every other frame — plenty smooth for a slow wobble, half
+      // the CPU cost.
+      frame.current++;
+      if (frame.current % 2 === 0) {
+        const t = state.clock.elapsedTime * 0.35;
+        const pos = mesh.geometry.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+          const ix = i * 3;
+          const nx = directions[ix];
+          const ny = directions[ix + 1];
+          const nz = directions[ix + 2];
+          const d =
+            BLOB_RADIUS +
+            bump(nx * 2 + t, ny * 2 + t * 0.6, nz * 2) * 0.16;
+          pos.setXYZ(i, nx * d, ny * d, nz * d);
+        }
+        pos.needsUpdate = true;
+        mesh.geometry.computeVertexNormals();
+      }
+
       mesh.rotation.y += delta * 0.25;
     }
     mesh.rotation.x = THREE.MathUtils.lerp(
