@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
+import { useId, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { Sparkles } from "lucide-react";
 
 interface BeforeAfterSliderProps {
@@ -18,10 +18,22 @@ export function BeforeAfterSlider({
 }: BeforeAfterSliderProps) {
   const [value, setValue] = useState(52);
   const sliderId = useId();
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const percent = ((event.clientX - rect.left) / rect.width) * 100;
+    setValue(Math.min(100, Math.max(0, percent)));
+  };
 
   return (
     <div className="w-full">
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border border-line bg-paper-alt">
+      <div
+        ref={cardRef}
+        onPointerMove={handlePointerMove}
+        className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border border-line bg-paper-alt"
+      >
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[linear-gradient(160deg,#e4e1da,#f2f0ec_55%,#dedad2)] grayscale dark:bg-[linear-gradient(160deg,#232228,#2b2a30_55%,#1c1b20)]">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/70 text-neutral-500 backdrop-blur-sm dark:bg-black/30 dark:text-neutral-400">
             {icon}
