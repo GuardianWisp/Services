@@ -1,15 +1,31 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 :root {
   --color-ink: #121110;
   --color-paper: #fbfaf8;
   --color-paper-alt: #f2f0ec;
   --color-card: #ffffff;
   --color-line: #e7e4de;
-  --color-accent: #ff5a36;
-  --color-accent-ink: #7a2408;
-  --color-accent-soft: #ffe7dc;
+  --color-accent: #c6ff1a;
+  --color-accent-ink: #83b300;
+  --color-accent-soft: #eeffc2;
+  --color-accent-contrast: #16220a;
   --color-muted: #6f6b64;
+}
+
+:root[data-theme="dark"] {
+  --color-ink: #f4f3f0;
+  --color-paper: #0a0a0d;
+  --color-paper-alt: #111116;
+  --color-card: #16161c;
+  --color-line: #27272f;
+  --color-accent: #3dffc2;
+  --color-accent-ink: #6dffd6;
+  --color-accent-soft: #0f3a2e;
+  --color-accent-contrast: #062019;
+  --color-muted: #9c99a5;
 }
 
 @theme inline {
@@ -21,6 +37,7 @@
   --color-accent: var(--color-accent);
   --color-accent-ink: var(--color-accent-ink);
   --color-accent-soft: var(--color-accent-soft);
+  --color-accent-contrast: var(--color-accent-contrast);
   --color-muted: var(--color-muted);
 
   --font-sans: var(--font-geist-sans);
@@ -65,7 +82,7 @@ body {
 
 ::selection {
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-accent-contrast);
 }
 
 .text-balance {

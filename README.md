@@ -29,6 +29,27 @@ npm run dev
 Проекты в портфолио помечены `isDemo: true` — это демо-заглушки на CSS/иконках
 без реальных фото, их можно заменить на реальные кейсы позже.
 
+## Переменные окружения
+
+Скопируйте `.env.example` в `.env.local` и заполните:
+
+- **`TELEGRAM_BOT_TOKEN`** и **`TELEGRAM_CHAT_ID`** — заявки с формы на сайте
+  (секция «Есть идея? Давайте сделаем.») отправляются в Telegram через бота.
+  Создайте бота через [@BotFather](https://t.me/BotFather), получите токен,
+  напишите боту любое сообщение (или добавьте его в группу), затем откройте
+  `https://api.telegram.org/bot<токен>/getUpdates`, чтобы узнать `chat_id`.
+  Без этих переменных форма вернёт ошибку и предложит написать в Telegram
+  напрямую.
+- **`NEXT_PUBLIC_GA_MEASUREMENT_ID`** — id счётчика Google Analytics (GA4,
+  вида `G-XXXXXXXXXX`) с [analytics.google.com](https://analytics.google.com).
+  Если оставить пустым, счётчик просто не подключается.
+- **`NEXT_PUBLIC_YANDEX_METRIKA_ID`** — номер счётчика с
+  [metrika.yandex.ru](https://metrika.yandex.ru) (просто число). Работает
+  одновременно с Google Analytics, не заменяет его.
+
+На Vercel эти же переменные нужно добавить в Project Settings → Environment
+Variables.
+
 ## Проверки перед деплоем
 
 ```bash
@@ -39,5 +60,7 @@ npm run build      # production build
 
 ## Деплой на Vercel
 
-Проект полностью статический (все страницы пререндерятся), деплоится на
-[Vercel](https://vercel.com/new) без дополнительной настройки.
+Все страницы пререндерятся, кроме `/api/contact` (serverless-функция для
+формы заявки). Деплоится на [Vercel](https://vercel.com/new) без
+дополнительной настройки — не забудьте только добавить переменные окружения
+из раздела выше.

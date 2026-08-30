@@ -25,7 +25,7 @@ export function Services() {
                   <span className="text-sm font-medium text-muted">
                     {service.index}
                   </span>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-paper-alt text-ink transition-colors duration-300 group-hover:bg-accent group-hover:text-ink">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-paper-alt text-ink transition-colors duration-300 group-hover:bg-accent group-hover:text-accent-contrast">
                     <service.icon className="h-5 w-5" />
                   </div>
                 </div>

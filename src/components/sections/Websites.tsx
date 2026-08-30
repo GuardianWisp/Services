@@ -24,14 +24,14 @@ function WebsiteMockup({
   return (
     <div className="overflow-hidden rounded-3xl border border-line bg-card shadow-[0_20px_40px_-28px_rgba(18,17,16,0.25)]">
       <div className="flex items-center gap-1.5 border-b border-line px-4 py-3">
-        <span className="h-2.5 w-2.5 rounded-full bg-neutral-200" />
-        <span className="h-2.5 w-2.5 rounded-full bg-neutral-200" />
-        <span className="h-2.5 w-2.5 rounded-full bg-neutral-200" />
+        <span className="h-2.5 w-2.5 rounded-full bg-neutral-200 dark:bg-white/15" />
+        <span className="h-2.5 w-2.5 rounded-full bg-neutral-200 dark:bg-white/15" />
+        <span className="h-2.5 w-2.5 rounded-full bg-neutral-200 dark:bg-white/15" />
         <span className="ml-3 h-5 flex-1 rounded-full bg-paper-alt" />
       </div>
-      <div className="relative h-44 bg-[linear-gradient(155deg,var(--color-paper-alt),white)] p-5">
+      <div className="relative h-44 bg-[linear-gradient(155deg,var(--color-paper-alt),white)] p-5 dark:bg-[linear-gradient(155deg,var(--color-paper-alt),var(--color-paper))]">
         <div
-          className={`absolute top-5 h-20 w-20 rounded-2xl bg-[linear-gradient(155deg,var(--color-accent-soft),white)] ${
+          className={`absolute top-5 h-20 w-20 rounded-2xl bg-[linear-gradient(155deg,var(--color-accent-soft),white)] dark:bg-[linear-gradient(155deg,var(--color-accent-soft),var(--color-card))] ${
             accentPosition === "left" ? "left-5" : "right-5"
           }`}
         />

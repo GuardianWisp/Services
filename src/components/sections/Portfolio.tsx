@@ -65,11 +65,11 @@ export function Portfolio() {
                     item.gradient,
                   )}
                 >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/80 text-ink shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/80 text-ink shadow-sm backdrop-blur-sm transition-transform duration-300 group-hover:scale-105 dark:bg-black/40">
                     <item.icon className="h-6 w-6" strokeWidth={1.5} />
                   </div>
                   {item.isDemo ? (
-                    <span className="absolute top-4 right-4 rounded-full bg-white/80 px-2.5 py-1 text-[11px] font-medium text-muted">
+                    <span className="absolute top-4 right-4 rounded-full bg-white/80 px-2.5 py-1 text-[11px] font-medium text-muted backdrop-blur-sm dark:bg-black/50">
                       demo
                     </span>
                   ) : null}

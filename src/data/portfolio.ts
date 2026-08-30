@@ -42,7 +42,8 @@ export const portfolioItems: PortfolioItem[] = [
     category: "Website",
     description: "Сайт-визитка с онлайн-записью и Telegram-заявками.",
     icon: LayoutTemplate,
-    gradient: "from-orange-200 via-orange-100 to-white",
+    gradient:
+      "from-orange-200 via-orange-100 to-white dark:from-orange-950 dark:via-neutral-900 dark:to-neutral-950",
     isDemo: true,
   },
   {
@@ -51,7 +52,8 @@ export const portfolioItems: PortfolioItem[] = [
     category: "AI Content",
     description: "Обычные фото тортов превращены в рекламные визуалы.",
     icon: Cake,
-    gradient: "from-rose-200 via-orange-100 to-white",
+    gradient:
+      "from-rose-200 via-orange-100 to-white dark:from-rose-950 dark:via-orange-950 dark:to-neutral-950",
     isDemo: true,
   },
   {
@@ -60,7 +62,8 @@ export const portfolioItems: PortfolioItem[] = [
     category: "Website",
     description: "Одностраничник с формой заявки и адаптацией под мобильные.",
     icon: LayoutTemplate,
-    gradient: "from-neutral-200 via-neutral-100 to-white",
+    gradient:
+      "from-neutral-200 via-neutral-100 to-white dark:from-neutral-800 dark:via-neutral-900 dark:to-neutral-950",
     isDemo: true,
   },
   {
@@ -69,7 +72,8 @@ export const portfolioItems: PortfolioItem[] = [
     category: "AI Content",
     description: "Замена фона и улучшение качества для продажи авто.",
     icon: Car,
-    gradient: "from-orange-200 via-amber-100 to-white",
+    gradient:
+      "from-orange-200 via-amber-100 to-white dark:from-orange-950 dark:via-amber-950 dark:to-neutral-950",
     isDemo: true,
   },
   {
@@ -78,7 +82,8 @@ export const portfolioItems: PortfolioItem[] = [
     category: "Branding",
     description: "Логотип, цвета и стиль для личного бренда.",
     icon: PenTool,
-    gradient: "from-neutral-300 via-neutral-100 to-white",
+    gradient:
+      "from-neutral-300 via-neutral-100 to-white dark:from-neutral-700 dark:via-neutral-900 dark:to-neutral-950",
     isDemo: true,
   },
   {
@@ -87,7 +92,8 @@ export const portfolioItems: PortfolioItem[] = [
     category: "Automation",
     description: "Telegram-бот с выбором услуги и уведомлением владельцу.",
     icon: Bot,
-    gradient: "from-orange-200 via-orange-50 to-white",
+    gradient:
+      "from-orange-200 via-orange-50 to-white dark:from-amber-950 dark:via-neutral-900 dark:to-neutral-950",
     isDemo: true,
   },
   {
@@ -96,7 +102,8 @@ export const portfolioItems: PortfolioItem[] = [
     category: "AI Content",
     description: "Улучшение качества и лёгкая ретушь фото недвижимости.",
     icon: HomeIcon,
-    gradient: "from-amber-100 via-neutral-100 to-white",
+    gradient:
+      "from-amber-100 via-neutral-100 to-white dark:from-amber-900 dark:via-neutral-900 dark:to-neutral-950",
     isDemo: true,
   },
   {
@@ -105,7 +112,8 @@ export const portfolioItems: PortfolioItem[] = [
     category: "Motion",
     description: "Короткая анимация для соцсетей и сторис.",
     icon: Clapperboard,
-    gradient: "from-neutral-200 via-orange-50 to-white",
+    gradient:
+      "from-neutral-200 via-orange-50 to-white dark:from-neutral-800 dark:via-orange-950 dark:to-neutral-950",
     isDemo: true,
   },
   {
@@ -114,7 +122,8 @@ export const portfolioItems: PortfolioItem[] = [
     category: "Automation",
     description: "Автоответы на частые вопросы прямо в Telegram.",
     icon: Sparkles,
-    gradient: "from-orange-100 via-neutral-100 to-white",
+    gradient:
+      "from-orange-100 via-neutral-100 to-white dark:from-orange-950 dark:via-neutral-800 dark:to-neutral-950",
     isDemo: true,
   },
 ];

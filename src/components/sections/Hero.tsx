@@ -108,7 +108,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="relative mx-auto h-[360px] w-full max-w-md sm:h-[440px] lg:mx-0 lg:h-[480px]"
         >
-          <div className="absolute inset-8 rounded-[2.5rem] border border-line bg-gradient-to-br from-white to-paper-alt shadow-[0_30px_60px_-30px_rgba(18,17,16,0.25)] sm:inset-10" />
+          <div className="absolute inset-8 rounded-[2.5rem] border border-line bg-gradient-to-br from-card to-paper-alt shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)] sm:inset-10" />
 
           {floatingCards.map((card) => (
             <div

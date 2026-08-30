@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Mail } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
@@ -33,7 +34,13 @@ export function Footer() {
               {siteConfig.email}
             </a>
           </div>
-          <p className="text-xs text-muted">© {siteConfig.year}</p>
+          <div className="flex items-center gap-3 text-xs text-muted">
+            <span>© {siteConfig.year}</span>
+            <span aria-hidden="true">·</span>
+            <Link href="/privacy" className="transition-colors hover:text-ink">
+              Политика конфиденциальности
+            </Link>
+          </div>
         </div>
       </Container>
     </footer>

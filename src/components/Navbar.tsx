@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import { navLinks, siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 import { TelegramIcon } from "@/components/ui/TelegramIcon";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
@@ -55,27 +56,31 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-3 md:flex">
+          <ThemeToggle />
           <a
             href={siteConfig.telegramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-colors duration-300 hover:bg-accent hover:text-ink"
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-colors duration-300 hover:bg-accent hover:text-accent-contrast"
           >
             <TelegramIcon className="h-4 w-4" />
             Написать в Telegram
           </a>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink md:hidden"
-          aria-label={open ? "Закрыть меню" : "Открыть меню"}
-          aria-expanded={open}
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink"
+            aria-label={open ? "Закрыть меню" : "Открыть меню"}
+            aria-expanded={open}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </Container>
 
       <AnimatePresence>

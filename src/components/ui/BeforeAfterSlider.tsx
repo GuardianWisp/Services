@@ -22,20 +22,20 @@ export function BeforeAfterSlider({
   return (
     <div className="w-full shrink-0 snap-center sm:shrink sm:snap-none">
       <div className="relative aspect-[4/5] w-[240px] overflow-hidden rounded-3xl border border-line bg-paper-alt sm:w-full">
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[linear-gradient(160deg,#e4e1da,#f2f0ec_55%,#dedad2)] grayscale">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/70 text-neutral-500">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[linear-gradient(160deg,#e4e1da,#f2f0ec_55%,#dedad2)] grayscale dark:bg-[linear-gradient(160deg,#232228,#2b2a30_55%,#1c1b20)]">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/70 text-neutral-500 backdrop-blur-sm dark:bg-black/30 dark:text-neutral-400">
             {icon}
           </div>
-          <span className="rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-neutral-600">
+          <span className="rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-neutral-600 backdrop-blur-sm dark:bg-black/30 dark:text-neutral-300">
             До
           </span>
         </div>
 
         <div
-          className="absolute inset-0 flex flex-col items-center justify-center gap-3 overflow-hidden bg-[linear-gradient(160deg,#fff4ee,#ffffff_55%,var(--color-accent-soft))]"
+          className="absolute inset-0 flex flex-col items-center justify-center gap-3 overflow-hidden bg-[linear-gradient(160deg,#fff4ee,#ffffff_55%,var(--color-accent-soft))] dark:bg-[linear-gradient(160deg,#1a191e,#141317_55%,var(--color-accent-soft))]"
           style={{ clipPath: `inset(0 0 0 ${value}%)` }}
         >
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-ink shadow-[0_10px_24px_-8px_rgba(255,90,54,0.6)]">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-accent-contrast shadow-[0_10px_24px_-8px_color-mix(in_srgb,var(--color-accent)_50%,transparent)]">
             {icon}
           </div>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-ink px-3 py-1 text-xs font-medium text-paper">
