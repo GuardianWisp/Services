@@ -1,19 +1,28 @@
 # Texture assets
 
-## brush-bw-matcap.png
+## green-matcap.png
 
-Source: `BrushBW_MatCap.tif` from a Cinema 4D matcap pack
-(`MATCAP_TOON`), used as the hero blob's material in
-`src/components/three/HeroScene.tsx`.
+Source: `3B6E10_E3F2C3_88AC2E_99CE51.png` (a standard 8-bit sRGB PNG,
+1024px, from `~/Downloads/Matcaps`), used as the hero blob's material
+in `src/components/three/HeroScene.tsx`. Already fully colored, so the
+material leaves `MeshMatcapMaterial`'s `color` at its default white
+rather than tinting it.
 
-The original TIFFs in that pack are **32-bit float, linear color
-space** renders (2160×2160, ~44MB each) — not standard 8-bit sRGB
-images. Converting them with `sips` (or anything that doesn't know
-about the linear profile) blows the image out to near-white, because
-the raw linear values look far too bright once written straight into
-an sRGB PNG without gamma-encoding them first.
+Resized straight down with `sips` (no gamma dance needed — this one's
+already normal sRGB, not linear):
 
-To reproduce/update this file from another matcap in the same pack:
+```bash
+sips -Z 256 -s format png /path/to/source.png \
+  --out public/textures/some-name-matcap.png
+```
+
+## Converting linear/HDR TIFFs (e.g. a Cinema 4D matcap pack)
+
+Some matcap packs (the `MATCAP_TOON` one in particular) ship **32-bit
+float, linear color space** TIFFs (2160×2160, ~44MB each) instead of
+normal sRGB images. `sips` doesn't know about the linear profile and
+blows the image out to near-white if you convert with it directly —
+the raw linear values need to be gamma-encoded to sRGB first.
 
 ```bash
 python3 -m pip install --user tifffile imagecodecs Pillow numpy
@@ -30,10 +39,10 @@ srgb = np.where(arr <= 0.0031308, arr * 12.92, 1.055 * np.power(arr, 1/2.4) - 0.
 srgb8 = (np.clip(srgb, 0, 1) * 255 + 0.5).astype(np.uint8)
 
 img = Image.fromarray(srgb8, mode='RGB').resize((256, 256), Image.LANCZOS)
-img.save('public/textures/brush-bw-matcap.png', optimize=True)
+img.save('public/textures/some-name-matcap.png', optimize=True)
 "
 ```
 
-256px is plenty — matcaps are sampled per-fragment by view-space
-normal, not spatially detailed, so there's no benefit to shipping the
-full 2160px render. Result: 44MB → ~34KB.
+256px is plenty either way — matcaps are sampled per-fragment by
+view-space normal, not spatially detailed, so there's no benefit to
+shipping a full-resolution source.
