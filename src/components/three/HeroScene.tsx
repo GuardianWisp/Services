@@ -18,7 +18,8 @@ import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 // ready), which is what gives the flat toon shading a bit of reflected
 // sheen instead of full relighting.
 const MODEL_URL = "/models/black-cat.glb";
-const TARGET_SIZE = 1.7;
+const TARGET_SIZE = 2.5;
+const Y_OFFSET = 0.1;
 
 function CatModel() {
   // Two handles to the same THREE.Group once loaded: `modelRef` is what
@@ -57,7 +58,7 @@ function CatModel() {
       scene.scale.setScalar(scale);
       scene.position.set(
         -center.x * scale,
-        -center.y * scale,
+        -center.y * scale + Y_OFFSET,
         -center.z * scale,
       );
 

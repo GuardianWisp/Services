@@ -7,101 +7,87 @@ import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { HeroScene } from "@/components/three/HeroScene";
-import { BurstDoodle, HeartDoodle } from "@/components/ui/Doodles";
 
 export function Hero() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden pt-20 pb-24 sm:pt-24 sm:pb-32"
+      className="relative flex min-h-screen flex-col overflow-hidden pt-20 pb-16 sm:pt-24 sm:pb-20"
     >
-      <Container className="relative">
-        <div className="flex flex-col items-center text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      {/* Full-bleed 3D scene behind everything — fills the whole section
+          edge to edge instead of sitting in a boxed frame, so there's no
+          visible canvas boundary against the page background. The radial
+          glow sits behind the canvas and fades to transparent well before
+          the section edges, so it reads as ambient light rather than a
+          hard-edged box. */}
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(255,45,130,0.25),transparent_70%)]" />
+      <div className="absolute inset-0 -z-10">
+        <HeroScene className="h-full w-full" />
+      </div>
+
+      <Container className="relative z-10 flex flex-1 flex-col items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-4"
+        >
+          <Badge>
+            <MapPin className="h-3.5 w-3.5 text-accent-ink" />
+            Работаю удалённо · {siteConfig.location}
+          </Badge>
+        </motion.div>
+
+        <div className="mt-auto flex flex-col items-center text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 24, filter: "blur(18px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{
+              duration: 1.1,
+              delay: 0.1,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="text-balance text-4xl font-medium leading-[0.95] tracking-tight text-ink drop-shadow-[0_4px_24px_rgba(7,7,7,0.8)] sm:text-6xl md:text-7xl"
           >
-            <Badge>
-              <MapPin className="h-3.5 w-3.5 text-accent-ink" />
-              Работаю удалённо · {siteConfig.location}
-            </Badge>
+            Дизайн, сайты и{" "}
+            <span className="text-accent-ink">AI-контент</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.7,
+              delay: 0.5,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="mt-4 max-w-xl text-balance text-lg leading-relaxed text-ink/80 drop-shadow-[0_2px_12px_rgba(7,7,7,0.9)]"
+          >
+            Дизайн и сайты, продающие тексты, Telegram-боты и
+            3D-контент — помогаю бизнесу выглядеть профессионально и
+            получать больше заявок.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.7,
+              delay: 0.6,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="mt-9 flex flex-wrap items-center justify-center gap-3"
+          >
+            <Button href="#contact" variant="primary">
+              <Send className="h-4 w-4" />
+              Оставить заявку
+            </Button>
+            <Button href="#services" variant="secondary">
+              Посмотреть услуги
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Button>
           </motion.div>
-
-          {/* 3D scene and text share one grid cell so the text overlays the
-              visual instead of pushing it down the page — the model keeps
-              its full size, the heading just reads sooner on load. */}
-          <div className="mt-8 grid w-full place-items-center">
-            <div className="relative col-start-1 row-start-1 flex w-full max-w-sm items-center justify-center sm:max-w-md md:max-w-lg">
-              <BurstDoodle className="absolute -left-8 top-0 h-14 w-14 text-ink/60 sm:-left-14 sm:h-20 sm:w-20" />
-              <HeartDoodle className="absolute -right-2 -top-2 h-10 w-10 text-ink/60 sm:right-2 sm:h-14 sm:w-14" />
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  duration: 0.8,
-                  delay: 0.15,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="aspect-[4/5] w-full drop-shadow-[0_30px_70px_rgba(255,45,130,0.3)]"
-              >
-                <HeroScene className="h-full w-full" />
-              </motion.div>
-            </div>
-
-            <div className="relative z-10 col-start-1 row-start-1 mt-[228px] flex flex-col items-center text-center sm:mt-[260px] md:mt-[292px]">
-              <motion.h1
-                initial={{ opacity: 0, y: 24, filter: "blur(18px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 1.1,
-                  delay: 0.1,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="text-balance text-4xl font-medium leading-[0.95] tracking-tight text-ink drop-shadow-[0_4px_24px_rgba(7,7,7,0.8)] sm:text-6xl md:text-7xl"
-              >
-                Дизайн, сайты и{" "}
-                <span className="text-accent-ink">AI-контент</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.7,
-                  delay: 0.5,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="mt-4 max-w-xl text-balance text-lg leading-relaxed text-ink/80 drop-shadow-[0_2px_12px_rgba(7,7,7,0.9)]"
-              >
-                Дизайн и сайты, продающие тексты, Telegram-боты и
-                3D-контент — помогаю бизнесу выглядеть профессионально и
-                получать больше заявок.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.7,
-                  delay: 0.6,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="mt-9 flex flex-wrap items-center justify-center gap-3"
-              >
-                <Button href="#contact" variant="primary">
-                  <Send className="h-4 w-4" />
-                  Оставить заявку
-                </Button>
-                <Button href="#services" variant="secondary">
-                  Посмотреть услуги
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </Button>
-              </motion.div>
-            </div>
-          </div>
         </div>
       </Container>
     </section>
