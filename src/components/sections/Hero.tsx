@@ -13,7 +13,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden pt-36 pb-24 sm:pt-44 sm:pb-32"
+      className="relative overflow-hidden pt-20 pb-24 sm:pt-24 sm:pb-32"
     >
       <Container className="relative">
         <div className="flex flex-col items-center text-center">
@@ -50,7 +50,7 @@ export function Hero() {
               </motion.div>
             </div>
 
-            <div className="relative z-10 col-start-1 row-start-1 mt-32 flex flex-col items-center text-center sm:mt-40 md:mt-48">
+            <div className="relative z-10 col-start-1 row-start-1 mt-[228px] flex flex-col items-center text-center sm:mt-[260px] md:mt-[292px]">
               <motion.h1
                 initial={{ opacity: 0, y: 24, filter: "blur(18px)" }}
                 whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
