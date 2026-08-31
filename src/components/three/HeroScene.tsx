@@ -1,63 +1,53 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-// Real baked-lighting matcap (a painterly brushed-metal sphere, converted
-// from a 32-bit linear TIFF render down to a 256px sRGB PNG — see
-// public/textures/README.md). It's grayscale, so MeshMatcapMaterial's
-// `color` tints it in the brand pink below.
-const MATCAP_URL = "/textures/brush-bw-matcap.png";
+// "Black cat" by Kanna-Nakajima (sketchfab.com/Kanna-nakajima),
+// CC-BY-4.0 — https://sketchfab.com/3d-models/black-cat-98da5c4c2fff4c05898ba82c244b9eec
+// Both materials use KHR_materials_unlit, so it renders correctly with
+// zero scene lights (three.js maps that extension to MeshBasicMaterial).
+const MODEL_URL = "/models/black-cat.glb";
+const TARGET_SIZE = 2.6; // roughly the footprint the previous blob had
 
-// Cheap deterministic "noise" (a handful of summed sines) — just enough to
-// nudge a sphere into an organic, non-uniform blob without pulling in a
-// noise library for a one-off static displacement.
-function bump(x: number, y: number, z: number) {
-  return (
-    Math.sin(x * 3.1 + y * 1.7) * 0.5 +
-    Math.sin(y * 2.3 + z * 3.3) * 0.3 +
-    Math.sin(z * 4.1 + x * 2.1) * 0.2
-  );
-}
-
-const BLOB_RADIUS = 1.3;
-
-function Blob() {
-  const meshRef = useRef<THREE.Mesh>(null);
+function CatModel() {
+  // Two handles to the same THREE.Group once loaded: `modelRef` is what
+  // useFrame mutates every frame (refs are for exactly this — imperative
+  // writes outside React's render pass), `model` state is only ever read,
+  // never written, and exists purely so <primitive> has something to
+  // render — React refs can't be read during render itself.
+  const modelRef = useRef<THREE.Group | null>(null);
+  const [model, setModel] = useState<THREE.Group | null>(null);
   const pointer = useRef({ x: 0, y: 0 });
   const reducedMotion = useRef(false);
-  const frame = useRef(0);
 
-  // IcosahedronGeometry doesn't share vertices between adjacent faces, so
-  // computeVertexNormals() alone only ever produces flat per-face normals.
-  // Weld the coincident vertices into an indexed geometry first so normals
-  // actually average across shared corners. Also bakes the initial (t=0)
-  // bump displacement here, so the blob has its organic shape immediately —
-  // and permanently, for prefers-reduced-motion — independent of whether
-  // useFrame ever gets to animate it further.
-  const { geometry, directions } = useMemo(() => {
-    const geo = mergeVertices(new THREE.IcosahedronGeometry(BLOB_RADIUS, 6));
-    const pos = geo.attributes.position;
-    const dirs = new Float32Array(pos.count * 3);
-    const v = new THREE.Vector3();
-    for (let i = 0; i < pos.count; i++) {
-      v.fromBufferAttribute(pos, i).normalize();
-      dirs[i * 3] = v.x;
-      dirs[i * 3 + 1] = v.y;
-      dirs[i * 3 + 2] = v.z;
-      const d = BLOB_RADIUS + bump(v.x * 2, v.y * 2, v.z * 2) * 0.16;
-      pos.setXYZ(i, v.x * d, v.y * d, v.z * d);
-    }
-    geo.computeVertexNormals();
-    return { geometry: geo, directions: dirs };
-  }, []);
+  useEffect(() => {
+    let cancelled = false;
+    new GLTFLoader().load(MODEL_URL, (gltf) => {
+      if (cancelled) return;
+      const scene = gltf.scene;
 
-  const matcap = useMemo(() => {
-    const texture = new THREE.TextureLoader().load(MATCAP_URL);
-    texture.colorSpace = THREE.SRGBColorSpace;
-    return texture;
+      // Normalize whatever scale/pivot the source file shipped with so it
+      // sits centered and consistently sized regardless of the export.
+      const box = new THREE.Box3().setFromObject(scene);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      const scale = TARGET_SIZE / Math.max(size.x, size.y, size.z);
+      scene.scale.setScalar(scale);
+      scene.position.set(
+        -center.x * scale,
+        -center.y * scale,
+        -center.z * scale,
+      );
+
+      modelRef.current = scene;
+      setModel(scene);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -73,53 +63,26 @@ function Blob() {
     return () => window.removeEventListener("pointermove", handlePointerMove);
   }, []);
 
-  useFrame((state, delta) => {
-    const mesh = meshRef.current;
-    if (!mesh) return;
+  useFrame((_, delta) => {
+    const model = modelRef.current;
+    if (!model) return;
 
     if (!reducedMotion.current) {
-      // Re-derive the displacement from the pristine sphere each update
-      // (rather than nudging the previous frame's result) so the noise
-      // gently flows across the surface instead of drifting/accumulating.
-      // Updated every other frame — plenty smooth for a slow wobble, half
-      // the CPU cost.
-      frame.current++;
-      if (frame.current % 2 === 0) {
-        const t = state.clock.elapsedTime * 0.35;
-        const pos = mesh.geometry.attributes.position;
-        for (let i = 0; i < pos.count; i++) {
-          const ix = i * 3;
-          const nx = directions[ix];
-          const ny = directions[ix + 1];
-          const nz = directions[ix + 2];
-          const d =
-            BLOB_RADIUS +
-            bump(nx * 2 + t, ny * 2 + t * 0.6, nz * 2) * 0.16;
-          pos.setXYZ(i, nx * d, ny * d, nz * d);
-        }
-        pos.needsUpdate = true;
-        mesh.geometry.computeVertexNormals();
-      }
-
-      mesh.rotation.y += delta * 0.25;
+      model.rotation.y += delta * 0.25;
     }
-    mesh.rotation.x = THREE.MathUtils.lerp(
-      mesh.rotation.x,
-      pointer.current.y * 0.3,
+    model.rotation.x = THREE.MathUtils.lerp(
+      model.rotation.x,
+      pointer.current.y * 0.2,
       0.05,
     );
-    mesh.rotation.z = THREE.MathUtils.lerp(
-      mesh.rotation.z,
-      -pointer.current.x * 0.2,
+    model.rotation.z = THREE.MathUtils.lerp(
+      model.rotation.z,
+      -pointer.current.x * 0.15,
       0.05,
     );
   });
 
-  return (
-    <mesh ref={meshRef} geometry={geometry}>
-      <meshMatcapMaterial matcap={matcap} color="#ff5fa8" />
-    </mesh>
-  );
+  return model ? <primitive object={model} /> : null;
 }
 
 export function HeroScene({ className }: { className?: string }) {
@@ -130,7 +93,7 @@ export function HeroScene({ className }: { className?: string }) {
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
       >
-        <Blob />
+        <CatModel />
       </Canvas>
     </div>
   );
