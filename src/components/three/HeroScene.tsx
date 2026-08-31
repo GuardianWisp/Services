@@ -5,11 +5,11 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
-// Real baked-lighting matcap — a chrome/silver studio-reflection sphere,
-// already fully shaded, so the material below leaves `color` at white
-// rather than tinting it. See public/textures/README.md for where this
-// came from / how to swap it.
-const MATCAP_URL = "/textures/silver-matcap.png";
+// Real baked-lighting matcap (a painterly brushed-metal sphere, converted
+// from a 32-bit linear TIFF render down to a 256px sRGB PNG — see
+// public/textures/README.md). It's grayscale, so MeshMatcapMaterial's
+// `color` tints it in the brand pink below.
+const MATCAP_URL = "/textures/brush-bw-matcap.png";
 
 // Cheap deterministic "noise" (a handful of summed sines) — just enough to
 // nudge a sphere into an organic, non-uniform blob without pulling in a
@@ -117,7 +117,7 @@ function Blob() {
 
   return (
     <mesh ref={meshRef} geometry={geometry}>
-      <meshMatcapMaterial matcap={matcap} />
+      <meshMatcapMaterial matcap={matcap} color="#ff5fa8" />
     </mesh>
   );
 }

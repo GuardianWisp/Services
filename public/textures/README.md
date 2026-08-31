@@ -1,16 +1,17 @@
 # Texture assets
 
-## silver-matcap.png
+## brush-bw-matcap.png
 
-Source: `C7C7D7_4C4E5A_818393_6C6C74.png` (a standard 8-bit sRGB PNG,
-1024px, from `~/Downloads/Matcaps`), used as the hero blob's material
-in `src/components/three/HeroScene.tsx`. Already fully shaded (a
-chrome/studio-reflection look), so the material leaves
-`MeshMatcapMaterial`'s `color` at its default white rather than
-tinting it.
+Source: `BrushBW_MatCap.tif` from a Cinema 4D matcap pack
+(`MATCAP_TOON`), used as the hero blob's material in
+`src/components/three/HeroScene.tsx`. It's grayscale, so the material
+tints it with `color="#ff5fa8"` (the brand pink) rather than leaving
+it white. See the TIFF conversion recipe below — this file needs the
+linear→sRGB pass.
 
-Resized straight down with `sips` (no gamma dance needed — this one's
-already normal sRGB, not linear):
+## Converting a plain sRGB PNG (no gamma dance needed)
+
+Some matcap packs ship normal 8-bit sRGB PNGs directly — just resize:
 
 ```bash
 sips -Z 256 -s format png /path/to/source.png \
