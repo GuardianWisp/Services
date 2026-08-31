@@ -5,57 +5,11 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
-// A matcap is a texture that already has lighting "baked" into it — the
-// material just samples it by the fragment's view-space normal, so there's
-// no runtime lighting math at all. This paints one on a canvas at runtime
-// instead of shipping an image asset: a radial base tone fading to a dark
-// rim (the sphere's own shading) plus an offset soft highlight (the "baked"
-// key light).
-function createMatcapTexture(base: string, highlight: string, shadow: string) {
-  const size = 256;
-  const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return null;
-
-  const body = ctx.createRadialGradient(
-    size * 0.5,
-    size * 0.5,
-    size * 0.02,
-    size * 0.5,
-    size * 0.5,
-    size * 0.5,
-  );
-  body.addColorStop(0, base);
-  body.addColorStop(0.68, base);
-  body.addColorStop(1, shadow);
-  ctx.fillStyle = body;
-  ctx.fillRect(0, 0, size, size);
-
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(size * 0.5, size * 0.5, size * 0.5, 0, Math.PI * 2);
-  ctx.clip();
-  const glow = ctx.createRadialGradient(
-    size * 0.34,
-    size * 0.28,
-    0,
-    size * 0.34,
-    size * 0.28,
-    size * 0.32,
-  );
-  glow.addColorStop(0, highlight);
-  glow.addColorStop(1, "transparent");
-  ctx.fillStyle = glow;
-  ctx.fillRect(0, 0, size, size);
-  ctx.restore();
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  texture.needsUpdate = true;
-  return texture;
-}
+// Real baked-lighting matcap (a painterly brushed-metal sphere, converted
+// from a 32-bit linear EXR/TIFF render down to a 256px sRGB PNG — see
+// public/textures/README.md). MeshMatcapMaterial multiplies it by `color`,
+// so the grayscale art still comes out tinted in the brand accent.
+const MATCAP_URL = "/textures/brush-bw-matcap.png";
 
 // Cheap deterministic "noise" (a handful of summed sines) — just enough to
 // nudge a sphere into an organic, non-uniform blob without pulling in a
@@ -100,10 +54,11 @@ function Blob() {
     return { geometry: geo, directions: dirs };
   }, []);
 
-  const matcap = useMemo(
-    () => createMatcapTexture("#ff5fa8", "#ffffff", "#7a1150"),
-    [],
-  );
+  const matcap = useMemo(() => {
+    const texture = new THREE.TextureLoader().load(MATCAP_URL);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    return texture;
+  }, []);
 
   useEffect(() => {
     reducedMotion.current = window.matchMedia(
@@ -160,11 +115,9 @@ function Blob() {
     );
   });
 
-  if (!matcap) return null;
-
   return (
     <mesh ref={meshRef} geometry={geometry}>
-      <meshMatcapMaterial matcap={matcap} />
+      <meshMatcapMaterial matcap={matcap} color="#ff5fa8" />
     </mesh>
   );
 }
