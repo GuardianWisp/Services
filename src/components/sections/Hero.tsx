@@ -28,7 +28,7 @@ export function Hero() {
             </Badge>
           </motion.div>
 
-          <div className="relative mt-8 flex w-full max-w-xs items-center justify-center sm:max-w-sm">
+          <div className="relative mt-8 flex w-full max-w-sm items-center justify-center sm:max-w-md md:max-w-lg">
             <BurstDoodle className="absolute -left-8 top-0 h-14 w-14 text-ink/60 sm:-left-14 sm:h-20 sm:w-20" />
             <HeartDoodle className="absolute -right-2 -top-2 h-10 w-10 text-ink/60 sm:right-2 sm:h-14 sm:w-14" />
 
@@ -36,7 +36,7 @@ export function Hero() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="aspect-square w-full drop-shadow-[0_30px_70px_rgba(255,45,130,0.3)]"
+              className="aspect-[4/5] w-full drop-shadow-[0_30px_70px_rgba(255,45,130,0.3)]"
             >
               <HeroScene className="h-full w-full" />
             </motion.div>
