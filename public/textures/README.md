@@ -1,12 +1,13 @@
 # Texture assets
 
-## green-matcap.png
+## silver-matcap.png
 
-Source: `3B6E10_E3F2C3_88AC2E_99CE51.png` (a standard 8-bit sRGB PNG,
+Source: `C7C7D7_4C4E5A_818393_6C6C74.png` (a standard 8-bit sRGB PNG,
 1024px, from `~/Downloads/Matcaps`), used as the hero blob's material
-in `src/components/three/HeroScene.tsx`. Already fully colored, so the
-material leaves `MeshMatcapMaterial`'s `color` at its default white
-rather than tinting it.
+in `src/components/three/HeroScene.tsx`. Already fully shaded (a
+chrome/studio-reflection look), so the material leaves
+`MeshMatcapMaterial`'s `color` at its default white rather than
+tinting it.
 
 Resized straight down with `sips` (no gamma dance needed — this one's
 already normal sRGB, not linear):
