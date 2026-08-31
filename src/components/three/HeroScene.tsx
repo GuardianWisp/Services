@@ -18,8 +18,7 @@ import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 // ready), which is what gives the flat toon shading a bit of reflected
 // sheen instead of full relighting.
 const MODEL_URL = "/models/black-cat.glb";
-const TARGET_SIZE = 2.7; // leaves just enough margin that tilting toward
-// the cursor doesn't swing an ear/tail tip past the camera frustum
+const TARGET_SIZE = 2.7;
 
 function CatModel() {
   // Two handles to the same THREE.Group once loaded: `modelRef` is what
