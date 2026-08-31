@@ -18,7 +18,7 @@ import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 // ready), which is what gives the flat toon shading a bit of reflected
 // sheen instead of full relighting.
 const MODEL_URL = "/models/black-cat.glb";
-const TARGET_SIZE = 2.7;
+const TARGET_SIZE = 1.7;
 
 function CatModel() {
   // Two handles to the same THREE.Group once loaded: `modelRef` is what
@@ -159,14 +159,14 @@ function Glow() {
   return null;
 }
 
+const DPR: [number, number] = [1, 2];
+const CAMERA = { position: [0, 0, 4.5] as [number, number, number], fov: 40 };
+const GL = { antialias: true, alpha: true };
+
 export function HeroScene({ className }: { className?: string }) {
   return (
     <div className={className}>
-      <Canvas
-        camera={{ position: [0, 0, 4.5], fov: 40 }}
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true }}
-      >
+      <Canvas camera={CAMERA} dpr={DPR} gl={GL}>
         <CatModel />
         <Glow />
       </Canvas>
