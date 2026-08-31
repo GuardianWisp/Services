@@ -160,14 +160,31 @@ function Glow() {
   return null;
 }
 
-const DPR: [number, number] = [1, 2];
+// Capped at 1.5 rather than the usual 2: the canvas now covers the full
+// viewport instead of a small boxed frame, so at DPR 2 the bloom pass's
+// render targets get expensive enough to risk a WebGL context loss on
+// memory-constrained mobile Safari.
+const DPR: [number, number] = [1, 1.5];
 const CAMERA = { position: [0, 0, 4.5] as [number, number, number], fov: 40 };
 const GL = { antialias: true, alpha: true };
 
 export function HeroScene({ className }: { className?: string }) {
   return (
     <div className={className}>
-      <Canvas camera={CAMERA} dpr={DPR} gl={GL}>
+      <Canvas
+        camera={CAMERA}
+        dpr={DPR}
+        gl={GL}
+        onCreated={({ gl }) => {
+          // A lost context throws inside r3f's render loop if left
+          // unhandled; preventDefault() here just stops that from
+          // becoming an uncaught error that unmounts the whole page —
+          // SceneErrorBoundary in Hero.tsx is the actual fallback.
+          gl.domElement.addEventListener("webglcontextlost", (event) => {
+            event.preventDefault();
+          });
+        }}
+      >
         <CatModel />
         <Glow />
       </Canvas>

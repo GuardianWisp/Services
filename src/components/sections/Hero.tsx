@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { HeroScene } from "@/components/three/HeroScene";
+import { SceneErrorBoundary } from "@/components/three/SceneErrorBoundary";
 
 export function Hero() {
   return (
@@ -22,7 +23,9 @@ export function Hero() {
           hard-edged box. */}
       <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(255,45,130,0.25),transparent_70%)]" />
       <div className="absolute inset-0 -z-10">
-        <HeroScene className="h-full w-full" />
+        <SceneErrorBoundary>
+          <HeroScene className="h-full w-full" />
+        </SceneErrorBoundary>
       </div>
 
       <Container className="relative z-10 flex flex-1 flex-col items-center">
