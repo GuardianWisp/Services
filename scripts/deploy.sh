@@ -1,23 +1,11 @@
 #!/usr/bin/env bash
-# Run this ON THE BEGET SERVER, from the project root, to build and
-# (re)start the site after pulling new commits.
-#
-#   ssh you@your-server
-#   cd /path/to/tetsub
-#   git pull
-#   ./scripts/deploy.sh
-set -euo pipefail
-
-npm ci
+# Run this ON THE BEGET SERVER, from /var/www/tetsab, to pull and
+# (re)deploy the site. Mirrors the same pattern already used for
+# burenie124.ru on this box.
+set -e
+cd /var/www/tetsab
+git pull --ff-only
+npm ci --silent
 npm run build
-
-# `output: "standalone"` only emits the server + the node_modules it
-# actually needs — static assets and /public are not copied in
-# automatically, so that's done here on every build.
-cp -r .next/static .next/standalone/.next/static
-if [ -d public ]; then
-  cp -r public .next/standalone/public
-fi
-
-pm2 startOrRestart ecosystem.config.js
-pm2 save
+pm2 restart tetsab --update-env
+echo "Deployed: $(git rev-parse --short HEAD)"

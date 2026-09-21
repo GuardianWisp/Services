@@ -1,17 +1,17 @@
-# Reverse proxy for tetsub.ru -> the Node process from ecosystem.config.js
-# (listening on 127.0.0.1:3000). Copy to /etc/nginx/sites-available/tetsub.ru
+# Reverse proxy for tetsab.ru -> the Node process (port 3001 — burenie124.ru
+# already owns 3000 on this box). Copy to /etc/nginx/sites-available/tetsab.ru
 # on the Beget VPS, symlink into sites-enabled, then run:
-#   certbot --nginx -d tetsub.ru -d www.tetsub.ru
+#   certbot --nginx -d tetsab.ru -d www.tetsab.ru
 # Certbot rewrites this file to add the SSL server block automatically —
 # the config below is the starting point before that.
 
 server {
     listen 80;
     listen [::]:80;
-    server_name tetsub.ru www.tetsub.ru;
+    server_name tetsab.ru www.tetsab.ru;
 
     location / {
-        proxy_pass http://127.0.0.1:3000;
+        proxy_pass http://127.0.0.1:3001;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";

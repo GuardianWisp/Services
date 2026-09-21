@@ -60,42 +60,29 @@ npm run build      # production build
 
 ## Деплой на Beget (VPS)
 
-Домен: **tetsub.ru**. Сайт собирается в standalone-режим (`output:
-"standalone"` в `next.config.ts`) — это отдельный Node-сервер без
-Vercel-специфики, который держит PM2 за nginx.
+Домен: **tetsab.ru**. Живёт на том же VPS, что и другой сайт
+(`burenie124.ru`) — те же паттерны: обычный `next start` под PM2, nginx
+проксирует, SSL через certbot. Порт **3001** (3000 уже занят burenie).
 
-Нужен именно **VPS/Cloud-сервер** на Beget с Node.js (обычный shared Node.js
-хостинг Beget слишком ограничен для PM2 + свой nginx).
+### Первичная настройка (один раз)
 
-### Первичная настройка сервера (один раз)
-
-1. **DNS** — у регистратора домена (или в DNS-панели Beget, если домен тоже
-   там) укажите A-запись `tetsub.ru` → IP сервера, и такую же для `www`.
-2. **SSH на сервер**, установите Node.js (LTS, версия из `.nvmrc`/см. локально
-   `node -v`), `npm i -g pm2`, `nginx`, `certbot`.
-3. Склонируйте репозиторий на сервер, скопируйте `.env.example` →
-   `.env.production` (или задайте переменные прямо в `ecosystem.config.js`) и
-   заполните `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`,
-   `NEXT_PUBLIC_GA_MEASUREMENT_ID`, `NEXT_PUBLIC_YANDEX_METRIKA_ID`.
-4. Запустите первый билд и старт:
-   ```bash
-   ./scripts/deploy.sh
-   ```
-5. **nginx** — возьмите `deploy/nginx.conf.example` как основу конфига для
-   `tetsub.ru`, включите сайт (`sites-available` → `sites-enabled`,
-   `nginx -t && systemctl reload nginx`).
-6. **SSL**:
-   ```bash
-   certbot --nginx -d tetsub.ru -d www.tetsub.ru
-   ```
+1. **DNS** — A-запись `tetsab.ru` (и `www`) → IP сервера.
+2. На сервере: `mkdir -p /var/www/tetsab && cd /var/www/tetsab`, склонировать
+   репозиторий, `npm ci`.
+3. Завести `/var/www/tetsab/.env` (не в git) с `TELEGRAM_BOT_TOKEN`,
+   `TELEGRAM_CHAT_ID`, `NEXT_PUBLIC_GA_MEASUREMENT_ID`,
+   `NEXT_PUBLIC_YANDEX_METRIKA_ID`.
+4. `npm run build`, затем `PORT=3001 pm2 start npm --name tetsab -- start` и
+   `pm2 save`.
+5. **nginx** — `deploy/nginx.conf.example` → `/etc/nginx/sites-available/tetsab.ru`,
+   симлинк в `sites-enabled`, `nginx -t && systemctl reload nginx`.
+6. **SSL**: `certbot --nginx -d tetsab.ru -d www.tetsab.ru`.
 
 ### Последующие деплои
 
 ```bash
-git pull
-./scripts/deploy.sh
+ssh root@<сервер> "/var/www/tetsab/scripts/deploy.sh"
 ```
 
-`scripts/deploy.sh` пересобирает проект, докладывает статику в
-`.next/standalone` (standalone-режим не копирует её сам) и перезапускает
-процесс через `pm2 startOrRestart ecosystem.config.js`.
+`scripts/deploy.sh` делает `git pull --ff-only` → `npm ci` → `npm run build`
+→ `pm2 restart tetsab --update-env`.
