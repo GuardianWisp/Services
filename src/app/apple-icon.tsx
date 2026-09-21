@@ -24,7 +24,7 @@ export default function AppleIcon() {
             fontSize: 100,
             fontWeight: 700,
             fontFamily: "sans-serif",
-            color: "#c6ff1a",
+            color: "#e8a3ae",
           }}
         >
           T

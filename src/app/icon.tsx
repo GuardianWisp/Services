@@ -23,7 +23,7 @@ export default function Icon() {
             fontSize: 20,
             fontWeight: 700,
             fontFamily: "sans-serif",
-            color: "#c6ff1a",
+            color: "#e8a3ae",
           }}
         >
           T
