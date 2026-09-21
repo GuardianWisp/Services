@@ -1,4 +1,4 @@
-# Isaeva — сайт-визитка
+# Tetsab — сайт-визитка
 
 Next.js 16 · TypeScript · Tailwind CSS v4 · Framer Motion · Lucide Icons.
 

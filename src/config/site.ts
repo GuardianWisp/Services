@@ -6,7 +6,7 @@
 export const TELEGRAM_USERNAME = "wispsoul";
 
 export const siteConfig = {
-  name: "Isaeva",
+  name: "Tetsab",
   role: "Digital-специалист",
   tagline: "Web · AI · Digital",
   location: "Красноярск / онлайн",
