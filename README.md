@@ -47,8 +47,8 @@ npm run dev
   [metrika.yandex.ru](https://metrika.yandex.ru) (просто число). Работает
   одновременно с Google Analytics, не заменяет его.
 
-На Vercel эти же переменные нужно добавить в Project Settings → Environment
-Variables.
+На сервере эти же переменные задаются в окружении процесса (см. раздел про
+деплой ниже), а не в `.env.local`.
 
 ## Проверки перед деплоем
 
@@ -58,9 +58,44 @@ npx eslint .       # ESLint
 npm run build      # production build
 ```
 
-## Деплой на Vercel
+## Деплой на Beget (VPS)
 
-Все страницы пререндерятся, кроме `/api/contact` (serverless-функция для
-формы заявки). Деплоится на [Vercel](https://vercel.com/new) без
-дополнительной настройки — не забудьте только добавить переменные окружения
-из раздела выше.
+Домен: **tetsub.ru**. Сайт собирается в standalone-режим (`output:
+"standalone"` в `next.config.ts`) — это отдельный Node-сервер без
+Vercel-специфики, который держит PM2 за nginx.
+
+Нужен именно **VPS/Cloud-сервер** на Beget с Node.js (обычный shared Node.js
+хостинг Beget слишком ограничен для PM2 + свой nginx).
+
+### Первичная настройка сервера (один раз)
+
+1. **DNS** — у регистратора домена (или в DNS-панели Beget, если домен тоже
+   там) укажите A-запись `tetsub.ru` → IP сервера, и такую же для `www`.
+2. **SSH на сервер**, установите Node.js (LTS, версия из `.nvmrc`/см. локально
+   `node -v`), `npm i -g pm2`, `nginx`, `certbot`.
+3. Склонируйте репозиторий на сервер, скопируйте `.env.example` →
+   `.env.production` (или задайте переменные прямо в `ecosystem.config.js`) и
+   заполните `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`,
+   `NEXT_PUBLIC_GA_MEASUREMENT_ID`, `NEXT_PUBLIC_YANDEX_METRIKA_ID`.
+4. Запустите первый билд и старт:
+   ```bash
+   ./scripts/deploy.sh
+   ```
+5. **nginx** — возьмите `deploy/nginx.conf.example` как основу конфига для
+   `tetsub.ru`, включите сайт (`sites-available` → `sites-enabled`,
+   `nginx -t && systemctl reload nginx`).
+6. **SSL**:
+   ```bash
+   certbot --nginx -d tetsub.ru -d www.tetsub.ru
+   ```
+
+### Последующие деплои
+
+```bash
+git pull
+./scripts/deploy.sh
+```
+
+`scripts/deploy.sh` пересобирает проект, докладывает статику в
+`.next/standalone` (standalone-режим не копирует её сам) и перезапускает
+процесс через `pm2 startOrRestart ecosystem.config.js`.

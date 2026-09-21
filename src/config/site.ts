@@ -13,7 +13,7 @@ export const siteConfig = {
   email: "wisplink@icloud.com",
   telegramUsername: TELEGRAM_USERNAME,
   telegramUrl: `https://t.me/${TELEGRAM_USERNAME}`,
-  url: "https://nikita-digital.vercel.app",
+  url: "https://tetsub.ru",
   year: 2026,
   description:
     "Дизайн и сайты, продающие тексты, Telegram-боты и AI/3D-контент для небольшого бизнеса, мастеров и частных специалистов.",
