@@ -19,13 +19,15 @@ export default function Icon() {
       >
         <div
           style={{
-            width: 12,
-            height: 12,
-            borderRadius: 999,
-            background: "#c6ff1a",
             display: "flex",
+            fontSize: 20,
+            fontWeight: 700,
+            fontFamily: "sans-serif",
+            color: "#c6ff1a",
           }}
-        />
+        >
+          T
+        </div>
       </div>
     ),
     { ...size },

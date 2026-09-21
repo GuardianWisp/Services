@@ -30,13 +30,20 @@ export default function OpengraphImage() {
         >
           <div
             style={{
-              width: 14,
-              height: 14,
-              borderRadius: 999,
-              background: "#c6ff1a",
+              width: 28,
+              height: 28,
+              borderRadius: 8,
+              background: "#121110",
               display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 16,
+              fontWeight: 700,
+              color: "#c6ff1a",
             }}
-          />
+          >
+            T
+          </div>
           {siteConfig.name}
         </div>
         <div
