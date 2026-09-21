@@ -15,7 +15,7 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 80,
-          background: "linear-gradient(155deg, #070707 0%, #22101a 100%)",
+          background: "linear-gradient(155deg, #fbfaf8 0%, #eeffc2 100%)",
           fontFamily: "sans-serif",
         }}
       >
@@ -25,7 +25,7 @@ export default function OpengraphImage() {
             alignItems: "center",
             gap: 12,
             fontSize: 28,
-            color: "#f5f3ee",
+            color: "#121110",
           }}
         >
           <div
@@ -33,7 +33,7 @@ export default function OpengraphImage() {
               width: 14,
               height: 14,
               borderRadius: 999,
-              background: "#ff4d94",
+              background: "#c6ff1a",
               display: "flex",
             }}
           />
@@ -50,14 +50,14 @@ export default function OpengraphImage() {
             style={{
               fontSize: 64,
               fontWeight: 600,
-              color: "#f5f3ee",
+              color: "#121110",
               lineHeight: 1.1,
               display: "flex",
             }}
           >
             Дизайн, сайты и AI-контент
           </div>
-          <div style={{ fontSize: 30, color: "#a8a49c", display: "flex" }}>
+          <div style={{ fontSize: 30, color: "#6f6b64", display: "flex" }}>
             для вашего бизнеса — в одном месте
           </div>
         </div>

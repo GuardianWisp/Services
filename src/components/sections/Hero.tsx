@@ -1,86 +1,81 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, MapPin, Send } from "lucide-react";
+import { ArrowRight, Bot, Globe, MapPin, Send, Sparkles } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { HeroScene } from "@/components/three/HeroScene";
-import { SceneErrorBoundary } from "@/components/three/SceneErrorBoundary";
+
+const floatingCards = [
+  {
+    icon: Globe,
+    label: "Website",
+    sub: "Сайт-визитка",
+    className: "left-[4%] top-[10%] sm:left-[6%]",
+    float: "animate-float",
+  },
+  {
+    icon: Sparkles,
+    label: "AI Photo",
+    sub: "Рекламный визуал",
+    className: "right-[2%] top-[34%] sm:right-[0%]",
+    float: "animate-float-slow",
+  },
+  {
+    icon: Bot,
+    label: "Telegram Bot",
+    sub: "Запись клиентов",
+    className: "left-[14%] bottom-[6%] sm:left-[16%]",
+    float: "animate-float",
+  },
+];
 
 export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-screen flex-col overflow-hidden pt-20 pb-16 sm:pt-24 sm:pb-20"
+      className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28"
     >
-      {/* Full-bleed 3D scene behind everything — fills the whole section
-          edge to edge instead of sitting in a boxed frame, so there's no
-          visible canvas boundary against the page background. The radial
-          glow sits behind the canvas and fades to transparent well before
-          the section edges, so it reads as ambient light rather than a
-          hard-edged box. */}
-      <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(255,45,130,0.25),transparent_70%)]" />
-      <div className="absolute inset-0 -z-10">
-        <SceneErrorBoundary>
-          <HeroScene className="h-full w-full" />
-        </SceneErrorBoundary>
-      </div>
-
-      <Container className="relative z-10 flex flex-1 flex-col items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-4"
-        >
-          <Badge>
-            <MapPin className="h-3.5 w-3.5 text-accent-ink" />
-            Работаю удалённо · {siteConfig.location}
-          </Badge>
-        </motion.div>
-
-        <div className="mt-auto flex flex-col items-center text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 24, filter: "blur(18px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true }}
-            transition={{
-              duration: 1.1,
-              delay: 0.1,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="text-balance text-4xl font-medium leading-[0.95] tracking-tight text-ink drop-shadow-[0_4px_24px_rgba(7,7,7,0.8)] sm:text-6xl md:text-7xl"
+      <Container className="relative grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+        <div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            Дизайн, сайты и{" "}
-            <span className="text-accent-ink">AI-контент</span>
+            <Badge>
+              <MapPin className="h-3.5 w-3.5 text-accent-ink" />
+              Работаю удалённо · {siteConfig.location}
+            </Badge>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-6 text-balance text-4xl font-medium leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl lg:text-[3.75rem]"
+          >
+            Дизайн, сайты и AI-контент{" "}
+            <span className="text-accent-ink">для вашего бизнеса</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.7,
-              delay: 0.5,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="mt-4 max-w-xl text-balance text-lg leading-relaxed text-ink/80 drop-shadow-[0_2px_12px_rgba(7,7,7,0.9)]"
+            transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-muted"
           >
-            Дизайн и сайты, продающие тексты, Telegram-боты и
-            3D-контент — помогаю бизнесу выглядеть профессионально и
-            получать больше заявок.
+            Дизайн и сайты, продающие тексты, Telegram-боты и 3D-контент —
+            помогаю бизнесу выглядеть профессионально и получать больше
+            заявок.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.7,
-              delay: 0.6,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="mt-9 flex flex-wrap items-center justify-center gap-3"
+            transition={{ duration: 0.7, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-9 flex flex-wrap items-center gap-3"
           >
             <Button href="#contact" variant="primary">
               <Send className="h-4 w-4" />
@@ -92,6 +87,36 @@ export function Hero() {
             </Button>
           </motion.div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative mx-auto h-[360px] w-full max-w-md sm:h-[440px] lg:mx-0 lg:h-[480px]"
+        >
+          <div className="absolute inset-8 rounded-[2.5rem] border border-line bg-gradient-to-br from-card to-paper-alt shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)] sm:inset-10" />
+
+          {floatingCards.map((card) => (
+            <div
+              key={card.label}
+              className={`absolute w-[168px] rounded-2xl border border-line bg-card/90 p-4 shadow-[0_16px_32px_-16px_rgba(18,17,16,0.25)] backdrop-blur-sm sm:w-[188px] ${card.className} ${card.float}`}
+              style={
+                {
+                  "--float-rotate":
+                    card.label === "AI Photo" ? "1.5deg" : "-1.5deg",
+                } as React.CSSProperties
+              }
+            >
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent-soft text-accent-ink">
+                <card.icon className="h-[18px] w-[18px]" />
+              </div>
+              <p className="mt-3 text-sm font-medium text-ink">
+                {card.label}
+              </p>
+              <p className="text-xs text-muted">{card.sub}</p>
+            </div>
+          ))}
+        </motion.div>
       </Container>
     </section>
   );

@@ -14,8 +14,8 @@ export function Services() {
           description="Направления, которые вместе закрывают путь клиента: от дизайна и сайта до текстов и общения в Telegram."
         />
 
-        <div className="mt-14 -mx-5 sm:-mx-8 lg:-mx-12 xl:-mx-[60px]">
-          <div className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pt-2 pb-14 scroll-pl-5 sm:px-8 sm:scroll-pl-8 lg:px-12 lg:scroll-pl-12 xl:px-[60px] xl:scroll-pl-[60px]">
+        <div className="mt-14 -mx-5 sm:-mx-8">
+          <div className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pt-2 pb-14 scroll-pl-5 sm:px-8 sm:scroll-pl-8">
             {services.map((service, i) => (
               <Reveal
                 key={service.title}

@@ -55,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#070707",
+  themeColor: "#fbfaf8",
   width: "device-width",
   initialScale: 1,
 };
@@ -71,6 +71,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-paper text-ink font-sans">
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{if(localStorage.getItem('theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();",
+          }}
+        />
         {GA_MEASUREMENT_ID ? (
           <>
             <Script

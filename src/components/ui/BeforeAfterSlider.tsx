@@ -1,6 +1,12 @@
 "use client";
 
-import { useId, useRef, useState, type PointerEvent, type ReactNode } from "react";
+import {
+  useId,
+  useRef,
+  useState,
+  type PointerEvent,
+  type ReactNode,
+} from "react";
 import { Sparkles } from "lucide-react";
 
 interface BeforeAfterSliderProps {
