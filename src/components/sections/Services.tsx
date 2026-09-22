@@ -14,13 +14,13 @@ export function Services() {
           description="Направления, которые вместе закрывают путь клиента: от дизайна и сайта до текстов и общения в Telegram."
         />
 
-        <div className="mt-14 -mx-5 sm:-mx-8">
-          <div className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pt-2 pb-14 scroll-pl-5 sm:px-8 sm:scroll-pl-8">
+        <div className="mt-14 -mx-5 sm:-mx-8 lg:mx-0">
+          <div className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pt-2 pb-14 scroll-pl-5 sm:px-8 sm:scroll-pl-8 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0 lg:pb-0">
             {services.map((service, i) => (
               <Reveal
                 key={service.title}
                 delay={i * 0.08}
-                className="w-[300px] shrink-0 snap-start sm:w-[340px]"
+                className="w-[300px] shrink-0 snap-start sm:w-[340px] lg:w-auto"
               >
                 <a
                   href={service.href}
