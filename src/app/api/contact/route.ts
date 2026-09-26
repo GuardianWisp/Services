@@ -72,26 +72,35 @@ export async function POST(request: Request) {
     `Сообщение: ${safeMessage || "—"}`,
   ].join("\n");
 
-  try {
-    const response = await fetch(
-      `https://api.telegram.org/bot${token}/sendMessage`,
-      {
+  // The first call after the server has been idle sometimes dies on a stale
+  // keep-alive socket or a slow connect, so retry network errors and 5xx.
+  const url = `https://api.telegram.org/bot${token}/sendMessage`;
+  const payload = JSON.stringify({ chat_id: chatId, text });
+  let sent = false;
+  for (let attempt = 1; attempt <= 3 && !sent; attempt++) {
+    try {
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: chatId, text }),
-      },
-    );
-
-    if (!response.ok) {
-      const detail = await response.text();
-      console.error("Telegram sendMessage failed", response.status, detail);
-      return NextResponse.json(
-        { ok: false, error: "Не удалось отправить заявку. Попробуйте написать в Telegram." },
-        { status: 502 },
-      );
+        body: payload,
+        signal: AbortSignal.timeout(8000),
+      });
+      if (response.ok) {
+        sent = true;
+      } else {
+        const detail = await response.text();
+        console.error("Telegram sendMessage failed", attempt, response.status, detail);
+        if (response.status < 500 && response.status !== 429) break;
+      }
+    } catch (error) {
+      console.error("Telegram sendMessage error", attempt, error);
     }
-  } catch (error) {
-    console.error("Telegram sendMessage error", error);
+    if (!sent && attempt < 3) {
+      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+    }
+  }
+
+  if (!sent) {
     return NextResponse.json(
       { ok: false, error: "Не удалось отправить заявку. Попробуйте написать в Telegram." },
       { status: 502 },

@@ -969,7 +969,10 @@ $('#form').addEventListener('submit',async e=>{ e.preventDefault(); const st=$('
   const message=[needs&&'Нужно: '+needs, link&&'Ссылка: '+link, msg].filter(Boolean).join('\n');
   btn.disabled=true; st.className='fst'; st.textContent='Отправляем…';
   try{
-    const r=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:$('#fName').value.trim(),contact:$('#fVia').value+': '+$('#fContact').value.trim(),message,consent:true,honeypot:$('#fHp').value})});
+    const body=JSON.stringify({name:$('#fName').value.trim(),contact:$('#fVia').value+': '+$('#fContact').value.trim(),message,consent:true,honeypot:$('#fHp').value});
+    const send=()=>fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body});
+    let r; try{ r=await send(); }catch(_){ r=null; }
+    if(!r||r.status>=500){ await new Promise(ok=>setTimeout(ok,700)); r=await send(); }
     const d=await r.json().catch(()=>({}));
     if(!r.ok||!d.ok) throw new Error(d.error||'');
     st.className='fst'; st.textContent='Спасибо! Заявка у нас — ответим в течение дня.'; e.target.reset(); $('#fContact').placeholder='@username';
