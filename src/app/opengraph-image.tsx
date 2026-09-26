@@ -62,10 +62,10 @@ export default function OpengraphImage() {
               display: "flex",
             }}
           >
-            Дизайн, сайты и AI-контент
+            Сайты, боты и визуал
           </div>
           <div style={{ fontSize: 30, color: "#6f6b64", display: "flex" }}>
-            для вашего бизнеса — в одном месте
+            для малого бизнеса — Красноярск и онлайн
           </div>
         </div>
       </div>

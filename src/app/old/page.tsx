@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { FloatingTelegramButton } from "@/components/FloatingTelegramButton";
 import { Footer } from "@/components/Footer";
@@ -12,6 +13,11 @@ import { Process } from "@/components/sections/Process";
 import { FAQ } from "@/components/sections/FAQ";
 import { CTA } from "@/components/sections/CTA";
 import { ColorLab } from "@/components/dev/ColorLab";
+
+export const metadata: Metadata = {
+  title: "Старая версия",
+  robots: { index: false, follow: false },
+};
 
 export default function Home() {
   return (
