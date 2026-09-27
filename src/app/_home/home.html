@@ -72,10 +72,10 @@ p,h1,h2,h3{margin:0;font-weight:400}
 .mbtn:hover{border-radius:22px}
 .m-open .mbtn i:nth-child(1){top:21.5px;transform:rotate(45deg)}
 .m-open .mbtn i:nth-child(2){top:21.5px;transform:rotate(-45deg)}
-.scrim{position:fixed;inset:0;z-index:40;background:rgba(40,40,40,.28);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .6s var(--ease)}
-.m-open .scrim{opacity:1;visibility:visible;pointer-events:auto;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
-.menu{box-sizing:border-box;position:fixed;z-index:42;top:calc(12px + env(safe-area-inset-top,0px));right:calc(var(--gut) - 10px);width:min(440px,calc(100vw - 20px));max-height:calc(100svh - 24px);overflow:auto;overscroll-behavior:contain;background:rgba(22,22,22,.94);color:#fff;border-radius:18px;padding:22px 26px 24px;display:flex;flex-direction:column;gap:28px;clip-path:inset(0 0 100% 30% round 18px);visibility:hidden;transition:clip-path .8s var(--ease),visibility 0s .8s}
-.m-open .menu{-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);clip-path:inset(0 0 0 0 round 18px);visibility:visible;transition:clip-path .8s var(--ease),visibility 0s}
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(40,40,40,.28);opacity:0;visibility:hidden;pointer-events:none;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);transition:opacity .35s ease,visibility 0s .35s}
+.m-open .scrim{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .6s var(--ease),visibility 0s}
+.menu{box-sizing:border-box;position:fixed;z-index:42;top:calc(12px + env(safe-area-inset-top,0px));right:calc(var(--gut) - 10px);width:min(440px,calc(100vw - 20px));max-height:calc(100svh - 24px);overflow:auto;overscroll-behavior:contain;background:rgba(22,22,22,.94);color:#fff;border-radius:18px;padding:22px 26px 24px;display:flex;flex-direction:column;gap:28px;clip-path:inset(0 0 100% 30% round 18px);visibility:hidden;opacity:0;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);transition:clip-path .4s cubic-bezier(.7,0,.84,0),opacity .3s ease .1s,visibility 0s .4s} /* closing: quick and clean */
+.m-open .menu{clip-path:inset(0 0 0 0 round 18px);visibility:visible;opacity:1;transition:clip-path .8s var(--ease),opacity 0s,visibility 0s}
 .m-top{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:rgba(255,255,255,.55);padding-right:44px;min-height:22px;align-items:center}
 .m-nav{display:flex;flex-direction:column}
 .mi{display:grid;grid-template-columns:28px 1fr auto;align-items:baseline;gap:10px;padding:8px 0 10px;border-bottom:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.36);transition:color .35s}
@@ -106,22 +106,52 @@ p,h1,h2,h3{margin:0;font-weight:400}
 a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 
 /* preloader: TETSAB reads itself backwards into BASTET, then lifts away */
-.pre{position:fixed;inset:0;z-index:60;background:var(--bg);display:grid;grid-template-rows:1fr auto;padding:calc(22px + env(safe-area-inset-top,0px)) var(--gut) calc(22px + env(safe-area-inset-bottom,0px));clip-path:inset(0 0 0 0);transition:clip-path 1s var(--ease)}
-.pre.out{clip-path:inset(0 0 100% 0)}
+/* preloader: a dark console that counts up, then light blinds close over it and hand off to the site */
+.pre{position:fixed;inset:0;z-index:60;background:#111;color:#fff;overflow:hidden;transition:opacity .7s var(--ease)}
+.pre.out{opacity:0;pointer-events:none}
 .pre.gone{display:none}
-.pre-w{align-self:center;justify-self:center;display:flex;font:400 clamp(3.4rem,13vw,10rem)/1 var(--f);letter-spacing:-.06em;color:var(--blk)}
-.pre-w .pl2{display:inline-block;overflow:hidden;height:1em;line-height:1}
-.pre-w .pl2>span{display:block;transform:translateY(100%);transition:transform .9s var(--ease)}
-.pre-w .pl2>span::after{content:attr(data-b);display:block}
-.pre.in .pre-w .pl2>span{transform:translateY(0)}
-.pre.flip .pre-w .pl2>span{transform:translateY(-50%)}
-.pre-f{display:flex;justify-content:space-between;align-items:end;font-size:14px;color:var(--sec)}
-.pre-f b{font-weight:400;font-size:clamp(1.4rem,3vw,2.2rem);letter-spacing:-.03em;color:var(--blk);font-variant-numeric:tabular-nums}
-.pre-cat{display:inline-flex;align-items:center;gap:8px}
-.pre-cat svg{width:16px;height:16px;color:var(--blk)}
-.pre-cat .e{fill:var(--bg);transform-box:fill-box;transform-origin:center;transition:fill .2s}
-.pre.flip .pre-cat .e{fill:var(--lime);animation:blink .3s ease .25s}
-.pre .pre-w .pl2>span,.pre.flip .pre-w .pl2>span{will-change:transform}
+.pre-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:16px;padding:16px;z-index:2}
+.pb{border:1px solid #282828;padding:14px;display:flex;justify-content:space-between;gap:28px;min-width:0;opacity:0;transition:opacity 1s var(--ease)}
+.pb.w2{grid-column:span 2}
+.pre.in .pb{opacity:1}
+.pre.in .pb:nth-child(2){transition-delay:.06s}.pre.in .pb:nth-child(3){transition-delay:.12s}.pre.in .pb:nth-child(4){transition-delay:.18s}
+.pc{display:flex;flex-direction:column;justify-content:space-between;gap:14px;font-size:12px;line-height:1.1;letter-spacing:-.01em;text-transform:uppercase;min-width:0}
+.pc.m{color:#5E5E5E;text-transform:none;max-width:40ch}
+.pc.m p{opacity:0;transition:opacity 1s var(--ease)}
+.pre.in .pc.m p{opacity:1;transition-delay:.5s}
+.pst{display:flex;flex-direction:column;justify-content:flex-start;gap:4px;font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pst div{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.pst i{width:12px;height:12px;border-radius:50%;background:#282828;transition:background .5s}
+.pst i.on{background:var(--lime)}
+.pn{align-self:flex-end;font-weight:400;font-size:clamp(4.4rem,11vw,10rem);line-height:.78;letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+[data-s]{position:relative;display:block}
+[data-s] .sz{visibility:hidden}
+[data-s] .sc{position:absolute;left:0;top:0;right:0}
+.prad{position:absolute;top:50%;left:0;width:min(46vh,340px);aspect-ratio:1;transform:translate(-50%,-50%);z-index:3;pointer-events:none;overflow:visible}
+.prad.r{left:100%}
+.prad circle,.prad line{fill:none;stroke:#3a3a3a;stroke-width:1;vector-effect:non-scaling-stroke}
+.prad circle{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform 1s var(--ease)}
+.pre.in .prad circle{transform:scale(1)}
+.prad circle:nth-child(2){transition-delay:.05s}.prad circle:nth-child(3){transition-delay:.1s}.prad circle:nth-child(4){transition-delay:.15s}.prad circle:nth-child(5){transition-delay:.2s}
+.prad .rot{stroke:#5E5E5E;stroke-dasharray:1 7;animation:prot 40s linear infinite}
+.prad line{opacity:0;transition:opacity .6s .4s}
+.pre.in .prad line{opacity:1}
+@keyframes prot{to{rotate:-360deg}}
+.pre.p-cl .prad circle{transform:scale(0);transition-duration:1.2s}
+.pre.p-cl .prad circle:nth-child(1){transition-delay:.2s}.pre.p-cl .prad circle:nth-child(2){transition-delay:.15s}.pre.p-cl .prad circle:nth-child(3){transition-delay:.1s}.pre.p-cl .prad circle:nth-child(4){transition-delay:.05s}.pre.p-cl .prad circle:nth-child(5){transition-delay:0s}
+.pre.p-cl .prad line{opacity:0;transition-delay:0s}
+.pre-close{position:absolute;inset:0;display:flex;flex-direction:column;gap:16px;padding:16px;z-index:5;pointer-events:none}
+.pre-close i{flex:1 1 0;width:0;background:var(--bg);transition:width 1.1s cubic-bezier(.76,0,.24,1),transform .9s cubic-bezier(.76,0,.24,1)}
+.pre.p-cl .pre-close i{width:100%;transition-delay:.25s,1.2s}
+.pre.p-cl .pre-close i.x{transform:scaleY(1.3)}
+.pre-logo{position:absolute;left:50%;top:50%;z-index:6;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:10px;opacity:0;transition:opacity 1s var(--ease)}
+.pre-logo b{font-weight:500;font-size:clamp(1.8rem,3.4vw,2.8rem);letter-spacing:-.05em;color:#434343;line-height:1}
+.pre-logo span{display:flex;width:100%;height:6px}
+.pre-logo span i{flex:1;background:#434343;transform:scaleY(0);transition:transform .4s cubic-bezier(.65,0,.35,1)}
+.pre-logo span i:nth-child(2){background:var(--lime);transition-delay:.3s}.pre-logo span i:nth-child(3){transition-delay:.6s}
+.pre.p-lg .pre-logo{opacity:1}
+.pre.p-lg .pre-logo span i{transform:scaleY(1)}
+@media (max-width:860px){.pre-grid{grid-template-columns:1fr;grid-template-rows:1fr 1fr}.pb.hm{display:none}.pb.w2{grid-column:auto}.pc.m{display:none}.prad{width:min(34vh,240px)}}
 
 /* hero */
 .hero{min-height:100svh;display:grid;grid-template-rows:1fr auto auto;padding-block:calc(84px + env(safe-area-inset-top,0px)) 32px}
@@ -145,6 +175,34 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .tile .tp i{font-style:normal;transition:transform .5s var(--ease)}
 .tile:hover .tp i{transform:translate(3px,3px)}
 @media (max-width:860px){.tiles{grid-template-columns:1fr 1fr}.tile{min-height:132px}}
+
+/* reel: two rows of work shots that drift apart as you scroll */
+.reel{padding-top:var(--gap);overflow:hidden}
+.reel-h{display:flex;justify-content:space-between;gap:16px;font-size:14px;color:var(--sec);padding-bottom:24px}
+.reel-row{display:flex;width:max-content;gap:var(--rg);will-change:transform}
+.reel-row.t{align-items:flex-end;margin-bottom:var(--rg)}
+.reel-row.b{align-items:flex-start}
+.reel{--rg:clamp(12px,2vw,30px)}
+.rc{position:relative;flex:none;display:block;overflow:hidden;border-radius:12px;background:var(--stage);transition:opacity .5s var(--ease)}
+.rc-in{position:absolute;left:0;top:0;transform-origin:0 0;display:grid;place-items:center;transition:scale .8s var(--ease)}
+.rc img,.rc video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:scale .8s var(--ease)}
+.rc:hover img,.rc:hover video{scale:1.035}
+.rc{cursor:default}
+.rc:hover .rc-in{scale:1.035}
+.reel:has(.rc:hover) .rc:not(:hover){opacity:.45}
+.rc .device{height:340px;max-width:560px;box-shadow:0 40px 70px -30px rgba(0,0,0,.45)}
+.rc .device.ph{height:390px;max-width:210px}
+.rc .phone{height:440px;width:250px}
+.rc .shop,.rc .calc{width:320px}
+.rc .cmp{position:absolute;inset:0}
+.rc .cmp .lb,.rc .cmp .handle{display:none}
+.rc .cmp .after{clip-path:none}
+.rc .cmp{--p:0%}
+.rc .cmp .before{display:none}
+.rc .msg,.rc .kb{animation:none}
+.reel-cur{position:fixed;left:0;top:0;z-index:40;pointer-events:none;padding:9px 14px;border-radius:99px;background:var(--blk);color:#fff;font-size:13px;white-space:nowrap;opacity:0;transform:translate(-50%,-150%) scale(.8);transition:opacity .25s,transform .35s var(--ease)}
+.reel-cur b{font-weight:400;color:var(--lime)}
+.reel-cur.on{opacity:1;transform:translate(-50%,-150%) scale(1)}
 
 /* statement */
 .stmt{padding-top:var(--gap)}
@@ -389,6 +447,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 /* finale */
 .fin{padding-block:calc(var(--gap) * 1.2) calc(var(--gap) * .8)}
 .fin p{font-size:clamp(2.4rem,7.6vw,7rem);line-height:.98;letter-spacing:-.05em;color:var(--blk)}
+.fin .wd{display:inline-block;white-space:nowrap}
 .fin .ch{display:inline-block;position:relative;overflow:hidden;vertical-align:top}
 .fin .ch>span{display:block;transition:transform .5s var(--ease)}
 .fin .ch>span::after{content:attr(data-c);position:absolute;left:0;top:100%}
@@ -426,13 +485,38 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 
 .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:24px calc(24px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);font-size:14px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation:none!important}.w>span{transform:none}}
+
+#h1 .w.m{color:var(--mute)}
+
+/* ---- design pass: quieter, closer to the reference ---- */
+/* 1. chapter tickers: smaller type in a band with hairlines */
+.tick{border-block:1px solid var(--line);padding-block:clamp(10px,1.4vw,18px)}
+.tick span{font-size:clamp(2.4rem,5vw,4.6rem);color:var(--tx)}
+.tick small{margin-top:.5em}
+/* 2. headings in graphite; black stays for the wordmark and buttons */
+.big-say,.info .num b,.info h3,.tile .tt,.tile .tp,.place,.cs-hero h2,.cs-txt,.cs-meta,.wrow .nm,.pk h3,.pk .pp,.steps li b,.faq summary,.fin p,.ct-cols,.quote blockquote,.ba2 p:last-child,.buy span,.pl span:last-child{color:var(--tx)}
+.pk.hi h3,.pk.hi .pp{color:#fff}
+/* 3. one radius scale: 16 for surfaces, 12 for controls */
+.stage,.pk,.steps li,.menu,.cs-cover,.rc{border-radius:16px}
+.pill,.chips li,.filters button,.seg,.tabs,.toast,#pv,.cmp .lb,.logo:hover,.logo:focus-visible,.mbtn:hover,.back:hover,.back:focus-visible{border-radius:12px}
+.seg button,.tabs button{border-radius:9px}
+/* 4. flat demo stages: hairline instead of drop shadows */
+.stage .device,.stage .phone,.stage .shop,.stage .calc,.cs-cover .device{box-shadow:0 0 0 1px rgba(0,0,0,.07)}
+.tile:hover,.tile:focus-visible{box-shadow:none}
 </style>
 </head>
 <body>
 
 <div class="pre" id="pre" aria-hidden="true">
-  <div class="pre-w" id="preW"></div>
-  <div class="pre-f"><span class="pre-cat"><svg viewBox="0 0 24 24"><path d="M3 21V4l5.5 5h7L21 4v17z" fill="currentColor"/><ellipse class="e" cx="9" cy="14" rx="1.7" ry="1.9"/><ellipse class="e" cx="15" cy="14" rx="1.7" ry="1.9"/></svg>(Студия)</span><b id="preN">00</b></div>
+  <div class="pre-grid">
+    <div class="pb w2 hm"><div class="pc"><p data-s>СТУДИЯ TETSAB<br>КРАСНОЯРСК / ОНЛАЙН</p><p data-s>САЙТЫ / БОТЫ / ВИЗУАЛ<br>ЗАПУСК / БЕЗ БЛОКИРОВОК</p></div><div class="pc m"><p>T E T S A B</p><p>Сайты, боты и визуал для мастеров и небольшого бизнеса. Красноярск и вся Россия.</p><p>TET SAB BAS TET<br>Схема TETSAB</p></div></div>
+    <div class="pb"><div class="pc"><p data-s>МОДУЛЬ 01 / ЗАЯВКИ<br>ID: TETSAB–A01</p><p data-s>Заявки с сайта<br>приходят вам<br>в Telegram или MAX.</p></div><div class="pst" id="preDots"><div><span data-s>01 САЙТ / ГОТОВ</span><i></i></div><div><span data-s>02 ФОРМА / ГОТОВ</span><i></i></div><div><span data-s>03 БОТ / ГОТОВ</span><i></i></div><div><span data-s>04 ВИЗУАЛ / ГОТОВ</span><i></i></div><div><span data-s>05 ХОСТИНГ / РФ</span><i></i></div><div><span data-s>06 VPN / НЕ НУЖЕН</span><i></i></div><div><span data-s>07 ЗАЯВКИ / АКТИВНО</span><i></i></div></div></div>
+    <div class="pb hm"><div class="pc"><p data-s>КРАСНОЯРСК<br>56.01° N / 92.87° E</p><p data-s>ОНЛАЙН<br>ПО ВСЕЙ РОССИИ</p></div><div class="pc"><p>ВРЕМЯ<br><span data-clock>—</span></p></div></div>
+    <div class="pb w2"><div class="pc"><p data-s>(ЗАГРУЗКА)<br>TETSAB ↔ BASTET</p><p data-s>СТУДИЯ<br>САЙТЫ, БОТЫ И ВИЗУАЛ</p></div><b class="pn" id="preN">000</b></div>
+  </div>
+  <svg class="prad" viewBox="-100 -100 200 200" aria-hidden="true"><circle r="99"/><circle r="80"/><circle class="rot" r="62"/><circle r="44"/><circle r="22"/><line x1="100" y1="0" x2="0" y2="0"/><line x1="100" y1="-34" x2="0" y2="0"/><line x1="100" y1="34" x2="0" y2="0"/></svg><svg class="prad r" viewBox="-100 -100 200 200" aria-hidden="true"><circle r="99"/><circle r="80"/><circle class="rot" r="62"/><circle r="44"/><circle r="22"/><line x1="-100" y1="0" x2="0" y2="0"/><line x1="-100" y1="-34" x2="0" y2="0"/><line x1="-100" y1="34" x2="0" y2="0"/></svg>
+  <div class="pre-close"><i></i><i class="x"></i><i class="x"></i><i class="x"></i><i></i></div>
+  <div class="pre-logo"><b>TETSAB</b><span><i></i><i></i><i></i></span></div>
 </div>
 <div id="pv" aria-hidden="true"></div>
 
@@ -453,20 +537,20 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
     <div class="mark" aria-hidden="true"><b>TETSAB</b><i>BASTET</i></div>
     <div class="half hero-say" id="heroSay">
       <div><span class="lab lab-b">(Студия · Красноярск / онлайн)</span>
-      <h1 class="big-say" id="h1">Сайты, боты и визуал для малого бизнеса — чтобы выглядеть профессионально и получать заявки.</h1></div>
+      <h1 class="big-say" id="h1">Сайт, бот или контент для рекламы — под ваш бизнес, а не по шаблону. <span>Всё работает в России без VPN и блокировок.</span></h1></div>
       <div class="r cta"><a class="pill" href="#contact">Оставить заявку</a><a class="pill ghost" href="#services">Посмотреть, что делаем</a></div>
     </div>
     <nav class="tiles" aria-label="Услуги коротко">
-      <a class="tile" href="#d-site"><span class="tn"><span>01</span><span>(Сайты)</span></span><span class="tt">Сайт или лендинг<small>Понятно о вас, заявка в одно касание</small></span><span class="tp"><span>от 25 000 ₽</span><i>↘</i></span></a>
+      <a class="tile" href="#d-site"><span class="tn"><span>01</span><span>(Сайты)</span></span><span class="tt">Сайт или лендинг<small>Услуги, цены и кнопка «Записаться»</small></span><span class="tp"><span>от 25 000 ₽</span><i>↘</i></span></a>
       <a class="tile" href="#d-visual"><span class="tn"><span>02</span><span>(Визуал)</span></span><span class="tt">Фото для рекламы<small>Из обычного фото с телефона</small></span><span class="tp"><span>от 5 000 ₽</span><i>↘</i></span></a>
-      <a class="tile" href="#d-bot"><span class="tn"><span>03</span><span>(Боты)</span></span><span class="tt">Бот в Telegram или MAX<small>Запись и заявки без переписки</small></span><span class="tp"><span>от 7 000 ₽</span><i>↘</i></span></a>
+      <a class="tile" href="#d-bot"><span class="tn"><span>03</span><span>(Боты)</span></span><span class="tt">Бот в Telegram или MAX<small>Сам записывает клиентов</small></span><span class="tp"><span>от 7 000 ₽</span><i>↘</i></span></a>
       <a class="tile" href="#d-order"><span class="tn"><span>04</span><span>(Заказы)</span></span><span class="tt">Меню и онлайн-заказ<small>Для кафе, шаурмы, магазинов</small></span><span class="tp"><span>от 50 000 ₽</span><i>↘</i></span></a>
     </nav>
   </section>
 
   <section class="stmt wrap" aria-label="Для кого">
     <span class="lab lab-b">(Для кого)</span>
-    <p class="big-say">Для мастеров, кондитеров, кафе, автосервисов и частных специалистов — тех, кому нужен понятный результат, а не сложный проект.</p>
+    <p class="big-say">Работаем с мастерами, кондитерами, кафе, автосервисами и частными специалистами. Объясняем без терминов и делаем то, что пригодится вашему бизнесу.</p>
     <div class="place">
       <div>Из Красноярска<small>(56.01° N, 92.87° E)</small></div>
       <div>По всей России<small>(онлайн · <span id="clock">—</span> по Красноярску)</small></div>
@@ -483,10 +567,10 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
       <article class="demo" id="d-site" aria-labelledby="d1">
         <div class="info">
           <div class="num"><b>01</b><span class="lab">(Сайты)</span></div>
-          <h3 id="d1">Сайт, который работает на вас</h3>
-          <p>Коротко о вас, услугах и ценах — и прямой путь до заявки. Хорошо выглядит и на телефоне, и на компьютере.</p>
+          <h3 id="d1">Сайт с ценами и записью</h3>
+          <p>Кто вы, что делаете и сколько это стоит. Клиент читает и тут же оставляет заявку — с телефона или компьютера.</p>
           <ul class="chips"><li>Лендинг</li><li>Сайт-визитка</li><li>Имиджевый сайт</li><li>Онлайн-запись</li><li>Заявки в мессенджер</li><li>Домен и хостинг</li></ul>
-          <div class="ba2"><p><b>(Было)</b>Только соцсети, цены в личку — клиенты уходят.</p><p><b>(Стало)</b>Страница, которую не стыдно отправить, и заявка в одно касание.</p></div>
+          <div class="ba2"><p><b>(Было)</b>Только соцсети и «цена в личку». Многие так и не пишут.</p><p><b>(Стало)</b>Ссылка, которую можно отправить любому клиенту. Заявки приходят вам в мессенджер.</p></div>
           <div class="buy"><a class="pill" href="#contact">Обсудить сайт</a><span>от 25 000 ₽</span></div>
         </div>
         <div class="stage" id="siteStage">
@@ -513,7 +597,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
         <div class="info">
           <div class="num"><b>02</b><span class="lab">(Визуал)</span></div>
           <h3 id="d2">Обычное фото → картинка для рекламы</h3>
-          <p>Не нужна дорогая съёмка. Присылаете фото с телефона — получаете визуал для сайта, соцсетей, Авито и маркетплейсов. Двигайте разделитель.</p>
+          <p>Дорогая съёмка не нужна. Пришлите фото с телефона, и мы сделаем из него картинку для сайта, соцсетей, Авито или маркетплейса. Подвигайте разделитель, чтобы сравнить.</p>
           <ul class="chips"><li>Предметные фото</li><li>Замена фона</li><li>Рекламные изображения</li><li>Для соцсетей</li><li>Для маркетплейсов</li></ul>
           <div class="buy"><a class="pill" href="#contact">Обработать мои фото</a><span>от 5 000 ₽</span></div>
         </div>
@@ -533,8 +617,8 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
       <article class="demo" id="d-bot" aria-labelledby="d3">
         <div class="info">
           <div class="num"><b>03</b><span class="lab">(Боты)</span></div>
-          <h3 id="d3">Меньше переписки — больше записей</h3>
-          <p>Бот в Telegram или MAX записывает клиентов, отвечает на частые вопросы и присылает вам уведомление. Без сложных CRM.</p>
+          <h3 id="d3">Бот, который записывает клиентов</h3>
+          <p>Бот в Telegram или MAX сам записывает клиентов и отвечает на частые вопросы. Вам приходит уведомление о каждой записи. Сложные программы осваивать не нужно.</p>
           <ul class="chips"><li>Запись клиентов</li><li>Приём заявок</li><li>Расчёт стоимости</li><li>Ответы на вопросы</li><li>Напоминания</li></ul>
           <div class="ba2"><p><b>(Было)</b>Одни и те же вопросы каждый день и записи в блокноте.</p><p><b>(Стало)</b>Бот записывает сам, вам приходит готовая заявка.</p></div>
           <div class="buy"><a class="pill" href="#contact">Обсудить бота</a><span>от 7 000 ₽</span></div>
@@ -555,7 +639,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
       <article class="demo flip" id="d-order" aria-labelledby="d4">
         <div class="info">
           <div class="num"><b>04</b><span class="lab">(Онлайн-заказы)</span></div>
-          <h3 id="d4">Меню и заказ — как в большом кафе</h3>
+          <h3 id="d4">Меню и заказ прямо на сайте</h3>
           <p>Клиент выбирает блюда, способ получения и оформляет заказ без звонка. Заказ сразу приходит вам в Telegram. Попробуйте добавить что-нибудь.</p>
           <ul class="chips"><li>Меню или каталог</li><li>Добавки и размеры</li><li>Корзина</li><li>Доставка / самовывоз</li><li>Уведомления</li></ul>
           <div class="buy"><a class="pill" href="#contact">Обсудить заказы</a><span>от 50 000 ₽</span></div>
@@ -582,6 +666,11 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
       <div class="filters" role="group" aria-label="Фильтр работ" id="filters"><button type="button" aria-pressed="true" data-t="all">Все</button><button type="button" aria-pressed="false" data-t="site">Сайты</button><button type="button" aria-pressed="false" data-t="visual">Визуал</button><button type="button" aria-pressed="false" data-t="bot">Боты</button><button type="button" aria-pressed="false" data-t="order">Заказы</button></div>
       <div class="works" id="wlist"></div>
     </div>
+  </section>
+  <section class="reel" aria-label="Визуал и 3D">
+    <div class="reel-h wrap"><span>(Визуал и 3D · из портфолио)</span><span>(Листайте)</span></div>
+    <div class="reel-row t" id="reelT"></div>
+    <div class="reel-row b" id="reelB"></div>
   </section>
 
   <section id="prices" aria-labelledby="pT">
@@ -611,11 +700,11 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 
   <section id="process" class="stmt wrap" aria-labelledby="prT">
     <span class="lab lab-b" id="prT">(Как мы работаем)</span>
-    <p class="big-say">Не знаете, с чего начать? Весь путь — шесть шагов.</p>
+    <p class="big-say">Как проходит работа: от первого сообщения до запуска.</p>
     <ol class="steps">
       <li><i>01</i><div><b>Знакомимся</b><span>Вы рассказываете о бизнесе и задаче.</span></div></li>
-      <li><i>02</i><div><b>Предлагаем решение</b><span>Сайт, бот, визуал или всё вместе — и стоимость.</span></div></li>
-      <li><i>03</i><div><b>Собираем концепцию</b><span>Структура, визуальное направление и контент.</span></div></li>
+      <li><i>02</i><div><b>Предлагаем решение</b><span>Говорим, что вам подойдёт, и называем цену.</span></div></li>
+      <li><i>03</i><div><b>Собираем концепцию</b><span>Продумываем, что будет на сайте и как он будет выглядеть.</span></div></li>
       <li><i>04</i><div><b>Разрабатываем</b><span>Делаем сайт, бота или визуал.</span></div></li>
       <li><i>05</i><div><b>Показываем</b><span>Смотрим вместе и вносим правки.</span></div></li>
       <li><i>06</i><div><b>Запускаем</b><span>Передаём готовый проект.</span></div></li>
@@ -625,8 +714,8 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
   <section id="faq" class="wrap" aria-labelledby="fT">
     <div class="half"><span class="lab" id="fT">(Вопросы)</span>
       <div class="r faq">
-        <details><summary>Я не знаю, что мне нужно. Это нормально?</summary><p>Да. Расскажите, чем занимаетесь, — предложим подходящий вариант и ориентировочную стоимость.</p></details>
-        <details><summary>Можно сделать сайт под ключ?</summary><p>Да: структура, дизайн, контент, формы и запуск на хостинге.</p></details>
+        <details><summary>Я не знаю, что мне нужно. Это нормально?</summary><p>Да. Расскажите, чем занимаетесь, и мы предложим вариант и примерную цену.</p></details>
+        <details><summary>Можно сделать сайт под ключ?</summary><p>Да. Тексты, дизайн, формы и запуск на хостинге делаем сами.</p></details>
         <details><summary>У меня нет хороших фотографий</summary><p>Сделаем визуал для сайта и соцсетей из того, что есть: фото товаров, работ или помещения.</p></details>
         <details><summary>Можно подключить Telegram или MAX?</summary><p>Да. Заявки с сайта могут приходить в мессенджер, а запись и расчёт стоимости можно доверить боту.</p></details>
         <details><summary>Сколько занимает создание сайта?</summary><p>Зависит от объёма. Точный срок назовём вместе со стоимостью.</p></details>
@@ -645,7 +734,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
       <div><a href="https://t.me/tetsab" target="_blank" rel="noopener"><span class="roll"><span data-t="t.me/tetsab ↗">t.me/tetsab ↗</span></span></a><small>(Наш канал)</small></div>
     </div>
     <div class="half">
-      <p class="big-say ct-say">Расскажите, чем вы занимаетесь, — мы предложим, что вам действительно нужно.</p>
+      <p class="big-say ct-say">Напишите, чем занимаетесь. Подскажем, что вам подойдёт и сколько это будет стоить.</p>
       <form class="r form" id="form" novalidate>
         <input type="text" id="fHp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <div class="f"><label for="fName">Имя</label><input id="fName" autocomplete="name"></div>
@@ -713,29 +802,36 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href^="#"]');
 function whenVisible(el,on,off){ new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?on():off&&off()),{threshold:.35}).observe(el); }
 
 /* hero */
-const h1=$('#h1'); h1.innerHTML=h1.textContent.trim().split(/\s+/).map((w,i)=>'<span class="w"><span style="transition-delay:'+(i*.035).toFixed(3)+'s">'+esc(w)+'</span></span>').join(' ');
+const h1=$('#h1'); /* split into words for the reveal; words from the inner <span> are the quieter second line */
+h1.innerHTML=[...h1.childNodes].flatMap(n=>n.textContent.trim().split(/\s+/).filter(Boolean).map(w=>[w,n.nodeType===1])).map(([w,m],i)=>'<span class="w'+(m?' m':'')+'"><span style="transition-delay:'+(i*.035).toFixed(3)+'s">'+esc(w)+'</span></span>').join(' ');
 const reveal=()=>setTimeout(()=>$('#heroSay').classList.add('on'),30);
 const fontsReady=Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),sleep(2500)]);
 
-/* preloader: once per visit; counter follows the font load, never shorter than ~1.2s */
+/* preloader: once per visit; the counter follows the font load, never shorter than ~1.6s */
 (function(){
   const pre=$('#pre'); let seen=false;
   try{ seen=sessionStorage.getItem('tetsab-pre')==='1'; sessionStorage.setItem('tetsab-pre','1'); }catch(e){}
   if(seen||reduce){ pre.classList.add('gone'); fontsReady.then(reveal); return; }
-  const A='TETSAB', B=[...A].reverse();
-  $('#preW').innerHTML=[...A].map((c,i)=>'<span class="pl2"><span data-b="'+B[i]+'" style="transition-delay:'+(i*.05).toFixed(2)+'s">'+c+'</span></span>').join('');
   lock(true); scrollTo(0,0);
+  // scrambled type: the real text holds the size, a random overlay settles into it
+  const GLY='АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЭЮЯ0123456789/–';
+  $$('#pre [data-s]').forEach((el,k)=>{ const lines=el.innerHTML.split(/<br\s*\/?>/i).map(x=>x.replace(/&amp;/g,'&'));
+    el.innerHTML='<span class="sz">'+el.innerHTML+'</span><span class="sc"></span>'; const sc=el.lastChild, t0=performance.now()+120+k*70, D=700;
+    const tick=now=>{ const p=Math.max(0,Math.min(1,(now-t0)/D));
+      sc.innerHTML=lines.map(l=>[...l].map((c,i)=>c===' '||i<p*l.length?c:GLY[(Math.random()*GLY.length)|0]).join('')).map(esc).join('<br>');
+      if(p<1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick); });
   setTimeout(()=>pre.classList.add('in'),60);
-  const n=$('#preN'), t0=performance.now(); let loaded=false, shown=0, fin=false; fontsReady.then(()=>loaded=true);
-  const iv=setInterval(()=>{ const el=performance.now()-t0, cap=loaded?100:90, target=Math.min(cap,el/1200*100);
-    shown+=(target-shown)*.2; n.textContent=String(Math.min(99,Math.floor(shown))).padStart(2,'0');
-    if((loaded&&el>1200&&shown>99.3)||el>4000) done(); },30);
-  function done(){ if(fin) return; fin=true; clearInterval(iv); n.textContent='100';
-    /* read backwards: the flip runs right to left */
-    $$('#preW .pl2>span').forEach((sp,i)=>sp.style.transitionDelay=((A.length-1-i)*.06).toFixed(2)+'s');
-    pre.classList.add('flip');
-    setTimeout(()=>{ pre.classList.add('out'); lock(caseEl.classList.contains('open')); setTimeout(reveal,250); },1150);
-    setTimeout(()=>pre.classList.add('gone'),2300);
+  const dots=$$('#preDots i'), n=$('#preN'), t0=performance.now(); let loaded=false, shown=0, fin=false; fontsReady.then(()=>loaded=true);
+  const iv=setInterval(()=>{ const el=performance.now()-t0, cap=loaded?100:90, target=Math.min(cap,el/1600*100);
+    shown+=(target-shown)*.18; const v=Math.min(99,Math.floor(shown)); n.textContent=String(v).padStart(3,'0');
+    dots.forEach((d,i)=>d.classList.toggle('on',v>=(i+1)*13));
+    if((loaded&&el>1600&&shown>99.3)||el>4500) done(); },30);
+  function done(){ if(fin) return; fin=true; clearInterval(iv); n.textContent='100'; dots.forEach(d=>d.classList.add('on'));
+    setTimeout(()=>pre.classList.add('p-cl'),250);
+    setTimeout(()=>pre.classList.add('p-lg'),1900);
+    setTimeout(()=>{ pre.classList.add('out'); lock(caseEl.classList.contains('open')); setTimeout(reveal,200); },3000);
+    setTimeout(()=>pre.classList.add('gone'),3800);
   }
 })();
 
@@ -827,22 +923,22 @@ const CASES={
   burenie:{domain:'burenie124.ru',brand:'БУРЕНИЕ 124',nav:'Работы · Отзывы · Заявка',city:'Красноярск',
     pal:{sa:'#e3eef8',sb:'#a9c8e6',ink:'#16324f',soft:'#eef4f9',t1:'linear-gradient(160deg,#cddff0,#7fa7cf)',t2:'linear-gradient(160deg,#dfe6dc,#9aa98f)',t3:'linear-gradient(160deg,#e3e0d9,#a89e8b)'},cover:'linear-gradient(160deg,#d7e6f3,#6f9fcc)',
     head:'Бурение скважин на воду',sub:'Без посредников · своё оборудование',btn:'Оставить заявку',gT:'Уже пробурено',pT:'Как это происходит',rows:[['1 · Заявка','звонок или форма'],['2 · Выезд и оценка','на участке'],['3 · Бурение','своя установка'],['4 · Сдача','проверяем воду']],formT:'Оставьте номер — перезвоню',
-    lead:'Сайт частного мастера по бурению скважин: живой человек вместо конторы-посредника.',
+    lead:'Сайт частного мастера по бурению скважин в Красноярске.',
     task:'Сергей бурит скважины сам, своей установкой. Клиенты находили его на Авито, но отправить человеку было нечего: не было страницы, где спокойно видно, кто он, как работает и куда выезжает.',
-    solution:'Сделали сайт от лица мастера. С первого экрана понятно: частный специалист, без посредников, своё оборудование. Дальше — подход к работе, порядок в четыре шага, отзывы с Авито, зона выезда около 50 км и короткая форма.',
+    solution:'Сделали сайт от лица мастера. С первого экрана видно, что это частный мастер со своей установкой, без посредников. Ниже: как проходит работа, отзывы с Авито, куда выезжает (около 50 км) и короткая форма.',
     chips:['Сайт-визитка','Тексты','Отзывы с Авито','Зона выезда','Форма заявки','Мобильная версия','Домен и хостинг'],
-    was:'Только объявление на Авито — среди десятков контор и посредников.',now:'Своя страница, которую не стыдно отправить: мастер, подход, отзывы и заявка.',
-    gives:[['Доверие','Видно живого мастера со своей установкой, а не контору.'],['Меньше вопросов','Порядок работы и зона выезда расписаны заранее.'],['Простая заявка','Имя и телефон — остальное мастер уточнит сам.']],
+    was:'Только объявление на Авито — среди десятков контор и посредников.',now:'Своя страница: кто мастер, как работает, отзывы и форма заявки.',
+    gives:[['Доверие','Видно, что работает сам мастер со своей установкой.'],['Меньше вопросов','Порядок работы и зона выезда расписаны заранее.'],['Простая заявка','Только имя и телефон, остальное мастер уточнит по звонку.']],
     extra:'form',quote:{t:'Человек своего дела — лишний раз задержится и перепроверит все процессы.',a:'Анастасия · отзыв на Авито'}},
   luna:{domain:'luna-cakes.ru',brand:'LUNA CAKES',nav:'Торты · Цены · Заказ',city:'Красноярск',
     pal:{},cover:'linear-gradient(160deg,#f6dde3,#c4697f)',
     head:'Торты на заказ в Красноярске',sub:'Бенто, свадебные, детские — от 1 кг',btn:'Заказать торт',gT:'Наши работы',pT:'Цены',rows:[['Бенто-торт','1 200 ₽'],['Торт 1 кг','2 400 ₽'],['Капкейки, 6 шт','1 100 ₽']],formT:'Дата, вес и пожелания',
     lead:'Имиджевый сайт кондитера и единый визуал для сайта и соцсетей.',
     task:'Кондитер продаёт через личку: цены спрашивают по сто раз, а фото тортов сняты на кухне при жёлтом свете и выглядят дешевле, чем торты на самом деле.',
-    solution:'Сайт с галереей работ, ценами «от» и формой заказа на дату. Фото тортов привели к одному светлому стилю — они работают и на сайте, и в соцсетях.',
+    solution:'Сайт с галереей работ, ценами «от» и формой заказа на дату. Фото тортов обработали в одном светлом стиле, их можно ставить и на сайт, и в соцсети.',
     chips:['Имиджевый сайт','Галерея','Цены','Заказ на дату','Обработка фото','Визуал для соцсетей'],
     was:'Цены в личку, фото с кухни, каждый заказ — длинная переписка.',now:'Клиент видит работы и цены, выбирает дату и оставляет заявку.',
-    gives:[['Выглядит дороже','Единый стиль фото поднимает ценность торта.'],['Меньше переписки','Цены и условия видны до первого сообщения.'],['Заказ на дату','Заявка сразу с датой, весом и пожеланиями.']],
+    gives:[['Торты выглядят дороже','Все фото в одном стиле и при хорошем свете.'],['Меньше переписки','Цены и условия видны до первого сообщения.'],['Заказ на дату','Заявка сразу с датой, весом и пожеланиями.']],
     extra:'visual',art:'cake'},
   lak:{domain:'lak-studio.ru',brand:'ЛАК.',nav:'Услуги · Мастера · Запись',city:'Красноярск',
     pal:{sa:'#efe9f6',sb:'#cdbde6',ink:'#3b2a55',soft:'#f4f0f8',t1:'linear-gradient(160deg,#ece3f5,#b8a0d8)',t2:'linear-gradient(160deg,#f5e3ea,#d7a0b5)',t3:'linear-gradient(160deg,#e6e6ee,#a7a7c0)'},cover:'linear-gradient(160deg,#e8e0f3,#7e5fb8)',
@@ -852,7 +948,7 @@ const CASES={
     solution:'Сайт с услугами, ценами и работами мастеров. Запись — через бота: клиент выбирает услугу, день и время, а мастеру приходит уведомление. Бот напоминает о визите за день.',
     chips:['Сайт','Telegram-бот','Запись','Напоминания','Уведомления мастеру','Прайс'],
     was:'Одни и те же вопросы каждый день и записи в блокноте.',now:'Бот записывает сам, мастеру приходит готовая запись.',
-    gives:[['Свободные руки','Администратор не отвечает на одно и то же.'],['Меньше неявок','Бот напоминает о визите за день.'],['Запись ночью','Клиент записывается, когда ему удобно.']],
+    gives:[['Меньше переписки','Администратору не нужно отвечать на одни и те же вопросы.'],['Меньше неявок','Бот напоминает о визите за день.'],['Запись в любое время','Клиент записывается ночью или в выходной, без администратора.']],
     extra:'bot',bot:{i:'Л',name:'Студия «Лак» · бот',chat:[['b','Здравствуйте! Что делаем?'],['k',['Маникюр','Педикюр','Дизайн'],0],['m','Маникюр'],['b','Свободно в пятницу: 11:00 · 14:00 · 17:30'],['m','14:00'],['b','Готово! Ждём вас в пятницу в 14:00. Напомню за день.']]}},
   ugli:{domain:'ugli-shaurma.ru',brand:'УГЛИ',nav:'Меню · Доставка · Контакты',city:'Красноярск',
     pal:{sa:'#f8e6d2',sb:'#e6a468',ink:'#4a2410',soft:'#faf1e8',t1:'linear-gradient(150deg,#f3d2a5,#c47a34)',t2:'linear-gradient(150deg,#f6e2a0,#d19a2a)',t3:'linear-gradient(150deg,#f0b8c0,#b8324a)'},cover:'linear-gradient(160deg,#f6d8b6,#c4561c)',
@@ -862,7 +958,7 @@ const CASES={
     solution:'Меню с фото, составом и ценой, добавки и соусы, корзина, выбор доставки или самовывоза. Готовый заказ сразу приходит в Telegram кафе.',
     chips:['Меню','Добавки','Корзина','Доставка / самовывоз','Заказ в Telegram','Мобильная версия'],
     was:'Заказы в переписке, путаница с адресами и составом.',now:'Клиент собирает заказ сам, кафе получает его целиком.',
-    gives:[['Без ошибок','Состав, соусы и адрес — в одном сообщении.'],['Быстрее в час пик','Не нужно принимать заказ голосом.'],['Средний чек выше','Добавки и напитки видны в меню.']],
+    gives:[['Без ошибок','Состав, соусы и адрес — в одном сообщении.'],['Быстрее в час пик','Не нужно принимать заказ голосом.'],['Больше в чеке','Добавки и напитки видны прямо в меню.']],
     extra:'order'},
   rovno:{domain:'rovno-remont.ru',brand:'РОВНО',nav:'Работы · Цены · Расчёт',city:'Красноярск',
     pal:{sa:'#efe9dc',sb:'#cdbb8f',ink:'#3a3120',soft:'#f5f1e8',t1:'linear-gradient(160deg,#e6e0d2,#b3a47e)',t2:'linear-gradient(160deg,#dcdcd6,#9a9a90)',t3:'linear-gradient(160deg,#ece4d6,#c2a57a)'},cover:'linear-gradient(160deg,#e6e0d0,#9b7a2c)',
@@ -872,7 +968,7 @@ const CASES={
     solution:'Лендинг с фото «до и после», ценами за квадратный метр и калькулятором: площадь и тип ремонта — и сразу примерная сумма с кнопкой «Получить смету».',
     chips:['Лендинг','Калькулятор','Фото до и после','Цены','Форма заявки'],
     was:'«Сколько стоит?» — «Надо смотреть» — и клиент уходит.',now:'Клиент видит примерную сумму и сам оставляет заявку на смету.',
-    gives:[['Понятная цена','Примерная сумма до первого звонка.'],['Тёплые заявки','Пишут те, кого цена уже устроила.'],['Доверие','Фото «до и после» вместо обещаний.']],
+    gives:[['Понятная цена','Примерная сумма до первого звонка.'],['Меньше пустых звонков','Пишут те, кого цена уже устроила.'],['Видно результат','Фото «до и после» по реальным объектам.']],
     extra:'calc'},
   drevo:{domain:'drevo-mebel.ru',brand:'ДРЕВО',nav:'Каталог · Материалы · Заказ',city:'Красноярск',
     pal:{sa:'#eee3d4',sb:'#c9a67c',ink:'#3d2816',soft:'#f5efe6',t1:'linear-gradient(160deg,#e3d3bd,#9c7148)',t2:'linear-gradient(160deg,#dfe3d8,#8fa38b)',t3:'linear-gradient(160deg,#ece0cf,#b88a5a)'},cover:'linear-gradient(160deg,#e6d8c4,#7a5234)',
@@ -881,18 +977,18 @@ const CASES={
     task:'Мебель сделана отлично, но на фото из мастерской — стружка, плохой свет и случайный фон. На Авито объявления теряются среди фабричной мебели.',
     solution:'Изделия сняли на чистом фоне в едином стиле, сделали лендинг с каталогом, сроками и формой заявки. Эти же фото пошли в объявления на Авито.',
     chips:['Лендинг','Каталог','Обработка фото','Чистый фон','Визуал для Авито'],
-    was:'Фото из мастерской: стружка, тени, случайный фон.',now:'Чистые кадры в одном стиле — на сайте и в объявлениях.',
-    gives:[['Выглядит как бренд','Единый стиль фото вместо случайных снимков.'],['Заметнее на Авито','Чистый кадр выделяется в ленте.'],['Понятный заказ','Сроки и шаги видны до звонка.']],
+    was:'Фото из мастерской: стружка, тени, случайный фон.',now:'Чистые фото в одном стиле для сайта и объявлений.',
+    gives:[['Аккуратный вид','Все фото в одном стиле, без случайного фона.'],['Заметнее на Авито','Чистый кадр выделяется в ленте.'],['Понятный заказ','Сроки и шаги видны до звонка.']],
     extra:'visual',art:'chair'},
   tiho:{domain:'tiho-psy.ru',brand:'ТИХО',nav:'Обо мне · Формат · Запись',city:'Красноярск / онлайн',
     pal:{sa:'#e7efe8',sb:'#a9c4b0',ink:'#23392b',soft:'#f0f5f1',t1:'linear-gradient(160deg,#dbe7de,#7d9e86)',t2:'linear-gradient(160deg,#e8e6de,#b1ab96)',t3:'linear-gradient(160deg,#e2e8ee,#98a9b8)'},cover:'linear-gradient(160deg,#dce8df,#4f7a5e)',
     head:'Психолог. Спокойно и бережно',sub:'Очно в Красноярске и онлайн',btn:'Записаться',gT:'С чем работаю',pT:'Стоимость',rows:[['Консультация, 50 мин','3 500 ₽'],['Онлайн','3 000 ₽'],['Парная сессия','5 000 ₽']],formT:'Или напишите в MAX',
-    lead:'Спокойная визитка психолога и MAX-бот для записи без звонков.',
+    lead:'Сайт-визитка психолога и MAX-бот для записи без звонков.',
     task:'Людям тяжело сделать первый шаг: позвонить незнакомому специалисту и объяснить, что случилось. Многие откладывают запись.',
-    solution:'Тихая визитка: кто специалист, с чем работает, форматы и стоимость. Запись — через MAX-бота: формат, удобное время, без звонков и лишних вопросов.',
+    solution:'Простая визитка: кто специалист, с чем работает, форматы и стоимость. Запись — через MAX-бота: формат, удобное время, без звонков и лишних вопросов.',
     chips:['Сайт-визитка','MAX-бот','Запись','Форматы','Стоимость'],
-    was:'Чтобы записаться, нужно звонить и объяснять всё с порога.',now:'Спокойная страница и запись в пару касаний, без звонка.',
-    gives:[['Легче начать','Запись без звонка снимает барьер.'],['Всё заранее','Форматы и стоимость видны сразу.'],['Бережно','Тон сайта соответствует работе.']],
+    was:'Чтобы записаться, нужно звонить и объяснять всё с порога.',now:'Понятная страница и запись через бота, без звонка.',
+    gives:[['Проще записаться','Не нужно звонить и объяснять всё незнакомому человеку.'],['Всё заранее','Форматы и стоимость видны сразу.'],['Спокойный тон','Сайт написан так же бережно, как проходит сама работа.']],
     extra:'bot',bot:{i:'Т',name:'Тихо · MAX-бот',chat:[['b','Здравствуйте. Какой формат вам удобнее?'],['k',['Очно','Онлайн'],1],['m','Онлайн'],['b','Ближайшее время: вт 19:00 · чт 18:00'],['m','Вторник, 19:00'],['b','Записала. За день пришлю напоминание и ссылку.']]}}
 };
 const caseEl=$('#case'), caseBody=$('#caseBody'), baseTitle=document.title; let caseFrom=null;
@@ -909,7 +1005,7 @@ function renderCase(slug){
   const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], nx=WORKS[(i+1)%WORKS.length], demo=!w.url;
   const two=n=>String(n).padStart(2,'0');
   $('#caseCnt').textContent='Кейс '+two(i+1)+' / '+two(WORKS.length);
-  return '<header class="cs-hero"><span class="lab lab-b">('+(demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(demo?'<p class="cs-demo">Демо-проект: концепт, который показывает подход. Не реальный клиент.</p>':'')+
+  return '<header class="cs-hero"><span class="lab lab-b">('+(demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(demo?'<p class="cs-demo">Это демо: пример того, как мы сделали бы сайт для такого бизнеса.</p>':'')+
     '<div class="cs-meta"><div><small>Ниша</small>'+esc(w.k)+'</div><div><small>Что сделали</small>'+esc(w.w)+'</div><div><small>Город</small>'+esc(c.city)+'</div><div><small>Статус</small>'+esc(w.s)+'</div></div></header>'+
     '<div class="cs-cover run" style="background:'+c.cover+'">'+siteMock(c)+'</div>'+
     '<section class="cs-sec half"><span class="lab">(01) Задача</span><p class="r cs-txt">'+esc(c.task)+'</p></section>'+
@@ -952,7 +1048,7 @@ function tickTick(dt){
 }
 
 /* finale letters */
-const letters=node=>{ [...node.childNodes].forEach(n=>{ if(n.nodeType===3){ const frag=document.createDocumentFragment(); [...n.textContent].forEach(c=>{ if(c===' '){ frag.appendChild(document.createTextNode(' ')); return; } const s=document.createElement('span'); s.className='ch'; const i=document.createElement('span'); i.textContent=c; i.dataset.c=c; s.appendChild(i); frag.appendChild(s); }); n.replaceWith(frag); } else letters(n); }); };
+const letters=node=>{ [...node.childNodes].forEach(n=>{ if(n.nodeType===3){ const frag=document.createDocumentFragment(); n.textContent.split(/( +)/).forEach(w=>{ if(!w) return; if(/^ +$/.test(w)){ frag.appendChild(document.createTextNode(' ')); return; } const wd=document.createElement('span'); wd.className='wd'; [...w].forEach(c=>{ const s=document.createElement('span'); s.className='ch'; const i=document.createElement('span'); i.textContent=c; i.dataset.c=c; s.appendChild(i); wd.appendChild(s); }); frag.appendChild(wd); }); n.replaceWith(frag); } else letters(n); }); }; // letters grouped by word so lines only break between words
 letters($('#fin'));
 
 /* live Krasnoyarsk time */
@@ -980,12 +1076,36 @@ $('#form').addEventListener('submit',async e=>{ e.preventDefault(); const st=$('
   }catch(err){ st.className='fst err'; st.textContent=err.message||'Не удалось отправить. Напишите нам в Telegram — t.me/tetsab'; }
   finally{ btn.disabled=false; } });
 
+/* reel: portfolio visuals, two rows drifting apart with the scroll */
+const REEL=[
+  [['w6',16/9,'Визуал · клавиатура'],['timeline',9/16,'Анимация · конструктор','v'],['w8',16/9,'3D · форма'],['w14',2.37,'3D · материалы'],['w11',.776,'Визуализация для «Моя Москва» · приложение — kozhin.dev'],['w5',2.37,'Визуал · сыворотка'],['w12',16/9,'3D · форма']],
+  [['w9',16/9,'Визуализация для «Моя Москва» · приложение — kozhin.dev'],['w7',16/9,'3D · форма'],['threads',16/9,'Анимация · нить','v'],['w13',16/9,'Визуал · игрушки'],['w16',16/9,'Приложение «Кошелёк» · дизайн и визуализация'],['w10',16/9,'3D · текстуры'],['w15',16/9,'Визуализация для «Моя Москва» · приложение — kozhin.dev']]];
+const HROW=[[.86,1.18,.8,.62,1.1,.62,.9],[.8,.94,.86,.74,.92,.8,.88]];
+const reelRows=[$('#reelT'),$('#reelB')].map((el,r)=>{
+  const items=REEL[r].map(([f,ar,cap,v],i)=>'<div class="rc" data-cap="'+esc(cap)+'" data-h="'+HROW[r][i]+'" data-ar="'+ar+'">'+(v?'<video src="reel/'+f+'.mp4" poster="reel/'+f+'.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video>':'<img src="reel/'+f+'.webp" alt="" loading="lazy" decoding="async">')+'</div>').join('');
+  el.innerHTML=items+items; // twice, so the row can loop
+  return {el,x:r?-420:0,dir:r?1:-1,w:0}; });
+function reelSize(){ const H=Math.min(340,Math.max(150,innerWidth*.22));
+  $$('.rc').forEach(a=>{ const h=H*+a.dataset.h, w=h*+a.dataset.ar; a.style.width=w.toFixed(1)+'px'; a.style.height=h.toFixed(1)+'px'; });
+  reelRows.forEach(r=>r.w=r.el.scrollWidth/2); }
+reelSize(); addEventListener('resize',reelSize); fontsReady.then(reelSize);
+let reelOn=false, reelHover=0; const vids=$$('.reel video');
+new IntersectionObserver(es=>{ reelOn=es[0].isIntersecting; vids.forEach(v=>{ if(reelOn&&!reduce) v.play().catch(()=>{}); else v.pause(); }); }).observe($('.reel'));
+function reelTick(dt){ if(!reelOn) return;
+  reelRows.forEach(r=>{ if(!r.w) return; r.x+=r.dir*((reduce?0:22*(1-reelHover*.8))*dt+vel*dt*.55); r.x=((r.x%r.w)+r.w)%r.w;
+    r.el.style.transform='translate3d('+(-r.x).toFixed(1)+'px,0,0)'; }); }
+if(fine){ const cur=document.createElement('div'); cur.className='reel-cur'; document.body.appendChild(cur);
+  $('.reel').addEventListener('pointerover',e=>{ const a=e.target.closest('.rc'); if(!a) return; cur.textContent='('+a.dataset.cap+')'; cur.classList.add('on'); reelHover=1; });
+  $('.reel').addEventListener('pointerleave',()=>{ cur.classList.remove('on'); reelHover=0; });
+  addEventListener('pointermove',e=>{ cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; },{passive:true}); }
+
 let last=performance.now();
-function frame(now){ requestAnimationFrame(frame); const dt=Math.min(.05,(now-last)/1000); last=now; tickTick(dt);
+function frame(now){ requestAnimationFrame(frame); const dt=Math.min(.05,(now-last)/1000); last=now; tickTick(dt); reelTick(dt);
   if(pvOn){ px+=(tx-px)*(1-Math.exp(-dt*10)); py+=(ty-py)*(1-Math.exp(-dt*10)); pv.style.left=px+'px'; pv.style.top=py+'px'; } }
 requestAnimationFrame(frame);
 })();
 </script>
+
 
 
 <!--BODY_EXTRA-->
