@@ -1242,6 +1242,8 @@ const cv=document.getElementById('glass'), hero=cv.parentElement, mark=document.
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;   /* 'less motion' keeps the scene calm (slow turn, no fly-in, slow tracker), not frozen */
 const calm=reduce?.35:1;
 hero.dataset.gl='loading';
+if(location.search.includes('gldebug')){ const d=document.createElement('div'); d.style.cssText='position:fixed;left:8px;bottom:8px;z-index:99;padding:6px 9px;border-radius:8px;background:#000;color:#B8E23A;font:11px ui-monospace,Menlo,monospace';
+  document.body.appendChild(d); let n=0; setInterval(()=>{ d.textContent=hero.dataset.gl+' · '+(fps-n)*2+' fps'; n=fps; },500); }
 let renderer;
 /* default GPU: 'high-performance' would wake the discrete one on dual-GPU laptops */
 try{ renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true}); }catch(_){ hero.dataset.gl='fallback:no-webgl'; return; }
@@ -1281,13 +1283,26 @@ while(o<buf.byteLength){ const [vc,ic]=new Uint32Array(buf,o,2); o+=8;
   g.setAttribute('normal',new THREE.InterleavedBufferAttribute(new THREE.InterleavedBuffer(nor,4),3,0,true));
   g.setIndex(new THREE.BufferAttribute(ind,1)); geos.push(g); }
 
-const mat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:0,transmission:1,ior:1.7,dispersion:11,thickness:.8,   /* thickness is in model units (the models are 2 units across) */
+const mat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:0,transmission:1,ior:1.7,dispersion:14,thickness:.8,   /* thickness is in model units (the models are 2 units across) */
   
   specularIntensity:1,envMapIntensity:1.25,clearcoat:1,clearcoatRoughness:.04,
   attenuationColor:new THREE.Color(.86,.9,.96),attenuationDistance:1});   /* no iridescence: it nearly doubled the frame time for a barely visible sheen */
 /* real glass goes dark at grazing angles (light bounces inside instead of passing through); three's thin-surface model
    doesn't, so the transmitted light is dimmed towards the silhouette. This is what gives the objects their volume. */
-mat.onBeforeCompile=sh=>{ sh.fragmentShader=sh.fragmentShader.replace('#include <transmission_fragment>',`#include <transmission_fragment>
+/* three's dispersion takes three samples (red, green, blue), which gives hard red/cyan fringes. Seven samples across
+   the spectrum, each weighted into a smooth rainbow, give the soft prism bands of real glass. */
+/* the glass is perfectly smooth, so each sample is one plain texture read at full detail (three's bicubic lookup does 8) */
+const SPECTRAL=`float halfSpread=(ior-1.0)*0.025*dispersion; vec3 acc=vec3(0.0), wsum=vec3(0.0); float aSum=0.0;
+  for(int i=0;i<7;i++){ float t=float(i)/6.0, sIor=ior+halfSpread*(2.0*t-1.0);
+    vec3 refractedRayExit=position+getVolumeTransmissionRay(n,v,thickness,sIor,modelMatrix);
+    vec4 ndcPos=projMatrix*viewMatrix*vec4(refractedRayExit,1.0); vec2 refractionCoords=(ndcPos.xy/ndcPos.w+1.0)/2.0;
+    vec4 smp=textureLod(transmissionSamplerMap,refractionCoords,0.0);
+    vec3 w=clamp(vec3(1.5-abs(t*4.0-0.5),1.5-abs(t*4.0-2.0),1.5-abs(t*4.0-3.5)),0.0,1.0);
+    acc+=smp.rgb*w; wsum+=w; aSum+=smp.a; }
+  transmittedLight=vec4(acc/wsum,aSum/7.0);
+  transmittance=diffuseColor*volumeAttenuation(length(getVolumeTransmissionRay(n,v,thickness,ior,modelMatrix)),attenuationColor,attenuationDistance);`;
+const spectralPars=THREE.ShaderChunk.transmission_pars_fragment.replace(/float halfSpread[\s\S]*?transmittedLight\.a \/= 3\.0;/,SPECTRAL);
+mat.onBeforeCompile=sh=>{ sh.fragmentShader=sh.fragmentShader.replace('#include <transmission_pars_fragment>',spectralPars).replace('#include <transmission_fragment>',`#include <transmission_fragment>
   #ifdef USE_TRANSMISSION
   { float edge=pow(1.0-saturate(abs(dot(n,v))),2.2); totalDiffuse=mix(totalDiffuse,totalDiffuse*vec3(.3,.33,.38),smoothstep(.1,.9,edge)); }
   #endif`); };
@@ -1348,7 +1363,8 @@ addEventListener('pointermove',e=>{ const r=cv.getBoundingClientRect(); const x=
 
 hero.addEventListener('click',e=>{ if(e.target.closest('a,button,input,label')) return; const r=cv.getBoundingClientRect();
   const i=hit(e.clientX-r.left-W/2,H/2-(e.clientY-r.top)); if(i<0) return; const el=document.getElementById(SERV[i][1]);
-  if(el) el.scrollIntoView({behavior:reduce?'auto':'smooth'}); });
+  const b=objs[i]; b.flip={t0:performance.now(),axis:Math.random()<.5?'x':'y',done:0}; wake();
+  setTimeout(()=>el&&el.scrollIntoView({behavior:reduce?'auto':'smooth'}),reduce?0:520); });
 const tmp=new V(); let t=0, last=0, raf=0, vis=false;
 /* tracking overlay (a 2D canvas over the scene): tracked vertices with boxes and live readouts, curves between
    the two objects, a few vertices tied into polygons, and lines from the cursor to the object under it.
@@ -1418,6 +1434,8 @@ function step(dt){
     tags[i].classList.toggle('on',live&&(touch||i===hover));
     b.w.lerp(b.base,Math.min(1,dt*.8));
     b.m.rotation.x+=b.w.x*dt*calm; b.m.rotation.y+=b.w.y*dt*calm; b.m.rotation.z+=b.w.z*dt*calm;
+    if(b.flip){ const p=Math.min(1,(T-b.flip.t0)/650), e2=1-Math.pow(1-p,4), a=Math.PI*2*e2;   /* one full turn, fast out, soft stop */
+      b.m.rotation[b.flip.axis]+=a-b.flip.done; b.flip.done=a; if(p>=1) b.flip=null; }
   });
   ptr.vx*=.5; ptr.vy*=.5;
 }
@@ -1432,7 +1450,8 @@ function govern(raw){ if(raw>1) return;   /* a pause (tab switch, sleep), not a 
   if(ratio>.75){ ratio=Math.max(.75,+(ratio-.25).toFixed(2)); renderer.setPixelRatio(ratio); renderer.setSize(W,H,false); }
   else if(mat.dispersion){ mat.dispersion=0; mat.needsUpdate=true; }
   else quit(); }
-function frame(now){ raf=0; if(dead) return; const raw=Math.max(0,(now-last)/1000); govern(raw); step(Math.min(.05,raw)); last=now; renderer.render(scene,cam); drawOverlay(now); if(vis) raf=requestAnimationFrame(frame); }
+let fps=0;
+function frame(now){ raf=0; fps++; if(dead) return; const raw=Math.max(0,(now-last)/1000); govern(raw); step(Math.min(.05,raw)); last=now; renderer.render(scene,cam); drawOverlay(now); if(vis) raf=requestAnimationFrame(frame); }
 function wake(){ if(!raf&&vis&&!dead){ last=performance.now(); raf=requestAnimationFrame(frame); } }
 
 await Promise.race([document.fonts?document.fonts.load('400 1em "Golos Text"').catch(()=>{}):0,new Promise(r=>setTimeout(r,3000))]);
@@ -1449,10 +1468,10 @@ layout();
   const cost=q=>{ renderer.setPixelRatio(q); renderer.setSize(W,H,false); for(let i=0;i<2;i++){ renderer.render(scene,cam); sync(); }
     let best=1e9; for(let k=0;k<3;k++){ const t0=performance.now(); for(let i=0;i<4;i++) renderer.render(scene,cam); sync(); best=Math.min(best,(performance.now()-t0)/4); }
     return best; };
-  await compile(); let c1=cost(1);
-  if(c1>9){ mat.dispersion=0; mat.needsUpdate=true; await compile(); c1=cost(1); }
+  await compile(); let c1=touch?0:cost(1);
+  if(!touch&&c1>9){ mat.dispersion=0; mat.needsUpdate=true; await compile(); c1=cost(1); }
   const cap=Math.min(devicePixelRatio||1,W<700?1.75:2), budget=W<700?9:10;
-  ratio=[2,1.75,1.5,1.25,1,.75].find(q=>q<=cap&&c1*q*q<=budget)||0;
+  ratio=touch?Math.min(devicePixelRatio||1,1.5):[2,1.75,1.5,1.25,1,.75].find(q=>q<=cap&&c1*q*q<=budget)||(c1<40?.75:0);
   if(!ratio){ quit('weak-gpu'); renderer.dispose(); return; }
   renderer.setPixelRatio(ratio); renderer.setSize(W,H,false); hero.dataset.gl=(reduce?'calm ':'run ')+'x'+ratio+(mat.dispersion?'':' no-dispersion');
   objs.forEach(b=>{ b.m.visible=false; b.sh.visible=false; b.p.set(b.home.x,b.home.y-H*.7,b.home.z); }); }
