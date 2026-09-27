@@ -1231,19 +1231,28 @@ function frame(now){ raf=0; const dt=Math.min(.05,(now-last)/1000); last=now; ti
 wake();
 })();
 </script>
-<script type="importmap">{"imports":{"three":"/vendor/three/three.module.min.js"}}</script>
+<script>
+/* ?gldebug: a plain script (it runs even if the 3D module never does) that shows the scene state, fps, iOS version and any error */
+if(location.search.includes('gldebug')){ const d=document.createElement('div'), errs=[];
+  d.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:99;padding:6px 9px;border-radius:8px;background:#000;color:#B8E23A;font:11px/1.4 ui-monospace,Menlo,monospace;word-break:break-word';
+  addEventListener('error',e=>errs.push((e.message||'load error')+(e.filename?' @'+e.filename.split('/').pop()+':'+e.lineno:'')),true);
+  addEventListener('unhandledrejection',e=>errs.push('promise: '+(e.reason&&e.reason.message||e.reason)));
+  const ios=(navigator.userAgent.match(/OS (\d+_\d+)/)||[])[1];
+  addEventListener('DOMContentLoaded',()=>document.body.appendChild(d));
+  let n=0; setInterval(()=>{ const f=window.__glFrames||0, h=document.querySelector('.hero');
+    d.textContent=(h&&h.dataset.gl||'module not started')+' · '+(f-n)*2+' fps'+(ios?' · iOS '+ios.replace('_','.'):'')+(errs.length?' · '+errs.slice(-2).join(' | '):''); n=f; },500); }
+</script>
 <script type="module">
 /* hero: a full-width wordmark behind two glass objects with dispersion; each object is a way into one service
    (hover shows its name, a click scrolls there). A tracking overlay marks points on the objects and ties them together. The wordmark is redrawn inside the scene so the glass refracts it;
    without WebGL the plain HTML wordmark stays. */
-import * as THREE from 'three';
+import * as THREE from '/vendor/three/three.module.min.js';   /* a plain path: import maps need iOS 16.4+ */
 (async()=>{
 const cv=document.getElementById('glass'), hero=cv.parentElement, mark=document.getElementById('markT');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;   /* 'less motion' keeps the scene calm (slow turn, no fly-in, slow tracker), not frozen */
 const calm=reduce?.35:1;
 hero.dataset.gl='loading';
-if(location.search.includes('gldebug')){ const d=document.createElement('div'); d.style.cssText='position:fixed;left:8px;bottom:8px;z-index:99;padding:6px 9px;border-radius:8px;background:#000;color:#B8E23A;font:11px ui-monospace,Menlo,monospace';
-  document.body.appendChild(d); let n=0; setInterval(()=>{ d.textContent=hero.dataset.gl+' · '+(fps-n)*2+' fps'; n=fps; },500); }
+
 let renderer;
 /* default GPU: 'high-performance' would wake the discrete one on dual-GPU laptops */
 try{ renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true}); }catch(_){ hero.dataset.gl='fallback:no-webgl'; return; }
@@ -1270,9 +1279,10 @@ scene.add(plane);
 
 /* models: hero/glass.bin holds the meshes back to back, int16 positions in a 2-unit box, int8 normals, uint16 indices */
 /* shipped gzipped (servers don't compress binary files on their own) and unpacked here */
-let buf; try{ buf=await (await fetch('/hero/glass.bin.gz')).arrayBuffer();
-  const m=new Uint8Array(buf,0,2); if(m[0]===0x1f&&m[1]===0x8b) buf=await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();   // a server may already have unpacked it
-}catch(_){ return; }
+const HERO='/hero/', canGunzip=typeof DecompressionStream!=='undefined';   /* older Safari can't unpack: it gets the plain copy */
+let buf; try{ buf=await (await fetch(HERO+'glass.bin'+(canGunzip?'.gz':''))).arrayBuffer();
+  const m=new Uint8Array(buf,0,2); if(canGunzip&&m[0]===0x1f&&m[1]===0x8b) buf=await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();   // a server may already have unpacked it
+}catch(_){ hero.dataset.gl='fallback:models'; return; }
 const geos=[]; let o=0; const al=n=>n+(4-n%4)%4;
 while(o<buf.byteLength){ const [vc,ic]=new Uint32Array(buf,o,2); o+=8;
   const pos=new Int16Array(buf,o,vc*3); o=al(o+vc*6);
@@ -1450,8 +1460,7 @@ function govern(raw){ if(raw>1) return;   /* a pause (tab switch, sleep), not a 
   if(ratio>.75){ ratio=Math.max(.75,+(ratio-.25).toFixed(2)); renderer.setPixelRatio(ratio); renderer.setSize(W,H,false); }
   else if(mat.dispersion){ mat.dispersion=0; mat.needsUpdate=true; }
   else quit(); }
-let fps=0;
-function frame(now){ raf=0; fps++; if(dead) return; const raw=Math.max(0,(now-last)/1000); govern(raw); step(Math.min(.05,raw)); last=now; renderer.render(scene,cam); drawOverlay(now); if(vis) raf=requestAnimationFrame(frame); }
+function frame(now){ raf=0; window.__glFrames=(window.__glFrames||0)+1; if(dead) return; const raw=Math.max(0,(now-last)/1000); govern(raw); step(Math.min(.05,raw)); last=now; renderer.render(scene,cam); drawOverlay(now); if(vis) raf=requestAnimationFrame(frame); }
 function wake(){ if(!raf&&vis&&!dead){ last=performance.now(); raf=requestAnimationFrame(frame); } }
 
 await Promise.race([document.fonts?document.fonts.load('400 1em "Golos Text"').catch(()=>{}):0,new Promise(r=>setTimeout(r,3000))]);
