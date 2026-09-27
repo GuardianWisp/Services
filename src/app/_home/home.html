@@ -160,8 +160,20 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 /* hero */
 .hero{min-height:100svh;display:grid;grid-template-rows:1fr auto auto;padding-block:calc(84px + env(safe-area-inset-top,0px)) 32px}
 .mark{align-self:center;position:relative;user-select:none}
-.mark b,.mark i{display:block;font:400 clamp(4.2rem,17vw,16rem)/.78 var(--f);letter-spacing:-.065em;color:var(--blk);white-space:nowrap;font-style:normal;margin-left:-.04em}
-.mark i{transform:scaleY(-1);opacity:.12;-webkit-mask-image:linear-gradient(to top,#000,transparent 55%);mask-image:linear-gradient(to top,#000,transparent 55%);margin-top:.06em}
+.mark b{display:inline-block;vertical-align:top;font:400 clamp(4.2rem,17vw,16rem)/.78 var(--f);letter-spacing:-.065em;color:var(--blk);white-space:nowrap;font-style:normal;margin-left:-.04em}
+/* hero: glass objects over the full-width wordmark; the wordmark is redrawn inside the 3D scene so the glass refracts it */
+.hero{position:relative}
+.hero>*{position:relative;z-index:2}
+.hero>.mark{z-index:0}
+.hero>.glass{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0;transition:opacity .9s var(--ease)}
+.hero>.glass.on{opacity:1}
+.hero>.glass-ov{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0;transition:opacity .9s var(--ease)}
+.hero>.glass-ov.on{opacity:1}
+@media (max-width:700px){.hero>.mark{min-height:34svh;display:grid;align-items:center}}
+.gl-tag{position:absolute;left:0;top:0;z-index:3;pointer-events:none;padding:8px 13px;border-radius:99px;background:var(--blk);color:#fff;font-size:13px;line-height:1.2;white-space:nowrap;opacity:0;transition:opacity .25s}
+.gl-tag b{font-weight:400;color:var(--lime)}
+.gl-tag.on{opacity:1}
+.gl-touch .gl-tag{padding:6px 10px;font-size:12px}
 .hero-say{padding-top:24px;align-items:end}
 .w{display:inline-block;overflow:hidden;vertical-align:top}
 .w>span{display:inline-block;transform:translateY(105%);transition:transform 1s var(--ease)}
@@ -400,13 +412,18 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .wrow:last-child{border-bottom:1px solid var(--line)}
 .wrow[hidden]{display:none}
 .wrow .nm{font-size:clamp(2.1rem,6vw,4.2rem);line-height:1.05;letter-spacing:-.04em;color:var(--blk)}
-.wrow .nm .roll{line-height:1.1;height:1.1em}
+.wrow .nm .roll{line-height:1.3;height:1.3em;margin-block:-.1em}
 .wrow .ct{display:flex;justify-content:space-between;gap:16px;font-size:14px;color:var(--sec)}
 .wrow.demo-w .nm{color:var(--mute)}
 @media (max-width:860px){.wrow{grid-template-columns:1fr}.wrow .ct{padding-top:6px}}
 #pv{position:fixed;left:0;top:0;z-index:25;width:min(30vw,340px);aspect-ratio:4/3;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.92);transition:opacity .35s,transform .6s var(--ease);display:grid;align-content:end;gap:2px;padding:16px;font-size:14px;color:#fff;border-radius:6px}
 #pv.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
 #pv small{opacity:.8}
+#pv{overflow:hidden;padding:0;display:block}
+#pv .pv-in{position:absolute;left:14px;top:14px;width:560px;transform-origin:0 0;transform:scale(var(--k,.5))}
+#pv .pv-in .device{max-width:none;height:440px;box-shadow:0 24px 48px -24px rgba(0,0,0,.45)}
+#pv .pv-in .device.shot{height:auto}
+#pv .pv-t{position:absolute;inset:auto 0 0;display:grid;gap:2px;padding:72px 16px 14px;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.55) 55%,rgba(0,0,0,.75))}
 
 /* prices */
 .prices{padding-top:48px}
@@ -522,6 +539,32 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .cs-revs blockquote{font-size:clamp(1.1rem,1.6vw,1.45rem);max-width:34ch}
 .cs-revs figcaption{font-size:14px;color:var(--sec)}
 @media (max-width:860px){.cs-shots.real{grid-template-columns:1fr}.cs-shots.real .stage.wide{grid-column:auto}.cs-shots.real .stage:first-child{grid-row:auto}.cs-revs{grid-template-columns:1fr}}
+
+/* visual case: video as the site's first screen */
+.device.film{background:#0e0e0e;grid-template-rows:30px 1fr}
+.device.film .bar{background:#1c1c1c;color:#8a8a8a}
+.device.film .bar i{background:#3a3a3a}
+.device.film.ph{grid-template-rows:22px 1fr}
+.device.film.ph .bar::after{background:#3a3a3a}
+.fv{position:relative;overflow:hidden;min-height:0}
+.fv video,.fv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.fo{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr;color:#fff;background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,0) 60%)}
+.fn{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;font-size:11px;color:rgba(255,255,255,.65)}
+.fn b{font-weight:500;color:#fff;letter-spacing:.12em}
+.fh{align-self:end;padding:0 18px 22px}
+.fh h4{margin:0;font-weight:400;font-size:26px;line-height:1.05;letter-spacing:-.02em;max-width:13ch}
+.fh p{margin:8px 0 14px;font-size:11px;color:rgba(255,255,255,.7)}
+.fh .sb{display:inline-block;padding:7px 12px;border-radius:99px;background:#fff;color:#000;font-size:10px}
+.device.film.ph .fn span{display:none}
+.device.film.ph .fh h4{font-size:20px}
+.device.film.ph .fv video{object-position:50% 50%}
+.stage.dk{background:#161616}
+.stage.dk .cap{color:rgba(255,255,255,.55)}
+.cs-film{display:grid;grid-template-columns:minmax(260px,1fr) minmax(0,2fr);gap:10px}
+.cs-film .stills{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:10px}
+.cs-film .stills .stage{min-height:200px;padding:0}
+.cs-film .stills img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@media (max-width:860px){.cs-film{grid-template-columns:1fr}.cs-film .stills{grid-template-columns:1fr}.cs-film .stills .stage{min-height:0;aspect-ratio:16/10}}
 </style>
 </head>
 <body>
@@ -553,7 +596,8 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 
 <main id="top">
   <section class="hero wrap" aria-labelledby="h1">
-    <div class="mark" aria-hidden="true"><b>TETSAB</b><i>BASTET</i></div>
+    <canvas class="glass" id="glass" aria-hidden="true"></canvas>
+    <div class="mark" aria-hidden="true"><b id="markT">TETSAB</b></div>
     <div class="half hero-say" id="heroSay">
       <div><span class="lab lab-b">(Студия · Красноярск / онлайн)</span>
       <h1 class="big-say" id="h1">Сайт, бот или контент для рекламы — под ваш бизнес, а не по шаблону. <span>Всё работает в России без VPN и блокировок.</span></h1></div>
@@ -798,6 +842,7 @@ const DISH=[['Шаурма классическая','Курица, овощи, 
 const WORKS=[
   {slug:'burenie',n:'Бурение 124',k:'Бурение скважин',w:'Сайт мастера',s:'Запущен',t:['site'],url:'https://burenie124.ru',bg:'linear-gradient(160deg,#9fc3e6,#2f6fae)'},
   {slug:'luna',n:'Luna Cakes',k:'Кондитерская',w:'Сайт + визуал',s:'Демо',t:['site','visual'],bg:'linear-gradient(160deg,#f6d3dc,#c4697f)'},
+  {slug:'tverd',n:'Твердь',k:'Цементный завод',w:'Ключевой визуал',s:'Демо',t:['visual'],bg:'linear-gradient(160deg,#4a4a4a,#121212)'},
   {slug:'lak',n:'Лак',k:'Маникюрная студия',w:'Сайт + бот записи',s:'Демо',t:['site','bot'],bg:'linear-gradient(160deg,#ddd0ee,#7e5fb8)'},
   {slug:'ugli',n:'Угли',k:'Шаурма и шашлык',w:'Меню и заказ',s:'Демо',t:['order'],bg:'linear-gradient(160deg,#f6cfa4,#c4561c)'},
   {slug:'rovno',n:'Ровно',k:'Ремонт квартир',w:'Лендинг с расчётом',s:'Демо',t:['site'],bg:'linear-gradient(160deg,#dcd7ca,#9b7a2c)'},
@@ -817,6 +862,16 @@ const CASES={
     extra:'form',
     real:{desk:'/img/cases/burenie/hero.jpg',mob:'/img/cases/burenie/m_hero.jpg',
       shots:[['Уже пробурено','/img/cases/burenie/gallery.jpg'],['Куда приезжаю','/img/cases/burenie/area.jpg'],['Отзывы с Авито','/img/cases/burenie/reviews.jpg'],['Заявка','/img/cases/burenie/request.jpg']]}},
+  tverd:{domain:'tverd-cement.ru',brand:'ТВЕРДЬ',nav:'Продукция · Объекты · Доставка',city:'Красноярский край',cover:'#161616',
+    head:'Цемент для мостов, плотин и стадионов',sub:'ЦЕМ I и ЦЕМ II · навалом и в мешках',btn:'Запросить цену',
+    lead:'Ключевой визуал для сайта цементного завода: порошок собирается в мост, завод, плотину и стадион.',
+    task:'Цемент на фото — это мешок или облако серой пыли. По такому кадру не видно, что из него строят мосты и плотины, и сайт завода выглядит так же, как у перекупщиков.',
+    solution:'Сделали 3D-ролик: частицы цемента собираются в сооружения, которые из него строят, и снова рассыпаются. Ролик стоит фоном на первом экране сайта, а кадры из него идут в презентации, соцсети и на выставочный стенд.',
+    chips:['Ключевой визуал','3D-анимация','Первый экран сайта','Мобильная версия','Кадры для соцсетей','Презентации и стенды'],
+    was:'Сток-фото мешков и бетономешалок, как у всех поставщиков.',now:'Свой ролик: из цемента на глазах собираются мост, завод, плотина и стадион.',
+    gives:[['Запоминается','Такой первый экран не спутать с сайтами других поставщиков.'],['Понятно без слов','Сразу видно, для каких объектов подходит цемент.'],['Один визуал на всё','Кадры из ролика работают на сайте, в презентациях и на стенде.']],
+    film:{src:'/img/cases/tverd/dark-1280.mp4',srcS:'/img/cases/tverd/dark-768.mp4',srcV:'/img/cases/tverd/dark-v.mp4',poster:'/img/cases/tverd/bridge.jpg',
+      shots:[['Мост','/img/cases/tverd/bridge.jpg'],['Завод','/img/cases/tverd/plant.jpg'],['Плотина','/img/cases/tverd/dam.jpg'],['Стадион','/img/cases/tverd/stadium.jpg']]}},
   luna:{domain:'luna-cakes.ru',brand:'LUNA CAKES',nav:'Торты · Цены · Заказ',city:'Красноярск',
     pal:{},cover:'linear-gradient(160deg,#f6dde3,#c4697f)',
     head:'Торты на заказ в Красноярске',sub:'Бенто, свадебные, детские — от 1 кг',btn:'Заказать торт',gT:'Наши работы',pT:'Цены',rows:[['Бенто-торт','1 200 ₽'],['Торт 1 кг','2 400 ₽'],['Капкейки, 6 шт','1 100 ₽']],formT:'Дата, вес и пожелания',
@@ -893,15 +948,25 @@ function realScreens(c){ const r=c.real;
   return '<section class="cs-sec"><span class="lab lab-b">(03) Экраны</span><div class="cs-shots real"><div class="stage run"><span class="cap">(Телефон)</span>'+realShot(c,r.mob,true)+'</div>'+
     r.shots.map(([cap,src])=>'<div class="stage wide"><span class="cap">('+esc(cap)+')</span>'+realShot(c,src)+'</div>').join('')+'</div></section>'+
     (r.reviews?'<section class="cs-sec"><span class="lab lab-b">(Отзывы клиентов · Авито)</span><div class="cs-revs">'+r.reviews.map(([a,t])=>'<figure class="quote"><blockquote>«'+esc(t)+'»</blockquote><figcaption>— '+esc(a)+'</figcaption></figure>').join('')+'</div></section>':''); }
+/* visual cases: the video runs as the site's first screen, stills from it below */
+function filmSite(c,still,ph){ const f=c.film;
+  /* the grain barely compresses, so each spot gets its own file: a vertical crop for the phone, a lighter one for small screens */
+  const src=ph?f.srcV:(globalThis.matchMedia&&matchMedia('(max-width:700px)').matches?f.srcS:f.src);
+  return '<div class="device film'+(ph?' ph':'')+'" aria-hidden="true"><div class="bar"><i></i><i></i><i></i><span>'+esc(c.domain)+'</span></div><div class="fv">'+
+    (still?'<img src="'+f.poster+'" alt="" decoding="async">':'<video src="'+src+'" poster="'+f.poster+'" muted loop playsinline preload="'+(ph?'none':'auto')+'"></video>')+
+    '<div class="fo"><div class="fn"><b>'+esc(c.brand)+'</b><span>'+esc(c.nav)+'</span></div><div class="fh"><h4>'+esc(c.head)+'</h4><p>'+esc(c.sub)+'</p><span class="sb">'+esc(c.btn)+'</span></div></div></div></div>'; }
+function filmScreens(c){
+  return '<section class="cs-sec"><span class="lab lab-b">(03) Экраны и кадры</span><div class="cs-film"><div class="stage run dk"><span class="cap">(Телефон)</span>'+filmSite(c,false,true)+'</div><div class="stills">'+
+    c.film.shots.map(([cap,src])=>'<div class="stage dk"><span class="cap">('+esc(cap)+')</span><img src="'+src+'" alt="" loading="lazy" decoding="async"></div>').join('')+'</div></div></section>'; }
 function renderCase(slug){
   const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], nx=WORKS[(i+1)%WORKS.length], demo=!w.url;
   const two=n=>String(n).padStart(2,'0');
   return '<header class="cs-hero"><span class="lab lab-b">('+(demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(demo?'<p class="cs-demo">Это демо: пример того, как мы сделали бы сайт для такого бизнеса.</p>':'')+
     '<div class="cs-meta"><div><small>Ниша</small>'+esc(w.k)+'</div><div><small>Что сделали</small>'+esc(w.w)+'</div><div><small>Город</small>'+esc(c.city)+'</div><div><small>Статус</small>'+esc(w.s)+'</div></div></header>'+
-    '<div class="cs-cover run" style="background:'+c.cover+'">'+(c.real?realShot(c,c.real.desk):siteMock(c))+'</div>'+
+    '<div class="cs-cover run" style="background:'+c.cover+'">'+(c.film?filmSite(c):c.real?realShot(c,c.real.desk):siteMock(c))+'</div>'+
     '<section class="cs-sec half"><span class="lab">(01) Задача</span><p class="r cs-txt">'+esc(c.task)+'</p></section>'+
     '<section class="cs-sec half"><span class="lab">(02) Решение</span><div class="r"><p class="cs-txt">'+esc(c.solution)+'</p><ul class="chips">'+c.chips.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></section>'+
-    (c.real?realScreens(c):    '<section class="cs-sec"><span class="lab lab-b">(03) Экраны</span><div class="cs-shots"><div class="stage run"><span class="cap">(Телефон)</span>'+siteMock(c,true)+'</div><div class="stage">'+(c.extra==='visual'?'':'<span class="cap">('+({bot:'Бот',order:'Заказ',calc:'Калькулятор',form:'Заявка'}[c.extra])+')</span>')+caseExtra(c)+'</div>'+
+    (c.film?filmScreens(c):c.real?realScreens(c):    '<section class="cs-sec"><span class="lab lab-b">(03) Экраны</span><div class="cs-shots"><div class="stage run"><span class="cap">(Телефон)</span>'+siteMock(c,true)+'</div><div class="stage">'+(c.extra==='visual'?'':'<span class="cap">('+({bot:'Бот',order:'Заказ',calc:'Калькулятор',form:'Заявка'}[c.extra])+')</span>')+caseExtra(c)+'</div>'+
       (c.quote?'<div class="stage"><span class="cap">(Отзыв)</span><figure class="quote"><blockquote>«'+esc(c.quote.t)+'»</blockquote><figcaption>— '+esc(c.quote.a)+'</figcaption></figure></div>':'')+'</div></section>')+
     '<section class="cs-sec half"><span class="lab">(04) Было → стало</span><div class="r ba2 cs-ba"><p><b>(Было)</b>'+esc(c.was)+'</p><p><b>(Стало)</b>'+esc(c.now)+'</p></div></section>'+
     '<section class="cs-sec"><span class="lab lab-b">(05) Что это даёт</span><ol class="steps">'+c.gives.map((g,k)=>'<li><i>'+two(k+1)+'</i><div><b>'+esc(g[0])+'</b><span>'+esc(g[1])+'</span></div></li>').join('')+'</ol></section>'+
@@ -955,6 +1020,9 @@ const h1=$('#h1'); /* split into words for the reveal; words from the inner <spa
 h1.innerHTML=[...h1.childNodes].flatMap(n=>n.textContent.trim().split(/\s+/).filter(Boolean).map(w=>[w,n.nodeType===1])).map(([w,m],i)=>'<span class="w'+(m?' m':'')+'"><span style="transition-delay:'+(i*.035).toFixed(3)+'s">'+esc(w)+'</span></span>').join(' ');
 const reveal=()=>setTimeout(()=>$('#heroSay').classList.add('on'),30);
 const fontsReady=Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),sleep(2500)]);
+const markT=$('#markT');
+function fitMark(){ markT.style.fontSize=''; const w=markT.parentElement.clientWidth, t=markT.scrollWidth; if(t) markT.style.fontSize=(parseFloat(getComputedStyle(markT).fontSize)*w/t*.995).toFixed(2)+'px'; }
+fitMark(); addEventListener('resize',fitMark); fontsReady.then(fitMark);
 
 /* preloader: once per visit; the counter follows the font load, never shorter than ~1.6s */
 (function(){
@@ -1048,23 +1116,31 @@ $('#wlist').innerHTML=WORKS.map((w,i)=>{
 $('#filters').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; pressGroup(b.parentElement,b); const t=b.dataset.t; $$('.wrow').forEach(r=>r.hidden=!(t==='all'||WORKS[+r.dataset.i].t.includes(t))); });
 const pv=$('#pv'); let pvOn=false, px=0, py=0, tx=0, ty=0;
 if(fine){
-  $('#wlist').addEventListener('pointerover',e=>{ const r=e.target.closest('.wrow'); if(!r) return; const w=WORKS[+r.dataset.i]; pv.style.background=w.bg; pv.innerHTML=esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.url?'Кейс · сайт работает':'Демо-кейс')+'</small>'; pv.classList.add('on'); pvOn=true; wake(); });
+  /* hover card: the real site's first screen for live cases, the same mock as inside the case for demos */
+  let pvI=-1;
+  $('#wlist').addEventListener('pointerover',e=>{ const r=e.target.closest('.wrow'); if(!r) return; const i=+r.dataset.i, w=WORKS[i], c=CASES[w.slug];
+    if(i!==pvI){ pvI=i; pv.style.background=w.bg;
+      pv.innerHTML='<div class="pv-in">'+(c&&c.film?filmSite(c,true):c&&c.real?realShot(c,c.real.desk):c?siteMock(c):'')+'</div><div class="pv-t">'+esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.url?'Кейс · сайт работает':'Демо-кейс')+'</small></div>';
+      pv.style.setProperty('--k',((pv.offsetWidth-28)/560).toFixed(3)); }
+    pv.classList.add('on'); pvOn=true; wake(); });
   $('#wlist').addEventListener('pointerleave',()=>{ pv.classList.remove('on'); pvOn=false; });
   addEventListener('pointermove',e=>{ tx=e.clientX; ty=e.clientY; if(!pvOn){ px=tx; py=ty; } },{passive:true});
 }
 
 /* ---------- case pages ---------- */
+/* case videos play (and start loading) only while on screen */
+const caseVids=new IntersectionObserver(es=>es.forEach(e=>{ const v=e.target; if(e.isIntersecting&&$('#case').classList.contains('open')) v.play().catch(()=>{}); else v.pause(); }),{root:$('#case'),threshold:.15});
 const caseEl=$('#case'), caseBody=$('#caseBody'), baseTitle=document.documentElement.dataset.title||document.title; /* a case page opened directly keeps the homepage title here */ let caseFrom=null;
 function openCase(slug){
   if(!CASES[slug]||!WORKS.some(w=>w.slug===slug)) return false;
-  caseBody.innerHTML=renderCase(slug); caseEl.scrollTop=0; $('#caseCnt').textContent=caseCnt(slug);
+  caseBody.innerHTML=renderCase(slug); caseEl.scrollTop=0; caseVids.disconnect(); if(!reduce) caseBody.querySelectorAll('video').forEach(v=>{ v.muted=true; caseVids.observe(v); }); $('#caseCnt').textContent=caseCnt(slug);
   pv.classList.remove('on'); pvOn=false;
   if(!caseEl.classList.contains('open')){ caseEl.classList.add('open'); caseEl.removeAttribute('inert'); lock(true); }
   document.title=WORKS.find(w=>w.slug===slug).n+' — кейс TETSAB';
   setTimeout(()=>$('#caseBack').focus({preventScroll:true}),60);
   return true;
 }
-function closeCase(){ if(!caseEl.classList.contains('open')) return; caseEl.classList.remove('open'); setTimeout(wake,0); caseEl.setAttribute('inert',''); lock(false); document.title=baseTitle; if(caseFrom){ caseFrom.focus({preventScroll:true}); caseFrom=null; } }
+function closeCase(){ if(!caseEl.classList.contains('open')) return; caseEl.classList.remove('open'); caseBody.querySelectorAll('video').forEach(v=>v.pause()); setTimeout(wake,0); caseEl.setAttribute('inert',''); lock(false); document.title=baseTitle; if(caseFrom){ caseFrom.focus({preventScroll:true}); caseFrom=null; } }
 /* back = the browser's back when we opened the case ourselves, so the history stays clean */
 function toList(back){ if(back&&PATHS&&history.state&&history.state.tsCase){ history.back(); return; }
   try{ history.replaceState(null,'',(PATHS?'/':location.pathname)+location.search); }catch(_){} closeCase(); }
@@ -1151,6 +1227,212 @@ function frame(now){ raf=0; const dt=Math.min(.05,(now-last)/1000); last=now; ti
   if(pvOn){ px+=(tx-px)*(1-Math.exp(-dt*10)); py+=(ty-py)*(1-Math.exp(-dt*10)); pv.style.left=px+'px'; pv.style.top=py+'px'; }
   if(busy()) raf=requestAnimationFrame(frame); }
 wake();
+})();
+</script>
+<script type="importmap">{"imports":{"three":"/vendor/three/three.module.min.js"}}</script>
+<script type="module">
+/* hero: a full-width wordmark behind two glass objects with dispersion; each object is a way into one service
+   (hover shows its name, a click scrolls there). A tracking overlay marks points on the objects and ties them together. The wordmark is redrawn inside the scene so the glass refracts it;
+   without WebGL the plain HTML wordmark stays. */
+import * as THREE from 'three';
+(async()=>{
+const cv=document.getElementById('glass'), hero=cv.parentElement, mark=document.getElementById('markT');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let renderer;
+try{ renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});   /* default GPU: 'high-performance' would wake the discrete one on dual-GPU laptops */ }catch(_){ return; }
+renderer.outputColorSpace=THREE.SRGBColorSpace; renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.transmissionResolutionScale=.5;   /* the refraction pass at half resolution: under the glass it isn't visible, and it halves the cost */
+
+/* the page colour comes from the --bg token: some hosts (the artifact viewer) leave <body> transparent, which would read as black */
+const BG=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#F5F5F5';
+const scene=new THREE.Scene(); scene.background=new THREE.Color(BG);
+/* studio for reflections only: a dark room with a few bright softboxes gives the glass its black-and-white edges */
+const studio=new THREE.Scene(); studio.background=new THREE.Color(0x0b0b0c);
+const box=(w,h,x,y,z,c)=>{ const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:c,side:THREE.DoubleSide})); m.position.set(x,y,z); m.lookAt(0,0,0); studio.add(m); };
+box(7,2.2,0,7,0,new THREE.Color(7,7,7)); box(.7,8,-7,0,2,new THREE.Color(6,6,6)); box(.5,7,7,.5,1.5,new THREE.Color(4.5,4.7,5.2));
+box(4,.35,0,1.5,-7,new THREE.Color(8,8,8)); box(9,3,0,-6,2,new THREE.Color(.35,.35,.37));
+
+const pm=new THREE.PMREMGenerator(renderer); scene.environment=pm.fromScene(studio,.015).texture; pm.dispose();
+const cam=new THREE.PerspectiveCamera(30,1,1,20000);
+
+/* the wordmark as a texture on a plane behind the objects; opaque, because the glass only refracts opaque things */
+const tc=document.createElement('canvas'), tx=tc.getContext('2d'), tex=new THREE.CanvasTexture(tc);
+tex.colorSpace=THREE.SRGBColorSpace;
+const plane=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:tex,toneMapped:false}));
+scene.add(plane);
+
+/* models: hero/glass.bin holds the meshes back to back, int16 positions in a 2-unit box, int8 normals, uint16 indices */
+/* shipped gzipped (servers don't compress binary files on their own) and unpacked here */
+let buf; try{ buf=await (await fetch('/hero/glass.bin.gz')).arrayBuffer();
+  const m=new Uint8Array(buf,0,2); if(m[0]===0x1f&&m[1]===0x8b) buf=await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();   // a server may already have unpacked it
+}catch(_){ return; }
+const geos=[]; let o=0; const al=n=>n+(4-n%4)%4;
+while(o<buf.byteLength){ const [vc,ic]=new Uint32Array(buf,o,2); o+=8;
+  const pos=new Int16Array(buf,o,vc*3); o=al(o+vc*6);
+  const nor=new Int8Array(buf,o,vc*4); o+=vc*4;
+  const ind=new Uint16Array(buf,o,ic); o=al(o+ic*2);
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.BufferAttribute(pos,3,true));
+  g.setAttribute('normal',new THREE.InterleavedBufferAttribute(new THREE.InterleavedBuffer(nor,4),3,0,true));
+  g.setIndex(new THREE.BufferAttribute(ind,1)); geos.push(g); }
+
+const mat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:0,transmission:1,ior:1.7,dispersion:11,thickness:.8,   /* thickness is in model units (the models are 2 units across) */
+  
+  specularIntensity:1,envMapIntensity:1.25,clearcoat:1,clearcoatRoughness:.04,
+  attenuationColor:new THREE.Color(.86,.9,.96),attenuationDistance:1});   /* no iridescence: it nearly doubled the frame time for a barely visible sheen */
+/* real glass goes dark at grazing angles (light bounces inside instead of passing through); three's thin-surface model
+   doesn't, so the transmitted light is dimmed towards the silhouette. This is what gives the objects their volume. */
+mat.onBeforeCompile=sh=>{ sh.fragmentShader=sh.fragmentShader.replace('#include <transmission_fragment>',`#include <transmission_fragment>
+  #ifdef USE_TRANSMISSION
+  { float edge=pow(1.0-saturate(abs(dot(n,v))),2.2); totalDiffuse=mix(totalDiffuse,totalDiffuse*vec3(.3,.33,.38),smoothstep(.1,.9,edge)); }
+  #endif`); };
+const V=THREE.Vector3;
+const SERV=[['Сайты','d-site'],['Боты','d-bot']];
+const touch=matchMedia('(hover:none)').matches; if(touch) hero.classList.add('gl-touch');
+const tags=SERV.map(([n])=>{ const el=document.createElement('span'); el.className='gl-tag'; el.setAttribute('aria-hidden','true'); el.innerHTML=n+' <b>→</b>'; hero.appendChild(el); return el; });
+const sc=document.createElement('canvas'); sc.width=sc.height=128; const sg=sc.getContext('2d'), gr=sg.createRadialGradient(64,64,0,64,64,64);
+gr.addColorStop(0,'rgba(0,0,0,.5)'); gr.addColorStop(.45,'rgba(0,0,0,.2)'); gr.addColorStop(1,'rgba(0,0,0,0)'); sg.fillStyle=gr; sg.fillRect(0,0,128,128);
+const shadowTex=new THREE.CanvasTexture(sc);
+const place=b=>{ b.m.position.copy(b.p); const h=Math.max(0,b.p.z)/300, sh=b.sh;
+  sh.position.set(b.p.x+b.size*(.08+.12*h),b.p.y-b.size*(.28+.2*h),1); sh.scale.set(b.size*(1+.5*h),b.size*(.55+.3*h),1);
+  sh.material.opacity=.55/(1+h*1.2); sh.visible=b.m.visible; };
+const objs=geos.map((g,i)=>{ const m=new THREE.Mesh(g,mat); m.rotation.set(Math.random()*6,Math.random()*6,0); scene.add(m);
+  m.visible=false; const sh=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:shadowTex,transparent:true,depthWrite:false,toneMapped:false}));
+  sh.visible=false; scene.add(sh); return {m,sh,home:new V(),p:new V(),v:new V(),size:1,w:new V((Math.random()-.5)*.3,.14+Math.random()*.1,(Math.random()-.5)*.18),base:null,born:Infinity,sx:0,sy:0,r:0}; });
+objs.forEach(b=>b.base=b.w.clone());
+
+let W=1,H=1,D=1,cy=0,ratio=0;
+function drawMark(){
+  const r=hero.getBoundingClientRect(), cs=getComputedStyle(mark), d=Math.min(2,devicePixelRatio||1);
+  tc.width=Math.min(4096,Math.round(W*d)); tc.height=Math.round(H*tc.width/W); const k=tc.width/W;
+  tx.fillStyle=BG; tx.fillRect(0,0,tc.width,tc.height);
+  /* baseline of the HTML wordmark, so the canvas copy lands exactly on top of it */
+  const probe=document.createElement('span'); probe.style.cssText='display:inline-block;width:0;height:0;vertical-align:baseline';
+  mark.appendChild(probe); const base=probe.getBoundingClientRect().top; probe.remove();
+  const b=mark.getBoundingClientRect(), fs=parseFloat(cs.fontSize), ls=parseFloat(cs.letterSpacing)||0;
+  tx.fillStyle=cs.color; tx.font=cs.fontWeight+' '+fs*k+'px '+cs.fontFamily; tx.textBaseline='alphabetic';
+  let x=(b.left-r.left)*k; const y=(base-r.top)*k;
+  if('letterSpacing' in tx){ tx.letterSpacing=ls*k+'px'; tx.fillText(mark.textContent,x,y); }
+  else for(const ch of mark.textContent){ tx.fillText(ch,x,y); x+=tx.measureText(ch).width+ls*k; }
+  tex.needsUpdate=true;
+  cy=H/2-((b.top+b.bottom)/2-r.top);
+}
+function layout(){
+  W=hero.clientWidth; H=hero.clientHeight; const narrow=W<700;
+  if(!ratio) ratio=Math.min(devicePixelRatio||1,narrow?1.75:2);   /* full retina: ~7 ms a frame at 1440 px; the governor steps down if a device can't keep up */
+  renderer.setPixelRatio(ratio); renderer.setSize(W,H,false);
+  cam.aspect=W/H; cam.fov=30; D=(H/2)/Math.tan(THREE.MathUtils.degToRad(15)); cam.position.set(0,0,D); cam.lookAt(0,0,0); cam.far=D*4; cam.updateProjectionMatrix();
+  plane.scale.set(W,H,1); drawMark();
+  od=Math.min(2,devicePixelRatio||1); ov.width=Math.round(W*od); ov.height=Math.round(H*od); ox.setTransform(od,0,0,od,0,0);
+  const S=narrow?W*.34:Math.min(W*.23,H*.44);
+  const spots=narrow
+    ? [[-.22*W,cy+.02*W,90,.95],[.24*W,cy-.03*W,160,1]]
+    : [[-.22*W,cy+.02*H,140,1],[.2*W,cy-.05*H,230,1.05]];
+  mat.attenuationDistance=S*.9;   /* world units: the light path through the glass is measured after scaling */
+  objs.forEach((b,i)=>{ const [x,y,z,s]=spots[i]; b.home.set(x,y,z); b.size=S*s; b.m.scale.setScalar(b.size/2);
+    if(b.born===Infinity) b.p.set(x,y-H*.7,z); });
+}
+
+/* cursor: in scene units, origin at the hero centre */
+const ptr={x:0,y:0,vx:0,vy:0,on:false};
+addEventListener('pointermove',e=>{ const r=cv.getBoundingClientRect(); const x=e.clientX-r.left-W/2, y=H/2-(e.clientY-r.top);
+  ptr.vx=x-ptr.x; ptr.vy=y-ptr.y; ptr.x=x; ptr.y=y; ptr.on=e.clientY>r.top&&e.clientY<r.bottom; wake(); },{passive:true});
+
+hero.addEventListener('click',e=>{ if(e.target.closest('a,button,input,label')) return; const r=cv.getBoundingClientRect();
+  const i=hit(e.clientX-r.left-W/2,H/2-(e.clientY-r.top)); if(i<0) return; const el=document.getElementById(SERV[i][1]);
+  if(el) el.scrollIntoView({behavior:reduce?'auto':'smooth'}); });
+const tmp=new V(); let t=0, last=0, raf=0, vis=false;
+/* tracking overlay (a 2D canvas over the scene): tracked vertices with boxes and live readouts, curves between
+   the two objects, a few vertices tied into polygons, and lines from the cursor to the object under it.
+   It is reshuffled several times a second, the way a tracker hunts for features. */
+const ov=document.createElement('canvas'); ov.className='glass-ov'; ov.setAttribute('aria-hidden','true'); cv.after(ov);
+const ox=ov.getContext('2d'); let od=1;
+const pick=(g,n)=>{ const p=g.attributes.position, out=[]; for(let i=0;i<n;i++){ const j=(Math.random()*p.count)|0; out.push(new V(p.getX(j),p.getY(j),p.getZ(j))); } return out; };
+objs.forEach(b=>{ b.pts=pick(b.m.geometry,46); b.scr=b.pts.map(()=>({x:0,y:0})); });
+const pw=new V(); let links=[], polys=[], boxes=[], anchors=[], nextShuffle=0;
+const rnd=n=>(Math.random()*n)|0, pt=()=>{ const i=rnd(objs.length); return [i,rnd(objs[i].pts.length)]; };
+function shuffle(){
+  const keep=l=>l.filter(()=>Math.random()<.55);
+  /* links fan out from a few anchor points, so they read as bundles rather than a tangle */
+  if(!anchors.length||Math.random()<.35) anchors=[0,1,2].map(()=>[rnd(2),rnd(objs[0].pts.length)]);
+  links=keep(links); while(links.length<(W<700?9:16)){ const a=anchors[rnd(anchors.length)], o2=1-a[0]; links.push({a,b:[o2,rnd(objs[o2].pts.length)],bend:(Math.random()-.5)*.35}); }
+  polys=keep(polys); while(polys.length<5){ const [i,j]=pt(), P=objs[i].pts, near=P.map((q,k)=>[q.distanceTo(P[j]),k]).sort((x,y)=>x[0]-y[0]); polys.push([i,j,near[1][1],near[2][1]]); }
+  boxes=keep(boxes); while(boxes.length<(W<700?3:5)){ const [i,j]=pt(); boxes.push({i,j,w:14+rnd(46),h:10+rnd(30),lab:Math.random()<.7,id:'TRK_'+String(rnd(99)).padStart(2,'0')}); }
+}
+function drawOverlay(T){
+  ox.clearRect(0,0,W,H); if(!objs.some(b=>b.m.visible)) return;
+  if(T>nextShuffle){ shuffle(); nextShuffle=T+90+Math.random()*160; }
+  objs.forEach(b=>{ if(!b.m.visible) return; b.m.updateMatrixWorld();
+    b.pts.forEach((q,k)=>{ pw.copy(q).applyMatrix4(b.m.matrixWorld).project(cam); b.scr[k].x=(pw.x*.5+.5)*W; b.scr[k].y=(-pw.y*.5+.5)*H; }); });
+  const S=(i,j)=>objs[i].scr[j];
+  ox.lineWidth=.75; ox.strokeStyle='rgba(0,0,0,.5)'; ox.fillStyle='#000';
+  /* points */
+  objs.forEach(b=>{ if(b.m.visible) b.scr.forEach(p=>ox.fillRect(p.x-1,p.y-1,2,2)); });
+  /* curves between the objects */
+  ox.beginPath();
+  links.forEach(({a,b,bend})=>{ const p=S(...a), q=S(...b), mx=(p.x+q.x)/2, my=(p.y+q.y)/2, dx=q.x-p.x, dy=q.y-p.y;
+    ox.moveTo(p.x,p.y); ox.quadraticCurveTo(mx-dy*bend,my+dx*bend,q.x,q.y); });
+  /* polygons on the surface */
+  polys.forEach(([i,a,b,c])=>{ const p=S(i,a), q=S(i,b), r=S(i,c); ox.moveTo(p.x,p.y); ox.lineTo(q.x,q.y); ox.lineTo(r.x,r.y); ox.closePath(); });
+  /* the cursor is tracked too: lines to the object it is over */
+  if(ptr.on&&!touch){ const cx=W/2+ptr.x, cy2=H/2-ptr.y; let best=-1, bd=1e9;
+    objs.forEach((b,i)=>{ const d=Math.hypot(b.sx-ptr.x,b.sy-ptr.y); if(d<b.r*2.2&&d<bd){ bd=d; best=i; } });
+    if(best>=0) for(let k=0;k<7;k++){ const p=objs[best].scr[(k*5+((T/120)|0))%objs[best].pts.length]; ox.moveTo(cx,cy2); ox.bezierCurveTo(cx,cy2+40,p.x,p.y-40,p.x,p.y); }
+    if(best>=0){ ox.strokeRect(cx-9,cy2-9,18,18); ox.font='9px ui-monospace,SFMono-Regular,Menlo,monospace'; ox.fillText('x '+Math.round(cx)+'  y '+Math.round(cy2),cx+13,cy2-11); } }
+  ox.stroke();
+  /* boxes with live readouts */
+  ox.font='9px ui-monospace,SFMono-Regular,Menlo,monospace'; ox.strokeStyle='rgba(0,0,0,.8)';
+  boxes.forEach(({i,j,w,h,lab,id})=>{ if(!objs[i].m.visible) return; const p=S(i,j); ox.strokeRect(p.x-w/2,p.y-h/2,w,h);
+    if(lab){ ox.fillText(id,p.x+w/2+4,p.y-h/2+7); if(W>=700) ox.fillText((p.x/W).toFixed(3)+' '+(p.y/H).toFixed(3),p.x+w/2+4,p.y-h/2+17); } });
+}
+let hover=-1;
+const hit=(x,y)=>{ let best=-1, bd=1e9; objs.forEach((b,i)=>{ if(!b.m.visible) return; const d=Math.hypot(b.sx-x,b.sy-y); if(d<b.r&&d<bd){ bd=d; best=i; } }); return best; };
+function step(dt){
+  t+=dt; const T=performance.now();
+  const h=ptr.on&&!touch?hit(ptr.x,ptr.y):-1; if(h!==hover){ hover=h; hero.style.cursor=h<0?'':'pointer'; }
+  cam.position.x+=((ptr.on?ptr.x*.05:0)-cam.position.x)*Math.min(1,dt*2.5); cam.position.y+=((ptr.on?ptr.y*.05:0)-cam.position.y)*Math.min(1,dt*2.5); cam.lookAt(0,0,0);
+  objs.forEach((b,i)=>{
+    const live=T>b.born; b.m.visible=live; const grow=Math.min(1,Math.max(0,(T-b.born)/900)), e=1-Math.pow(1-grow,3);
+    b.m.scale.setScalar(b.size/2*(.6+.4*e));
+    tmp.set(b.home.x+Math.sin(t*.35+i*2)*W*.012,b.home.y+Math.cos(t*.3+i*1.3)*H*.02,b.home.z);
+    if(live){ b.v.x+=((tmp.x-b.p.x)*5-b.v.x*2.6)*dt; b.v.y+=((tmp.y-b.p.y)*5-b.v.y*2.6)*dt; b.v.z+=((tmp.z-b.p.z)*5-b.v.z*2.6)*dt; }
+    /* a quick swipe knocks an object aside and spins it; a slow cursor can rest on it */
+    const k=D/(D-b.p.z); b.sx=b.p.x*k; b.sy=b.p.y*k; b.r=b.size*.5*k;
+    if(ptr.on){ const dx=b.sx-ptr.x, dy=b.sy-ptr.y, dist=Math.hypot(dx,dy), R=b.size*.85, sp=Math.min(1,Math.hypot(ptr.vx,ptr.vy)/28);
+      if(dist<R&&dist>1&&sp>.15){ const f=(1-dist/R)**2*5200*sp; b.v.x+=dx/dist*f*dt; b.v.y+=dy/dist*f*dt;
+        b.w.y+=ptr.vx*.0009; b.w.x-=ptr.vy*.0009; } }
+    b.p.addScaledVector(b.v,dt);
+    const hs=i===hover?1.08:1; b.hs=(b.hs||1)+(hs-(b.hs||1))*Math.min(1,dt*8); b.m.scale.multiplyScalar(b.hs); place(b);
+    if(live){ const tg=tags[i], tw=tg._w||(tg._w=tg.offsetWidth), cl=(v,a,z)=>Math.max(a,Math.min(z,v));
+      /* beside the object with a mouse, under it on touch screens; never off the edge or under the header */
+      const x=touch?W/2+b.sx-tw/2:W/2+b.sx+b.r*.55, y=touch?H/2-b.sy+b.r*.8:H/2-b.sy-b.r*.8;
+      tg.style.transform='translate('+cl(x,8,W-tw-8).toFixed(1)+'px,'+cl(y,76,H-48).toFixed(1)+'px)'; }
+    tags[i].classList.toggle('on',live&&(touch||i===hover));
+    b.w.lerp(b.base,Math.min(1,dt*.8));
+    b.m.rotation.x+=b.w.x*dt; b.m.rotation.y+=b.w.y*dt; b.m.rotation.z+=b.w.z*dt;
+  });
+  ptr.vx*=.5; ptr.vy*=.5;
+}
+/* quality governor: if frames keep running late (a MacBook Air on battery, say), render fewer pixels */
+let slow=0, ema=1/60;
+function govern(raw){ if(raw>.25) return; ema+=(raw-ema)*.05;
+  if(ema>1/48){ if(++slow>45&&ratio>.75){ ratio=Math.max(.75,+(ratio-.25).toFixed(2)); renderer.setPixelRatio(ratio); renderer.setSize(W,H,false); slow=0; ema=1/60; } } else slow=0; }
+function frame(now){ raf=0; const raw=(now-last)/1000; govern(raw); step(Math.min(.05,raw)); last=now; renderer.render(scene,cam); drawOverlay(now); if(vis&&!reduce) raf=requestAnimationFrame(frame); }
+function wake(){ if(!raf&&vis&&!reduce){ last=performance.now(); raf=requestAnimationFrame(frame); } }
+
+await (document.fonts?document.fonts.ready:Promise.resolve());
+await new Promise(r=>{ requestAnimationFrame(()=>requestAnimationFrame(r)); setTimeout(r,120); });   // after the page has fitted the wordmark (rAF alone stalls in a background tab)
+layout();
+/* the objects fly in once the preloader has lifted, so the entrance is actually seen */
+const pre=document.getElementById('pre');
+const launch=()=>{ const T=performance.now(); objs.forEach((b,i)=>{ b.born=T+160+220*i; if(reduce){ b.born=0; b.p.copy(b.home); b.m.visible=true; place(b); } }); wake(); if(reduce){ renderer.render(scene,cam); drawOverlay(performance.now()); } };
+if(!pre||pre.matches('.gone,.out')) launch();
+else new MutationObserver((_,mo)=>{ if(pre.matches('.gone,.out')){ mo.disconnect(); launch(); } }).observe(pre,{attributes:true,attributeFilter:['class']});
+renderer.render(scene,cam); cv.classList.add('on'); ov.classList.add('on');
+new ResizeObserver(()=>{ layout(); if(!raf){ renderer.render(scene,cam); drawOverlay(performance.now()); } }).observe(hero);
+new IntersectionObserver(es=>{ vis=es[0].isIntersecting; wake(); }).observe(hero);
+/* if the GPU drops the context (sleep, driver reset) fall back to the plain wordmark */
+cv.addEventListener('webglcontextlost',()=>{ vis=false; cv.classList.remove('on'); ov.classList.remove('on'); tags.forEach(t=>t.remove()); hero.style.cursor=''; });
 })();
 </script>
 
