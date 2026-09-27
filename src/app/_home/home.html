@@ -1023,6 +1023,8 @@ const fontsReady=Promise.race([document.fonts?document.fonts.ready:Promise.resol
 const markT=$('#markT');
 function fitMark(){ markT.style.fontSize=''; const w=markT.parentElement.clientWidth, t=markT.scrollWidth; if(t) markT.style.fontSize=(parseFloat(getComputedStyle(markT).fontSize)*w/t*.995).toFixed(2)+'px'; }
 fitMark(); addEventListener('resize',fitMark); fontsReady.then(fitMark);
+/* fonts.ready can resolve before Golos has even started loading; fit again once it is really in */
+if(document.fonts){ document.fonts.load('400 1em "Golos Text"').then(fitMark,()=>{}); document.fonts.addEventListener('loadingdone',fitMark); }
 
 /* preloader: once per visit; the counter follows the font load, never shorter than ~1.6s */
 (function(){
@@ -1237,9 +1239,12 @@ wake();
 import * as THREE from 'three';
 (async()=>{
 const cv=document.getElementById('glass'), hero=cv.parentElement, mark=document.getElementById('markT');
-const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;   /* 'less motion' keeps the scene calm (slow turn, no fly-in, slow tracker), not frozen */
+const calm=reduce?.35:1;
+hero.dataset.gl='loading';
 let renderer;
-try{ renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});   /* default GPU: 'high-performance' would wake the discrete one on dual-GPU laptops */ }catch(_){ return; }
+/* default GPU: 'high-performance' would wake the discrete one on dual-GPU laptops */
+try{ renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true}); }catch(_){ hero.dataset.gl='fallback:no-webgl'; return; }
 renderer.outputColorSpace=THREE.SRGBColorSpace; renderer.toneMapping=THREE.ACESFilmicToneMapping;
 renderer.transmissionResolutionScale=.5;   /* the refraction pass at half resolution: under the glass it isn't visible, and it halves the cost */
 
@@ -1364,7 +1369,7 @@ function shuffle(){
 }
 function drawOverlay(T){
   ox.clearRect(0,0,W,H); if(!objs.some(b=>b.m.visible)) return;
-  if(T>nextShuffle){ shuffle(); nextShuffle=T+90+Math.random()*160; }
+  if(T>nextShuffle){ shuffle(); nextShuffle=T+(reduce?1500+Math.random()*1000:90+Math.random()*160); }
   objs.forEach(b=>{ if(!b.m.visible) return; b.m.updateMatrixWorld();
     b.pts.forEach((q,k)=>{ pw.copy(q).applyMatrix4(b.m.matrixWorld).project(cam); b.scr[k].x=(pw.x*.5+.5)*W; b.scr[k].y=(-pw.y*.5+.5)*H; }); });
   const S=(i,j)=>objs[i].scr[j];
@@ -1412,14 +1417,14 @@ function step(dt){
       tg.style.transform='translate('+cl(x,8,W-tw-8).toFixed(1)+'px,'+cl(y,76,H-48).toFixed(1)+'px)'; }
     tags[i].classList.toggle('on',live&&(touch||i===hover));
     b.w.lerp(b.base,Math.min(1,dt*.8));
-    b.m.rotation.x+=b.w.x*dt; b.m.rotation.y+=b.w.y*dt; b.m.rotation.z+=b.w.z*dt;
+    b.m.rotation.x+=b.w.x*dt*calm; b.m.rotation.y+=b.w.y*dt*calm; b.m.rotation.z+=b.w.z*dt*calm;
   });
   ptr.vx*=.5; ptr.vy*=.5;
 }
 /* quality governor: if frames keep running late, render fewer pixels, then drop the dispersion,
    and as a last resort hand the hero back to the plain wordmark */
 let slow=0, ema=1/60, dead=false;
-function quit(){ dead=true; vis=false; cv.classList.remove('on'); ov.classList.remove('on'); tags.forEach(t=>t.remove()); hero.style.cursor=''; }
+function quit(why){ hero.dataset.gl='fallback:'+(why||'slow'); dead=true; vis=false; cv.classList.remove('on'); ov.classList.remove('on'); tags.forEach(t=>t.remove()); hero.style.cursor=''; }
 function govern(raw){ if(raw>1) return;   /* a pause (tab switch, sleep), not a slow frame */
   ema+=(Math.min(raw,.5)-ema)*.1;
   if(ema<=1/40){ slow=0; return; }
@@ -1427,10 +1432,10 @@ function govern(raw){ if(raw>1) return;   /* a pause (tab switch, sleep), not a 
   if(ratio>.75){ ratio=Math.max(.75,+(ratio-.25).toFixed(2)); renderer.setPixelRatio(ratio); renderer.setSize(W,H,false); }
   else if(mat.dispersion){ mat.dispersion=0; mat.needsUpdate=true; }
   else quit(); }
-function frame(now){ raf=0; if(dead) return; const raw=Math.max(0,(now-last)/1000); govern(raw); step(Math.min(.05,raw)); last=now; renderer.render(scene,cam); drawOverlay(now); if(vis&&!reduce) raf=requestAnimationFrame(frame); }
-function wake(){ if(!raf&&vis&&!reduce&&!dead){ last=performance.now(); raf=requestAnimationFrame(frame); } }
+function frame(now){ raf=0; if(dead) return; const raw=Math.max(0,(now-last)/1000); govern(raw); step(Math.min(.05,raw)); last=now; renderer.render(scene,cam); drawOverlay(now); if(vis) raf=requestAnimationFrame(frame); }
+function wake(){ if(!raf&&vis&&!dead){ last=performance.now(); raf=requestAnimationFrame(frame); } }
 
-await (document.fonts?document.fonts.ready:Promise.resolve());
+await Promise.race([document.fonts?document.fonts.load('400 1em "Golos Text"').catch(()=>{}):0,new Promise(r=>setTimeout(r,3000))]);
 await new Promise(r=>{ requestAnimationFrame(()=>requestAnimationFrame(r)); setTimeout(r,120); });   // after the page has fitted the wordmark (rAF alone stalls in a background tab)
 layout();
 /* fit the scene to this GPU before anyone sees it: compile off the main thread where the browser can, time a few
@@ -1448,8 +1453,8 @@ layout();
   if(c1>9){ mat.dispersion=0; mat.needsUpdate=true; await compile(); c1=cost(1); }
   const cap=Math.min(devicePixelRatio||1,W<700?1.75:2), budget=W<700?9:10;
   ratio=[2,1.75,1.5,1.25,1,.75].find(q=>q<=cap&&c1*q*q<=budget)||0;
-  if(!ratio){ quit(); renderer.dispose(); return; }
-  renderer.setPixelRatio(ratio); renderer.setSize(W,H,false);
+  if(!ratio){ quit('weak-gpu'); renderer.dispose(); return; }
+  renderer.setPixelRatio(ratio); renderer.setSize(W,H,false); hero.dataset.gl=(reduce?'calm ':'run ')+'x'+ratio+(mat.dispersion?'':' no-dispersion');
   objs.forEach(b=>{ b.m.visible=false; b.sh.visible=false; b.p.set(b.home.x,b.home.y-H*.7,b.home.z); }); }
 /* the objects fly in once the preloader has lifted, so the entrance is actually seen */
 const pre=document.getElementById('pre');
@@ -1458,9 +1463,10 @@ if(!pre||pre.matches('.gone,.out')) launch();
 else new MutationObserver((_,mo)=>{ if(pre.matches('.gone,.out')){ mo.disconnect(); launch(); } }).observe(pre,{attributes:true,attributeFilter:['class']});
 renderer.render(scene,cam); cv.classList.add('on'); ov.classList.add('on');
 new ResizeObserver(()=>{ layout(); if(!raf){ renderer.render(scene,cam); drawOverlay(performance.now()); } }).observe(hero);
+document.fonts&&document.fonts.addEventListener('loadingdone',()=>setTimeout(()=>{ if(!dead){ layout(); if(!raf){ renderer.render(scene,cam); drawOverlay(performance.now()); } } },0));   /* the page refits the wordmark first */
 new IntersectionObserver(es=>{ vis=es[es.length-1].isIntersecting; wake(); }).observe(hero);   /* the latest entry: a reload can batch 'restored scroll, off screen' with 'scrolled back to top' */
 /* if the GPU drops the context (sleep, driver reset) fall back to the plain wordmark */
-cv.addEventListener('webglcontextlost',()=>{ vis=false; cv.classList.remove('on'); ov.classList.remove('on'); tags.forEach(t=>t.remove()); hero.style.cursor=''; });
+cv.addEventListener('webglcontextlost',()=>{ hero.dataset.gl='fallback:context-lost'; vis=false; cv.classList.remove('on'); ov.classList.remove('on'); tags.forEach(t=>t.remove()); hero.style.cursor=''; });
 })();
 </script>
 
