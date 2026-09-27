@@ -1246,7 +1246,7 @@ if(location.search.includes('gldebug')){ const d=document.createElement('div'), 
 /* hero: a full-width wordmark behind two glass objects with dispersion; each object is a way into one service
    (hover shows its name, a click scrolls there). A tracking overlay marks points on the objects and ties them together. The wordmark is redrawn inside the scene so the glass refracts it;
    without WebGL the plain HTML wordmark stays. */
-import * as THREE from '/vendor/three/three.module.min.js';   /* a plain path: import maps need iOS 16.4+ */
+import * as THREE from '/vendor/three/three-r186.min.js';   /* a plain path (import maps need iOS 16.4+); one file, transpiled for Safari 15 (three uses class static blocks, Safari 16.4+) */
 (async()=>{
 const cv=document.getElementById('glass'), hero=cv.parentElement, mark=document.getElementById('markT');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;   /* 'less motion' keeps the scene calm (slow turn, no fly-in, slow tracker), not frozen */
