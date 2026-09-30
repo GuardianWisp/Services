@@ -290,11 +290,13 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .device.ph .site .sh h4{font-size:19px}
 .device.ph .site .sg{grid-template-columns:1fr 1fr}
 .device.ph .site .sg i:nth-child(3){display:none}
-/* demo 1 shows a real site: its screens stacked into one page and scrolled by the same keyframes */
-.site.real img{display:block;width:100%;height:auto}
-.site.real .mb,.device.ph .site.real .pc{display:none}
-.device.ph .site.real .mb{display:block}
-.site.real .mb img+img{position:relative;margin-top:-16.9%;clip-path:inset(9.85% 0 0 0)}   /* each phone shot starts with the site's header (100 of 1016 px): hide it after the first so the page reads as one */
+/* demo 1 shows a real site: one full-page capture scrolls (by script, section to section) under its pinned header */
+#siteStage{padding-block:48px 72px}   /* room for the caption above and the switch below the frame */
+.site.real{animation:none}
+#device img{display:block;width:100%;height:auto}
+#device .head{position:absolute;left:0;top:0;z-index:2}
+#device .mb,#device.ph .pc{display:none}
+#device.ph .mb{display:block}
 .stage-link{position:absolute;right:18px;top:14px;z-index:3;font-size:13px;color:var(--sec);transition:color .3s}
 .stage-link:hover,.stage-link:focus-visible{color:var(--blk)}
 .toast{position:absolute;right:18px;bottom:62px;z-index:4;width:min(270px,70%);padding:12px 14px;border-radius:14px;background:rgba(22,22,22,.92);color:#fff;font-size:13px;line-height:1.35;box-shadow:0 20px 40px -20px rgba(0,0,0,.5);opacity:0;transform:translateY(12px);transition:opacity .5s var(--ease),transform .7s var(--ease)}
@@ -691,13 +693,14 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
         </div>
         <div class="stage" id="siteStage">
           <span class="cap">(Кейс · Бурение 124)</span>
-          <!-- the real site, scrolled: desktop screens, or the phone ones when the switch says «Телефон» -->
+          <!-- the real site as one full-page capture scrolling under its own pinned header; desktop, or phone when the switch says «Телефон».
+               Loaded by script (Safari won't lazy-load images outside the clipped view); the sizes reserve the space. -->
           <div class="device" id="device">
             <div class="bar"><i></i><i></i><i></i><span>burenie124.ru</span></div>
-            <div class="view"><div class="site real">
-              <div class="pc"><img src="/img/cases/burenie/d_hero.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/d_gallery.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/d_reviews.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/d_area.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/d_request.jpg" alt="" loading="lazy" decoding="async"></div>
-              <div class="mb"><img src="/img/cases/burenie/m_1.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/m_2.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/m_3.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/m_4.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/m_5.jpg" alt="" loading="lazy" decoding="async"></div>
-            </div></div>
+            <div class="view">
+              <div class="site real"><img class="pc" data-src="/img/cases/burenie/p_desk.jpg" width="1120" height="4636" alt=""><img class="mb" data-src="/img/cases/burenie/p_mob.jpg" width="472" height="7154" alt=""></div>
+              <img class="head pc" data-src="/img/cases/burenie/p_desk_head.jpg" width="1120" height="75" alt=""><img class="head mb" data-src="/img/cases/burenie/p_mob_head.jpg" width="472" height="78" alt="">
+            </div>
           </div>
           <a class="stage-link" href="/cases/burenie">Смотреть кейс →</a>
           <div class="toast" id="siteToast" aria-hidden="true"><small>Telegram · сейчас</small>Новая заявка с сайта: <b>скважина, Емельяново</b></div>
@@ -1157,9 +1160,22 @@ if(document.fonts){ document.fonts.load('400 1em "Golos Text"').then(fitMark,()=
 
 /* 01 site: device switch + incoming lead */
 const device=$('#device');
-$('.seg').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; pressGroup(b.parentElement,b); device.classList.toggle('ph',b.dataset.v==='ph'); });
+const mode=()=>device.classList.contains('ph')?'mb':'pc';
+const loadShots=set=>$$('#device img.'+set+'[data-src]').forEach(i=>{ i.src=i.dataset.src; i.removeAttribute('data-src'); });
+/* the page scrolls down in steps, pausing on each section, then glides back to the top */
+let scrollA=null, siteOn=false;
+function siteScroll(){ scrollA&&scrollA.cancel(); scrollA=null; if(reduce) return;
+  const site=$('#device .site'), end=$('#device .view').clientHeight-site.offsetHeight; if(end>=0) return;
+  const n=mode()==='mb'?8:6, move=1100, hold=1300, back=1800, total=n*hold+(n-1)*move+back, kf=[]; let t=0;
+  for(let i=0;i<n;i++){ const y='translateY('+(end*i/(n-1)).toFixed(1)+'px)'; if(i) t+=move;
+    kf.push({transform:y,offset:t/total}); t+=hold; kf.push({transform:y,offset:t/total,easing:'cubic-bezier(.65,0,.35,1)'}); }
+  kf.push({transform:'translateY(0)',offset:1});
+  scrollA=site.animate(kf,{duration:total,iterations:Infinity}); if(!siteOn) scrollA.pause(); }
+$('.seg').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; pressGroup(b.parentElement,b); device.classList.toggle('ph',b.dataset.v==='ph'); loadShots(mode()); siteScroll(); });
+device.addEventListener('transitionend',e=>{ if(e.target===device&&e.propertyName==='height') siteScroll(); });   /* the frame changes size when switching; measure again once it has */
+addEventListener('resize',()=>siteOn&&siteScroll());
 let siteT=null; const siteToast=$('#siteToast');
-whenVisible($('#siteStage'),()=>{ $('#siteStage').classList.add('run'); if(siteT) return; const cycle=()=>{ siteToast.classList.add('on'); setTimeout(()=>siteToast.classList.remove('on'),3200); }; setTimeout(cycle,2600); siteT=setInterval(cycle,9000); },()=>{ $('#siteStage').classList.remove('run'); clearInterval(siteT); siteT=null; siteToast.classList.remove('on'); });
+whenVisible($('#siteStage'),()=>{ siteOn=true; loadShots(mode()); scrollA?scrollA.play():siteScroll(); if(siteT) return; const cycle=()=>{ siteToast.classList.add('on'); setTimeout(()=>siteToast.classList.remove('on'),3200); }; setTimeout(cycle,2600); siteT=setInterval(cycle,9000); },()=>{ siteOn=false; scrollA&&scrollA.pause(); clearInterval(siteT); siteT=null; siteToast.classList.remove('on'); });
 
 /* 02 before / after: same object, phone snapshot vs. ad shot */
 const cmp=$('#cmp');
