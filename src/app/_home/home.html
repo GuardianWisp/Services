@@ -321,6 +321,11 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .cmp .after svg{width:min(62%,320px);filter:drop-shadow(0 26px 22px rgba(0,0,0,.18))}
 /* the caption stays put and the wipe uncovers it; tied to the handle, it re-wrapped its text on every move */
 .cmp .after .adtag{position:absolute;left:18px;right:18px;top:54px;display:flex;justify-content:space-between;align-items:end;gap:16px;font-size:13px;color:var(--blk)}
+.cmp.photo .ly{background:#111}
+.cmp.photo .ly img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cmp.photo .before::after{content:none}   /* the photo is already the "before"; no drawn vignette on top */
+.cmp.photo .adtag{color:#fff}
+.cmp.photo.light .adtag{color:var(--blk)}   /* light "after" shots keep the caption dark */
 .cmp .after .adtag b{font-weight:400;font-size:clamp(1rem,1.8vw,1.35rem);letter-spacing:-.02em;max-width:14ch;line-height:1.1}
 .cmp .handle{position:absolute;top:0;bottom:0;left:var(--p);width:0;z-index:3;pointer-events:none}
 .cmp .handle::before{content:"";position:absolute;top:0;bottom:0;left:-1px;width:2px;background:#fff}
@@ -728,7 +733,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
             <div class="handle" aria-hidden="true"></div>
             <input type="range" min="0" max="100" value="50" id="cmpR" aria-label="Сравнить до и после">
           </div>
-          <div class="tabs" role="group" aria-label="Пример" id="cmpTabs"><button type="button" aria-pressed="true" data-k="cake">Торт</button><button type="button" aria-pressed="false" data-k="bottle">Товар</button><button type="button" aria-pressed="false" data-k="chair">Мебель</button></div>
+          <div class="tabs" role="group" aria-label="Пример" id="cmpTabs"><button type="button" aria-pressed="true" data-k="cake">Десерт</button><button type="button" aria-pressed="false" data-k="bottle">Товар</button><button type="button" aria-pressed="false" data-k="chair">Мебель</button></div>
         </div>
       </article>
 
@@ -937,14 +942,14 @@ const rub=n=>n.toLocaleString('ru-RU')+' ₽';
 /* on tetsab.ru cases live at /cases/slug; in a single-file preview they fall back to #case/slug */
 const caseHref=slug=>(globalThis.__paths?'/cases/':'#case/')+slug;
 const ART={
-  cake:{t:'Торт на заказ',s:'Рекламный кадр для соцсетей',svg:'<svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="170" rx="78" ry="12" fill="#e9e6e0"/><rect x="38" y="104" width="124" height="62" rx="10" fill="#f3d9de"/><rect x="54" y="62" width="92" height="48" rx="9" fill="#f7e6e9"/><path d="M54 74c8 10 12-4 20 6s12-6 20 4 12-6 20 2 12-6 20 4 10-4 12-2V70c0-5-4-8-9-8H63c-5 0-9 3-9 8z" fill="#8c3b4f"/><path d="M38 116c10 12 14-4 24 6s14-6 24 4 14-6 24 2 14-6 24 4 14-4 18-2v-12c0-6-4-10-10-10H48c-6 0-10 4-10 10z" fill="#b65a6f"/><circle cx="82" cy="58" r="7" fill="#c21f3a"/><circle cx="100" cy="55" r="7" fill="#d4273f"/><circle cx="118" cy="58" r="7" fill="#c21f3a"/><rect x="98" y="30" width="4" height="22" rx="2" fill="#e8c35a"/><path d="M100 20c4 5 4 9 0 11-4-2-4-6 0-11z" fill="#f5a623"/></svg>'},
-  bottle:{t:'Масло для рук',s:'Карточка для маркетплейса',svg:'<svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="176" rx="52" ry="8" fill="#e6e3dc"/><rect x="84" y="22" width="32" height="26" rx="5" fill="#2b2b2b"/><rect x="90" y="44" width="20" height="12" fill="#cfcfcf"/><rect x="58" y="54" width="84" height="120" rx="20" fill="#c9a36a"/><rect x="58" y="54" width="84" height="120" rx="20" fill="url(#g1)"/><rect x="70" y="92" width="60" height="50" rx="6" fill="#f6f1e7"/><rect x="80" y="104" width="40" height="5" rx="2" fill="#2b2b2b"/><rect x="86" y="116" width="28" height="3" rx="1.5" fill="#8a8a8a"/><rect x="84" y="124" width="32" height="3" rx="1.5" fill="#8a8a8a"/><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".15"/></linearGradient></defs></svg>'},
+  cake:{t:'Торт на заказ',s:'Рекламный кадр для соцсетей',ph:{b:'/img/cases/visual/dessert-before.jpg',a:'/img/cases/visual/dessert-after.jpg',t:'Десерт для меню',s:'Кадр для сайта и доставки',ab:'Исходное фото десерта: тусклый свет, мягкий фокус',aa:'Тот же десерт после обработки: свет, резкость, цвет'},svg:'<svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="170" rx="78" ry="12" fill="#e9e6e0"/><rect x="38" y="104" width="124" height="62" rx="10" fill="#f3d9de"/><rect x="54" y="62" width="92" height="48" rx="9" fill="#f7e6e9"/><path d="M54 74c8 10 12-4 20 6s12-6 20 4 12-6 20 2 12-6 20 4 10-4 12-2V70c0-5-4-8-9-8H63c-5 0-9 3-9 8z" fill="#8c3b4f"/><path d="M38 116c10 12 14-4 24 6s14-6 24 4 14-6 24 2 14-6 24 4 14-4 18-2v-12c0-6-4-10-10-10H48c-6 0-10 4-10 10z" fill="#b65a6f"/><circle cx="82" cy="58" r="7" fill="#c21f3a"/><circle cx="100" cy="55" r="7" fill="#d4273f"/><circle cx="118" cy="58" r="7" fill="#c21f3a"/><rect x="98" y="30" width="4" height="22" rx="2" fill="#e8c35a"/><path d="M100 20c4 5 4 9 0 11-4-2-4-6 0-11z" fill="#f5a623"/></svg>'},
+  bottle:{t:'Масло для рук',s:'Карточка для маркетплейса',ph:{b:'/img/cases/visual/perfume-before.jpg',a:'/img/cases/visual/perfume-after.jpg',t:'Флакон для каталога',s:'Кадр для маркетплейса',light:1,ab:'Исходное фото флакона: тёплый свет, мягкий фокус',aa:'Тот же флакон после обработки: каменный подиум, дневной свет'},svg:'<svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="176" rx="52" ry="8" fill="#e6e3dc"/><rect x="84" y="22" width="32" height="26" rx="5" fill="#2b2b2b"/><rect x="90" y="44" width="20" height="12" fill="#cfcfcf"/><rect x="58" y="54" width="84" height="120" rx="20" fill="#c9a36a"/><rect x="58" y="54" width="84" height="120" rx="20" fill="url(#g1)"/><rect x="70" y="92" width="60" height="50" rx="6" fill="#f6f1e7"/><rect x="80" y="104" width="40" height="5" rx="2" fill="#2b2b2b"/><rect x="86" y="116" width="28" height="3" rx="1.5" fill="#8a8a8a"/><rect x="84" y="124" width="32" height="3" rx="1.5" fill="#8a8a8a"/><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".15"/></linearGradient></defs></svg>'},
   chair:{t:'Кресло из массива',s:'Фото для сайта и Авито',svg:'<svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="178" rx="70" ry="9" fill="#e6e3dc"/><path d="M52 38c0-8 6-14 14-14h68c8 0 14 6 14 14v70H52z" fill="#7d8f7a"/><rect x="40" y="100" width="120" height="34" rx="14" fill="#8fa38b"/><rect x="36" y="78" width="18" height="58" rx="8" fill="#6f806c"/><rect x="146" y="78" width="18" height="58" rx="8" fill="#6f806c"/><path d="M52 134l-6 42M148 134l6 42M76 134l-2 38M124 134l2 38" stroke="#6b4a2f" stroke-width="7" stroke-linecap="round"/></svg>'}
 };
 const DISH=[['Шаурма классическая','Курица, овощи, чесночный соус',290,'linear-gradient(150deg,#f3d2a5,#c47a34)'],['Шаурма сырная','Двойной сыр, халапеньо',330,'linear-gradient(150deg,#f6e2a0,#d19a2a)'],['Фалафель-ролл','Без мяса, хумус',270,'linear-gradient(150deg,#dfe6b5,#8c9a3e)'],['Морс домашний','Клюква, 0,4 л',120,'linear-gradient(150deg,#f0b8c0,#b8324a)']];
 const WORKS=[
   {slug:'burenie',n:'Бурение 124',k:'Бурение скважин',w:'Сайт мастера',s:'Запущен',t:['site'],url:'https://burenie124.ru',bg:'linear-gradient(160deg,#9fc3e6,#2f6fae)'},
-  {slug:'vanil',n:'Ателье Ваниль',k:'Кондитерская',w:'Сайт с заказом и админкой',s:'Концепт',t:['site','order'],url:'https://vanil.tetsab.ru',concept:true,bg:'linear-gradient(160deg,#f3dcdc,#7a1f2e)'},
+  {slug:'luna',n:'Luna Cakes',k:'Кондитерская',w:'Сайт + визуал',s:'Демо',t:['site','visual'],bg:'linear-gradient(160deg,#f6d3dc,#c4697f)'},
   {slug:'tverd',n:'Твердь',k:'Цементный завод',w:'Ключевой визуал',s:'Демо',t:['visual'],bg:'linear-gradient(160deg,#4a4a4a,#121212)'},
   {slug:'lak',n:'Лак',k:'Маникюрная студия',w:'Сайт + бот записи',s:'Демо',t:['site','bot'],bg:'linear-gradient(160deg,#ddd0ee,#7e5fb8)'},
   {slug:'ugli',n:'Угли',k:'Шаурма и шашлык',w:'Меню и заказ',s:'Демо',t:['order'],bg:'linear-gradient(160deg,#f6cfa4,#c4561c)'},
@@ -977,16 +982,16 @@ const CASES={
     gives:[['Запоминается','Такой первый экран не спутать с сайтами других поставщиков.'],['Понятно без слов','Сразу видно, для каких объектов подходит цемент.'],['Один визуал на всё','Кадры из ролика работают на сайте, в презентациях и на стенде.']],
     film:{src:'/img/cases/tverd/dark-1280.mp4',srcS:'/img/cases/tverd/dark-768.mp4',srcV:'/img/cases/tverd/dark-v.mp4',poster:'/img/cases/tverd/bridge.jpg',
       shots:[['Мост','/img/cases/tverd/bridge.jpg'],['Завод','/img/cases/tverd/plant.jpg'],['Плотина','/img/cases/tverd/dam.jpg'],['Стадион','/img/cases/tverd/stadium.jpg']]}},
-  vanil:{domain:'vanil.tetsab.ru',city:'Москва',cover:'linear-gradient(160deg,#f5ebe3,#e3c3c3)',
-    lead:'Сайт авторской кондитерской: меню с ценами, конструктор торта, витрина с остатками и админка, где кондитер сам всё меняет с телефона.',
-    task:'Домашний кондитер продаёт через Инстаграм. Цены спрашивают в директ, каждый заказ — длинная переписка, а про витрину готовых десертов узнают из сторис, когда половину уже разобрали.',
-    solution:'Сделали сайт, где клиент собирает заказ сам. В конструкторе выбирает торт, начинку и дату и сразу видит примерную цену. Моти и десерты с витрины добавляет в ту же корзину — торт и две коробки моти уходят одной заявкой. На странице витрины видно, сколько чего осталось, и можно отложить себе. Цены, остатки, даты витрины и фото кондитер меняет сам в админке.',
-    chips:['Сайт с заказом','Меню и цены','Конструктор торта','Витрина с остатками','Общая корзина','Админка','Загрузка фото','Мобильная версия','Хостинг в России'],
-    was:'Цены в директ, заказ — в переписке, витрина — в сторис.',now:'Цены и начинки видны сразу, заказ собирается в одной корзине, остатки витрины — на сайте.',
-    gives:[['Меньше переписки','Цены, начинки и примерная стоимость видны до первого сообщения.'],['Витрину разбирают быстрее','Видно, что осталось, и любимый десерт можно отложить заранее.'],['Без программиста','Цены, остатки, даты витрины и фото кондитер меняет сам, прямо с телефона.']],
-    real:{desk:'/img/cases/vanil/hero.jpg',mob:'/img/cases/vanil/m_hero.jpg',
-      phones:[['Первый экран','/img/cases/vanil/m_1.jpg'],['Меню','/img/cases/vanil/m_2.jpg'],['Конструктор','/img/cases/vanil/m_3.jpg'],['Витрина','/img/cases/vanil/m_4.jpg'],['Заказ','/img/cases/vanil/m_5.jpg']],
-      shots:[['Конструктор торта','/img/cases/vanil/configurator.jpg'],['Меню с ценами','/img/cases/vanil/menu.jpg'],['Витрина с остатками','/img/cases/vanil/vitrina.jpg'],['Админка: остатки −1 / +1','/img/cases/vanil/admin.jpg']]}},
+  luna:{domain:'luna-cakes.ru',brand:'LUNA CAKES',nav:'Торты · Цены · Заказ',city:'Красноярск',
+    pal:{},cover:'linear-gradient(160deg,#f6dde3,#c4697f)',
+    head:'Торты на заказ в Красноярске',sub:'Бенто, свадебные, детские — от 1 кг',btn:'Заказать торт',gT:'Наши работы',pT:'Цены',rows:[['Бенто-торт','1 200 ₽'],['Торт 1 кг','2 400 ₽'],['Капкейки, 6 шт','1 100 ₽']],formT:'Дата, вес и пожелания',
+    lead:'Имиджевый сайт кондитера и единый визуал для сайта и соцсетей.',
+    task:'Кондитер продаёт через личку: цены спрашивают по сто раз, а фото тортов сняты на кухне при жёлтом свете и выглядят дешевле, чем торты на самом деле.',
+    solution:'Сайт с галереей работ, ценами «от» и формой заказа на дату. Фото тортов обработали в одном светлом стиле, их можно ставить и на сайт, и в соцсети.',
+    chips:['Имиджевый сайт','Галерея','Цены','Заказ на дату','Обработка фото','Визуал для соцсетей'],
+    was:'Цены в личку, фото с кухни, каждый заказ — длинная переписка.',now:'Клиент видит работы и цены, выбирает дату и оставляет заявку.',
+    gives:[['Торты выглядят дороже','Все фото в одном стиле и при хорошем свете.'],['Меньше переписки','Цены и условия видны до первого сообщения.'],['Заказ на дату','Заявка сразу с датой, весом и пожеланиями.']],
+    extra:'visual',art:'cake'},
   lak:{domain:'lak-studio.ru',brand:'ЛАК.',nav:'Услуги · Мастера · Запись',city:'Красноярск',
     pal:{sa:'#efe9f6',sb:'#cdbde6',ink:'#3b2a55',soft:'#f4f0f8',t1:'linear-gradient(160deg,#ece3f5,#b8a0d8)',t2:'linear-gradient(160deg,#f5e3ea,#d7a0b5)',t3:'linear-gradient(160deg,#e6e6ee,#a7a7c0)'},cover:'linear-gradient(160deg,#e8e0f3,#7e5fb8)',
     head:'Маникюр и педикюр рядом с домом',sub:'Запись онлайн за минуту',btn:'Записаться',gT:'Работы мастеров',pT:'Цены',rows:[['Маникюр с покрытием','1 800 ₽'],['Педикюр','2 200 ₽'],['Дизайн','от 100 ₽']],formT:'Или запишитесь через бота',
@@ -1065,9 +1070,9 @@ function filmScreens(c){
   return '<section class="cs-sec"><span class="lab lab-b">(03) Экраны и кадры</span><div class="cs-film"><div class="stage run dk"><span class="cap">(Телефон)</span>'+filmSite(c,false,true)+'</div><div class="stills">'+
     c.film.shots.map(([cap,src])=>'<div class="stage dk"><span class="cap">('+esc(cap)+')</span><img src="'+src+'" alt="" loading="lazy" decoding="async"></div>').join('')+'</div></div></section>'; }
 function renderCase(slug){
-  const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], nx=WORKS[(i+1)%WORKS.length], demo=!w.url||w.concept;
+  const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], nx=WORKS[(i+1)%WORKS.length], demo=!w.url;
   const two=n=>String(n).padStart(2,'0');
-  return '<header class="cs-hero"><span class="lab lab-b">('+(w.concept?'Концепт':demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(w.concept?'<p class="cs-demo">Это концепт: бренд придуман, а сайт настоящий — его можно открыть и собрать заказ.</p>':demo?'<p class="cs-demo">Это демо: пример того, как мы сделали бы сайт для такого бизнеса.</p>':'')+
+  return '<header class="cs-hero"><span class="lab lab-b">('+(demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(demo?'<p class="cs-demo">Это демо: пример того, как мы сделали бы сайт для такого бизнеса.</p>':'')+
     '<div class="cs-meta"><div><small>Ниша</small>'+esc(w.k)+'</div><div><small>Что сделали</small>'+esc(w.w)+'</div><div><small>Город</small>'+esc(c.city)+'</div><div><small>Статус</small>'+esc(w.s)+'</div></div></header>'+
     '<div class="cs-cover run" style="background:'+c.cover+'">'+(c.film?filmSite(c):c.real?realShot(c,c.real.desk):siteMock(c))+'</div>'+
     '<section class="cs-sec half"><span class="lab">(01) Задача</span><p class="r cs-txt">'+esc(c.task)+'</p></section>'+
@@ -1182,7 +1187,11 @@ whenVisible($('#siteStage'),()=>{ siteOn=true; loadShots(mode()); scrollA?scroll
 
 /* 02 before / after: same object, phone snapshot vs. ad shot */
 const cmp=$('#cmp');
-function setArt(k){ const a=ART[k]; $('#cmpB').innerHTML=a.svg; $('#cmpA').innerHTML=a.svg.replace(/id="g1"/,'id="g2"').replace(/url\(#g1\)/,'url(#g2)')+'<div class="adtag"><b>'+esc(a.t)+'</b><span>'+esc(a.s)+'</span></div>'; }
+/* a real photo pair where there is one (same framing, so the wipe lines up), the drawing otherwise */
+function setArt(k){ const a=ART[k], p=a.ph; cmp.classList.toggle('photo',!!p); cmp.classList.toggle('light',!!(p&&p.light));
+  const tag=p?'<div class="adtag"><b>'+esc(p.t)+'</b><span>'+esc(p.s)+'</span></div>':'<div class="adtag"><b>'+esc(a.t)+'</b><span>'+esc(a.s)+'</span></div>';
+  if(p){ $('#cmpB').innerHTML='<img src="'+p.b+'" alt="'+esc(p.ab)+'">'; $('#cmpA').innerHTML='<img src="'+p.a+'" alt="'+esc(p.aa)+'">'+tag; return; }
+  $('#cmpB').innerHTML=a.svg; $('#cmpA').innerHTML=a.svg.replace(/id="g1"/,'id="g2"').replace(/url\(#g1\)/,'url(#g2)')+tag; }
 setArt('cake');
 $('#cmpTabs').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; pressGroup(b.parentElement,b); setArt(b.dataset.k); });
 let cmpUsed=false;
@@ -1241,7 +1250,7 @@ if(fine){
   let pvI=-1;
   $('#wlist').addEventListener('pointerover',e=>{ const r=e.target.closest('.wrow'); if(!r) return; const i=+r.dataset.i, w=WORKS[i], c=CASES[w.slug];
     if(i!==pvI){ pvI=i; pv.style.background=w.bg;
-      pv.innerHTML='<div class="pv-in">'+(c&&c.film?filmSite(c,true):c&&c.real?realShot(c,c.real.desk):c?siteMock(c):'')+'</div><div class="pv-t">'+esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.concept?'Концепт · сайт работает':w.url?'Кейс · сайт работает':'Демо-кейс')+'</small></div>';
+      pv.innerHTML='<div class="pv-in">'+(c&&c.film?filmSite(c,true):c&&c.real?realShot(c,c.real.desk):c?siteMock(c):'')+'</div><div class="pv-t">'+esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.url?'Кейс · сайт работает':'Демо-кейс')+'</small></div>';
       pv.style.setProperty('--k',((pv.offsetWidth-28)/560).toFixed(3)); }
     pv.classList.add('on'); pvOn=true; wake(); });
   $('#wlist').addEventListener('pointerleave',()=>{ pv.classList.remove('on'); pvOn=false; });
