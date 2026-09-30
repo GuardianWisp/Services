@@ -295,6 +295,9 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .site.real{animation:none}
 #device img{display:block;width:100%;height:auto}
 #device .head{position:absolute;left:0;top:0;z-index:2}
+/* phone: the screen sits inside a thin grey bezel with its own rounded corners, concentric with the body (30 − 7 = 23) */
+#device.ph{background:var(--ui);padding:0 7px 7px}
+#device.ph .view{border-radius:23px;isolation:isolate}
 #device .mb,#device.ph .pc{display:none}
 #device.ph .mb{display:block}
 .stage-link{position:absolute;right:18px;top:14px;z-index:3;font-size:13px;color:var(--sec);transition:color .3s}
