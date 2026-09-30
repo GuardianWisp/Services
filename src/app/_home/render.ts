@@ -22,7 +22,7 @@ type Data = {
   CASES: Record<string, Case>;
 };
 
-function analytics() {
+export function analytics() {
   let head = "";
   let body = "";
   if (GA_MEASUREMENT_ID) {
@@ -73,7 +73,7 @@ export function casePage(slug: string): string | null {
   const url = `${SITE}/cases/${slug}`;
   const title = `${work.n} — кейс TETSAB`;
   const description = c.lead;
-  const image = c.real ? `${SITE}${c.real.desk}` : `${SITE}/opengraph-image`;
+  const image = c.real ? `${SITE}${c.real.desk}` : `${SITE}/og.jpg`;
 
   let html = homeHtml;
   const homeTitle = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "TETSAB";
@@ -85,6 +85,8 @@ export function casePage(slug: string): string | null {
   html = html.replace(/(<meta property="og:title" content=")[^"]*"/, `$1${attr(title)}"`);
   html = html.replace(/(<meta property="og:description" content=")[^"]*"/, `$1${attr(description)}"`);
   html = html.replace(/(<meta property="og:image" content=")[^"]*"/, `$1${image}"`);
+  // the size tags describe the site-wide card, not a case screenshot
+  if (c.real) html = html.replace(/<meta property="og:image:(width|height)" content="\d+">\n/g, "");
 
   // open sheet, page locked behind it, no preloader
   html = swap(html, '<html lang="ru">', `<html lang="ru" class="lock" data-title="${homeTitle}">`);

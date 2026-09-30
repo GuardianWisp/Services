@@ -13,7 +13,9 @@
 <meta property="og:url" content="https://tetsab.ru/">
 <meta property="og:title" content="TETSAB — сайты, боты и визуал для малого бизнеса">
 <meta property="og:description" content="Сайты, Telegram- и MAX-боты, визуал и онлайн-заказы для малого бизнеса. Красноярск и онлайн. Сайт-визитка от 25 000 ₽.">
-<meta property="og:image" content="https://tetsab.ru/opengraph-image">
+<meta property="og:image" content="https://tetsab.ru/og.jpg">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/icon">
 <link rel="apple-touch-icon" href="/apple-icon">
@@ -464,6 +466,39 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .faq details[open] summary::after{content:"(−)"}
 .faq p{padding:0 0 22px;max-width:56ch;color:var(--sec)}
 @media (max-width:860px){.faq{padding-top:24px}}
+/* faq, enhanced by script (.fx): numbered rows, a hairline that draws across on hover, height that eases open,
+   the answer rising word by word like the hero headline, plus turning into minus */
+.faq.fx summary::after,.faq.fx details[open] summary::after{content:none}
+.faq.fx details{border-top:0}
+.faq.fx details:last-child{border-bottom:1px solid var(--line)}
+.faq.fx summary{position:relative;display:grid;grid-template-columns:44px 1fr auto;align-items:baseline;gap:0 16px;padding-block:24px;border-top:1px solid var(--line)}
+.faq.fx summary::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--blk);transform:scaleX(0);transform-origin:right;transition:transform .8s var(--ease)}
+.faq.fx .is-open summary::before{transform:scaleX(1);transform-origin:left}
+.fq-n{position:relative;font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums;transition:color .4s}
+.fq-n::before{content:"";position:absolute;left:-14px;top:.45em;width:6px;height:6px;border-radius:50%;background:var(--lime);transform:scale(0);transition:transform .5s var(--ease)}
+.fq-q{transition:transform .7s var(--ease),color .4s}
+.fq-i{display:inline-flex;align-items:center;color:var(--sec);white-space:nowrap}
+.fq-i i{position:relative;width:.62em;height:.62em;margin:0 .08em;transition:rotate .8s var(--ease)}
+.fq-i i::before,.fq-i i::after{content:"";position:absolute;background:currentColor;border-radius:1px}
+.fq-i i::before{left:0;right:0;top:50%;height:1.5px;margin-top:-.75px}
+.fq-i i::after{top:0;bottom:0;left:50%;width:1.5px;margin-left:-.75px;transition:scale .6s var(--ease)}
+.faq.fx .is-open .fq-n{color:var(--blk)}
+.faq.fx .is-open .fq-n::before{transform:scale(1)}
+.faq.fx .is-open .fq-i i{rotate:180deg}
+.faq.fx .is-open .fq-i i::after{scale:1 0}
+.fq-a{overflow:hidden}
+.faq.fx .fq-a p{padding:0 0 30px 60px}
+.fq-w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.fq-w>span{display:inline-block;transform:translateY(110%);transition:transform .35s cubic-bezier(.7,0,.84,0)}
+.faq.fx .is-open .fq-w>span{transform:none;transition:transform .9s var(--ease) calc(120ms + var(--i) * 16ms)}
+@media (hover:hover){
+  .faq.fx summary:hover::before{transform:scaleX(1);transform-origin:left}
+  .faq.fx summary:hover .fq-q{transform:translateX(10px)}
+  .faq.fx summary:hover .fq-n{color:var(--blk)}
+  .faq.fx:has(summary:hover) details:not(:hover):not(.is-open) .fq-q{color:var(--mute)}
+}
+@media (max-width:860px){.faq.fx summary{grid-template-columns:32px 1fr auto;gap:0 10px;padding-block:20px}.faq.fx .fq-a p{padding-left:42px}}
+@media (prefers-reduced-motion:reduce){.fq-w>span{transform:none}}
 
 /* finale */
 .fin{padding-block:calc(var(--gap) * 1.2) calc(var(--gap) * .8)}
@@ -534,6 +569,13 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .cs-shots.real .stage.wide{grid-column:2}
 .cs-shots.real .stage.wide~.stage.wide{grid-column:1/-1}
 .cs-shots.real .stage.wide{min-height:0;padding:clamp(16px,3vw,40px)}
+/* phone screenshots: a strip that scrolls sideways, bleeding to the screen edges */
+.cs-phones{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-inline:calc(var(--gut) * -1);padding-inline:var(--gut);scroll-padding-inline:var(--gut)}
+.cs-phones::-webkit-scrollbar{display:none}
+.cs-phones .stage{flex:0 0 clamp(270px,27vw,380px);min-height:0;padding:52px clamp(18px,2vw,30px) clamp(18px,2vw,30px);scroll-snap-align:start}
+.cs-phones .device.shot.ph{width:100%;height:auto;border-radius:24px}
+.cs-phones .device.shot.ph img{height:auto;aspect-ratio:591/1016}
+@media (min-width:1200px){.cs-phones{display:grid;grid-template-columns:repeat(5,1fr);overflow:visible;margin-inline:0;padding-inline:0}.cs-phones .stage{padding:48px 16px 16px}}
 .cs-revs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .cs-revs .quote{margin:0;max-width:none;padding:clamp(20px,3vw,36px);border-radius:16px;background:var(--card);display:grid;align-content:space-between;gap:24px;min-height:220px}
 .cs-revs blockquote{font-size:clamp(1.1rem,1.6vw,1.45rem);max-width:34ch}
@@ -786,6 +828,37 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
       </div>
     </div>
   </section>
+<script>
+/* faq: one answer open at a time; height is animated so the row eases open and shut instead of jumping.
+   Without this script the plain <details> still works. */
+(()=>{
+const box=document.querySelector('.faq'); if(!box) return;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const items=[...box.querySelectorAll('details')];
+items.forEach((d,n)=>{
+  const s=d.querySelector('summary'), p=d.querySelector('p');
+  s.innerHTML=`<span class="fq-n">${String(n+1).padStart(2,'0')}</span><span class="fq-q">${s.innerHTML}</span><span class="fq-i" aria-hidden="true">(<i></i>)</span>`;
+  const words=p.textContent.trim().split(/\s+/);
+  p.innerHTML=words.map((w,i)=>`<span class="fq-w"><span style="--i:${i}">${w}</span></span>`).join(' ');
+  const a=document.createElement('div'); a.className='fq-a'; d.append(a); a.append(p);
+  if(d.open) d.classList.add('is-open');
+  s.addEventListener('click',e=>{ e.preventDefault(); toggle(d,!d.classList.contains('is-open')); });
+});
+box.classList.add('fx');
+function toggle(d,open){
+  const a=d.lastElementChild, from=d.open?a.getBoundingClientRect().height:0;
+  d._anim&&d._anim.cancel();
+  if(open){ items.forEach(o=>o!==d&&o.classList.contains('is-open')&&toggle(o,false)); d.open=true; }
+  d.classList.toggle('is-open',open);
+  const to=open?a.scrollHeight:0;
+  if(reduce){ if(!open) d.open=false; return; }
+  d._anim=a.animate({height:[from+'px',to+'px']},open
+    ? {duration:900,easing:'cubic-bezier(.16,1,.3,1)'}
+    : {duration:550,easing:'cubic-bezier(.65,0,.35,1)'});
+  d._anim.onfinish=()=>{ d._anim=null; if(!open) d.open=false; };
+}
+})();
+</script>
 
   <section class="fin wrap" aria-label="О названии">
     <p id="fin">Tetsab — это Bastet наоборот. <span class="dim">Мы делаем бизнес заметным.</span></p>
@@ -861,6 +934,8 @@ const CASES={
     gives:[['Доверие','Видно, что работает сам мастер со своей установкой, а отзывы подтверждают это.'],['Меньше вопросов','Порядок работы, оплата и зона выезда расписаны заранее.'],['Простая заявка','Клиент оставляет номер, Сергей перезванивает и договаривается о выезде.']],
     extra:'form',
     real:{desk:'/img/cases/burenie/hero.jpg',mob:'/img/cases/burenie/m_hero.jpg',
+      phones:[['Первый экран','/img/cases/burenie/m_1.jpg'],['Работы','/img/cases/burenie/m_2.jpg'],['Отзывы','/img/cases/burenie/m_3.jpg'],['Зона выезда','/img/cases/burenie/m_4.jpg'],['Заявка','/img/cases/burenie/m_5.jpg']],
+      reviews:[['Анастасия','Очень ответственный исполнитель. На место прибыл в оговоренное время, даже несмотря на ухудшившиеся погодные условия. Ответил на все возникшие вопросы, всё объяснил, рассказал, дал напутствия. Человек своего дела, в котором можете быть уверены.'],['Дмитрий Сергеевич','Бурили 36 метров, ответственно и трепетно относятся к своей работе, приехали, сделали без лишних слов. Благодарю за работу, буду рекомендовать.']],
       shots:[['Уже пробурено','/img/cases/burenie/gallery.jpg'],['Куда приезжаю','/img/cases/burenie/area.jpg'],['Отзывы с Авито','/img/cases/burenie/reviews.jpg'],['Заявка','/img/cases/burenie/request.jpg']]}},
   tverd:{domain:'tverd-cement.ru',brand:'ТВЕРДЬ',nav:'Продукция · Объекты · Доставка',city:'Красноярский край',cover:'#161616',
     head:'Цемент для мостов, плотин и стадионов',sub:'ЦЕМ I и ЦЕМ II · навалом и в мешках',btn:'Запросить цену',
@@ -947,6 +1022,7 @@ function realShot(c,src,ph){ return '<div class="device shot'+(ph?' ph':'')+'" a
 function realScreens(c){ const r=c.real;
   return '<section class="cs-sec"><span class="lab lab-b">(03) Экраны</span><div class="cs-shots real"><div class="stage run"><span class="cap">(Телефон)</span>'+realShot(c,r.mob,true)+'</div>'+
     r.shots.map(([cap,src])=>'<div class="stage wide"><span class="cap">('+esc(cap)+')</span>'+realShot(c,src)+'</div>').join('')+'</div></section>'+
+    (r.phones?'<section class="cs-sec"><span class="lab lab-b">(Мобильная версия)</span><div class="cs-phones">'+r.phones.map(([cap,src])=>'<div class="stage"><span class="cap">('+esc(cap)+')</span>'+realShot(c,src,true)+'</div>').join('')+'</div></section>':'')+
     (r.reviews?'<section class="cs-sec"><span class="lab lab-b">(Отзывы клиентов · Авито)</span><div class="cs-revs">'+r.reviews.map(([a,t])=>'<figure class="quote"><blockquote>«'+esc(t)+'»</blockquote><figcaption>— '+esc(a)+'</figcaption></figure>').join('')+'</div></section>':''); }
 /* visual cases: the video runs as the site's first screen, stills from it below */
 function filmSite(c,still,ph){ const f=c.film;
@@ -1155,7 +1231,13 @@ route();
 
 /* chapter titles drift with scroll; widths measured once, visibility from an observer */
 const ticks=$$('.tick'); let lastY=scrollY, vel=0;
-const measure=()=>ticks.forEach(t=>t._w=t.firstElementChild.scrollWidth/4);
+/* one period = the distance between two copies of the title; the row gets as many copies as the screen needs
+   (4 in the markup ran out on 2K+ monitors, leaving a gap on the right) */
+const measure=()=>ticks.forEach(t=>{ const row=t.firstElementChild, k=row.children, period=k[2].offsetLeft-k[0].offsetLeft;
+  if(!period) return;
+  for(let have=k.length/2, need=Math.ceil(t.clientWidth/period)+2; have<need; have++){
+    const a=k[0].cloneNode(true), b=k[1].cloneNode(true); a.removeAttribute('id'); row.append(a,b); }
+  t._w=period; });
 measure(); addEventListener('resize',measure); if(document.fonts) document.fonts.ready.then(measure);
 const tickIO=new IntersectionObserver(es=>{ es.forEach(e=>e.target._on=e.isIntersecting); wake(); },{rootMargin:'80px 0px'});
 ticks.forEach(t=>tickIO.observe(t));
