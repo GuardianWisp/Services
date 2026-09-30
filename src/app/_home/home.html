@@ -290,6 +290,13 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .device.ph .site .sh h4{font-size:19px}
 .device.ph .site .sg{grid-template-columns:1fr 1fr}
 .device.ph .site .sg i:nth-child(3){display:none}
+/* demo 1 shows a real site: its screens stacked into one page and scrolled by the same keyframes */
+.site.real img{display:block;width:100%;height:auto}
+.site.real .mb,.device.ph .site.real .pc{display:none}
+.device.ph .site.real .mb{display:block}
+.site.real .mb img+img{position:relative;margin-top:-16.9%;clip-path:inset(9.85% 0 0 0)}   /* each phone shot starts with the site's header (100 of 1016 px): hide it after the first so the page reads as one */
+.stage-link{position:absolute;right:18px;top:14px;z-index:3;font-size:13px;color:var(--sec);transition:color .3s}
+.stage-link:hover,.stage-link:focus-visible{color:var(--blk)}
 .toast{position:absolute;right:18px;bottom:62px;z-index:4;width:min(270px,70%);padding:12px 14px;border-radius:14px;background:rgba(22,22,22,.92);color:#fff;font-size:13px;line-height:1.35;box-shadow:0 20px 40px -20px rgba(0,0,0,.5);opacity:0;transform:translateY(12px);transition:opacity .5s var(--ease),transform .7s var(--ease)}
 .toast small{display:block;color:rgba(255,255,255,.55);font-size:11px;margin-bottom:3px}
 .toast b{font-weight:400;color:var(--lime)}
@@ -304,9 +311,11 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .cmp .before{background:repeating-linear-gradient(0deg,rgba(0,0,0,.07) 0 1px,transparent 1px 38px),repeating-linear-gradient(90deg,rgba(0,0,0,.07) 0 1px,transparent 1px 38px),linear-gradient(180deg,#d9cfb4,#b9aa84)}
 .cmp .before svg{width:min(58%,300px);transform:rotate(-7deg) translate(-8%,6%);filter:sepia(.55) saturate(.75) brightness(.86) contrast(.85)}
 .cmp .before::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 40% 45%,transparent 30%,rgba(60,40,0,.35));mix-blend-mode:multiply}
-.cmp .after{clip-path:inset(0 0 0 var(--p));background:radial-gradient(ellipse at 50% 40%,#ffffff,#ecebe7 60%,#dcdad4)}
+.cmp .before{isolation:isolate}   /* the vignette's multiply blends inside this layer only, not with the whole stage */
+.cmp .after{clip-path:inset(0 0 0 var(--p));background:radial-gradient(ellipse at 50% 40%,#ffffff,#ecebe7 60%,#dcdad4);transform:translateZ(0)}   /* own layer: moving the handle moves the clip, nothing under it is repainted */
 .cmp .after svg{width:min(62%,320px);filter:drop-shadow(0 26px 22px rgba(0,0,0,.18))}
-.cmp .after .adtag{position:absolute;left:calc(var(--p) + 18px);right:18px;top:54px;display:flex;justify-content:space-between;align-items:end;font-size:13px;color:var(--blk);transition:opacity .3s}
+/* the caption stays put and the wipe uncovers it; tied to the handle, it re-wrapped its text on every move */
+.cmp .after .adtag{position:absolute;left:18px;right:18px;top:54px;display:flex;justify-content:space-between;align-items:end;gap:16px;font-size:13px;color:var(--blk)}
 .cmp .after .adtag b{font-weight:400;font-size:clamp(1rem,1.8vw,1.35rem);letter-spacing:-.02em;max-width:14ch;line-height:1.1}
 .cmp .handle{position:absolute;top:0;bottom:0;left:var(--p);width:0;z-index:3;pointer-events:none}
 .cmp .handle::before{content:"";position:absolute;top:0;bottom:0;left:-1px;width:2px;background:#fff}
@@ -349,8 +358,8 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .modes button{border:0;padding:6px 11px;border-radius:99px;font-size:12px;background:var(--ui);color:var(--sec)}
 .modes button[aria-pressed=true]{background:var(--blk);color:#fff}
 .dish{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;padding:10px 18px;border-top:1px solid #f0f0f0}
-.dish i{width:48px;height:48px;border-radius:12px}
-.dish div{font-size:14px;color:var(--blk);line-height:1.25}
+.dish i{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:var(--ui);font-style:normal;font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums;transition:background .4s var(--ease),color .4s}
+.dish.on i{background:var(--lime);color:var(--blk)}   /* in the cart: the tile lights up, like the preloader's status dots */.dish div{font-size:14px;color:var(--blk);line-height:1.25}
 .dish small{display:block;font-size:12px;color:var(--mute)}
 .qty{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--blk)}
 .qty button{width:28px;height:28px;border-radius:50%;border:0;background:var(--ui);font-size:16px;line-height:1;color:var(--blk);transition:background .25s}
@@ -486,7 +495,9 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .faq.fx .is-open .fq-n::before{transform:scale(1)}
 .faq.fx .is-open .fq-i i{rotate:180deg}
 .faq.fx .is-open .fq-i i::after{scale:1 0}
+.faq.fx{position:relative}
 .fq-a{overflow:hidden}
+.fq-ghost{position:absolute;left:0;right:0;pointer-events:none}
 .faq.fx .fq-a p{padding:0 0 30px 60px}
 .fq-w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
 .fq-w>span{display:inline-block;transform:translateY(110%);transition:transform .35s cubic-bezier(.7,0,.84,0)}
@@ -679,20 +690,17 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
           <div class="buy"><a class="pill" href="#contact">Обсудить сайт</a><span>от 25 000 ₽</span></div>
         </div>
         <div class="stage" id="siteStage">
-          <span class="cap">(Пример · кондитерская)</span>
+          <span class="cap">(Кейс · Бурение 124)</span>
+          <!-- the real site, scrolled: desktop screens, or the phone ones when the switch says «Телефон» -->
           <div class="device" id="device">
-            <div class="bar"><i></i><i></i><i></i><span>luna-cakes.ru</span></div>
-            <div class="view"><div class="site">
-              <div class="sn"><b>LUNA CAKES</b><span>Торты · Цены · Заказ</span></div>
-              <div class="sh"><h4>Торты на заказ в Красноярске</h4><p>Бенто, свадебные, детские — от 1 кг</p><span class="sb">Заказать торт</span></div>
-              <div class="st">Наши работы</div>
-              <div class="sg"><i></i><i></i><i></i></div>
-              <div class="st">Цены</div>
-              <div class="sp"><div><span>Бенто-торт</span><span>1 200 ₽</span></div><div><span>Торт 1 кг</span><span>2 400 ₽</span></div><div><span>Капкейки, 6 шт</span><span>1 100 ₽</span></div></div>
-              <div class="sf"><span>Оставьте заявку — перезвоним</span><i></i><i></i><b>Отправить</b></div>
+            <div class="bar"><i></i><i></i><i></i><span>burenie124.ru</span></div>
+            <div class="view"><div class="site real">
+              <div class="pc"><img src="/img/cases/burenie/d_hero.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/d_gallery.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/d_reviews.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/d_area.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/d_request.jpg" alt="" loading="lazy" decoding="async"></div>
+              <div class="mb"><img src="/img/cases/burenie/m_1.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/m_2.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/m_3.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/m_4.jpg" alt="" loading="lazy" decoding="async"><img src="/img/cases/burenie/m_5.jpg" alt="" loading="lazy" decoding="async"></div>
             </div></div>
           </div>
-          <div class="toast" id="siteToast" aria-hidden="true"><small>Telegram · сейчас</small>Новая заявка с сайта: <b>торт 2 кг на субботу</b></div>
+          <a class="stage-link" href="/cases/burenie">Смотреть кейс →</a>
+          <div class="toast" id="siteToast" aria-hidden="true"><small>Telegram · сейчас</small>Новая заявка с сайта: <b>скважина, Емельяново</b></div>
           <div class="seg" role="group" aria-label="Вид"><button type="button" aria-pressed="true" data-v="pc">Компьютер</button><button type="button" aria-pressed="false" data-v="ph">Телефон</button></div>
         </div>
       </article>
@@ -829,12 +837,14 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
     </div>
   </section>
 <script>
-/* faq: one answer open at a time; height is animated so the row eases open and shut instead of jumping.
-   Without this script the plain <details> still works. */
+/* faq: one answer open at a time. The layout changes once, in a single frame; the rows and the rest of the page
+   then glide from where they were to where they are now on transforms (FLIP), so no frame has to re-lay out or
+   repaint the page, which is what made a height animation stutter. A closing answer stays on screen as a copy that
+   folds away. Without this script the plain <details> still works. */
 (()=>{
 const box=document.querySelector('.faq'); if(!box) return;
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const items=[...box.querySelectorAll('details')];
+const items=[...box.querySelectorAll('details')], sec=box.closest('section'), root=document.documentElement;
 items.forEach((d,n)=>{
   const s=d.querySelector('summary'), p=d.querySelector('p');
   s.innerHTML=`<span class="fq-n">${String(n+1).padStart(2,'0')}</span><span class="fq-q">${s.innerHTML}</span><span class="fq-i" aria-hidden="true">(<i></i>)</span>`;
@@ -842,20 +852,34 @@ items.forEach((d,n)=>{
   p.innerHTML=words.map((w,i)=>`<span class="fq-w"><span style="--i:${i}">${w}</span></span>`).join(' ');
   const a=document.createElement('div'); a.className='fq-a'; d.append(a); a.append(p);
   if(d.open) d.classList.add('is-open');
-  s.addEventListener('click',e=>{ e.preventDefault(); toggle(d,!d.classList.contains('is-open')); });
+  s.addEventListener('click',e=>{ e.preventDefault(); toggle(d); });
 });
 box.classList.add('fx');
-function toggle(d,open){
-  const a=d.lastElementChild, from=d.open?a.getBoundingClientRect().height:0;
-  d._anim&&d._anim.cancel();
-  if(open){ items.forEach(o=>o!==d&&o.classList.contains('is-open')&&toggle(o,false)); d.open=true; }
-  d.classList.toggle('is-open',open);
-  const to=open?a.scrollHeight:0;
-  if(reduce){ if(!open) d.open=false; return; }
-  d._anim=a.animate({height:[from+'px',to+'px']},open
-    ? {duration:900,easing:'cubic-bezier(.16,1,.3,1)'}
-    : {duration:550,easing:'cubic-bezier(.65,0,.35,1)'});
-  d._anim.onfinish=()=>{ d._anim=null; if(!open) d.open=false; };
+/* everything below the questions moves by the same amount */
+const below=()=>{ const out=[]; for(let n=sec.nextElementSibling;n;n=n.nextElementSibling) out.push(n);
+  for(let n=sec.parentElement.nextElementSibling;n;n=n.nextElementSibling) out.push(n);
+  return out.filter(n=>n.tagName!=='SCRIPT'&&getComputedStyle(n).position!=='fixed'); };
+let anims=[];
+function toggle(d){
+  const opening=!d.classList.contains('is-open'), moving=[...items,...below()];
+  const top=el=>el.getBoundingClientRect().top, before=moving.map(top), boxTop=top(box);
+  const leaving=items.filter(o=>o.classList.contains('is-open')&&(o===d||opening));
+  const ghosts=reduce?[]:leaving.map(o=>{ const a=o.lastElementChild, r=a.getBoundingClientRect(), g=document.createElement('div');
+    g.className='fq-ghost is-open'; g.style.top=(r.top-boxTop)+'px'; g.append(a.cloneNode(true)); box.append(g); return {o,g,h:r.height}; });
+  anims.forEach(a=>a.cancel()); anims=[];
+  root.style.overflowAnchor='none';   /* keep the browser from scrolling to compensate while rows change size */
+  leaving.forEach(o=>{ o.classList.remove('is-open'); o.open=false; });
+  if(opening){ d.open=true; d.classList.add('is-open'); }
+  if(reduce){ root.style.overflowAnchor=''; return; }
+  const after=moving.map(top);
+  const T=opening?{duration:900,easing:'cubic-bezier(.16,1,.3,1)'}:{duration:600,easing:'cubic-bezier(.65,0,.35,1)'};
+  moving.forEach((el,i)=>{ const dy=before[i]-after[i]; if(Math.abs(dy)>.5) anims.push(el.animate({transform:[`translateY(${dy}px)`,'translateY(0)']},T)); });
+  if(opening){ const a=d.lastElementChild; anims.push(a.animate({clipPath:[`inset(0 0 ${a.offsetHeight}px 0)`,'inset(0 0 0px 0)']},T)); }
+  ghosts.forEach(({o,g,h})=>{ const i=moving.indexOf(o);
+    requestAnimationFrame(()=>g.classList.remove('is-open'));
+    const an=g.animate({transform:['translateY(0)',`translateY(${after[i]-before[i]}px)`],clipPath:['inset(0 0 0px 0)',`inset(0 0 ${h}px 0)`]},T);
+    an.onfinish=an.oncancel=()=>g.remove(); anims.push(an); });
+  const mine=anims; Promise.all(mine.map(a=>a.finished.catch(()=>{}))).then(()=>{ if(anims===mine) root.style.overflowAnchor=''; });
 }
 })();
 </script>
@@ -1178,8 +1202,8 @@ $('#botReplay').addEventListener('click',playBot);
 
 /* 04 orders: working mini cart */
 const q=DISH.map(()=>0); let orderNo=124;
-$('#dishes').innerHTML=DISH.map((d,i)=>'<div class="dish"><i style="background:'+d[3]+'"></i><div>'+esc(d[0])+'<small>'+esc(d[1])+' · '+rub(d[2])+'</small></div><div class="qty"><button type="button" data-i="'+i+'" data-d="-1" aria-label="Убрать: '+esc(d[0])+'">−</button><output id="q'+i+'">0</output><button type="button" data-i="'+i+'" data-d="1" aria-label="Добавить: '+esc(d[0])+'">+</button></div></div>').join('');
-function cart(){ const n=q.reduce((a,b)=>a+b,0), s=q.reduce((a,b,i)=>a+b*DISH[i][2],0); $('#cartN').textContent=n?n+' шт · '+($('.modes [aria-pressed=true]').textContent.toLowerCase()):'Корзина пуста'; $('#cartSum').textContent=rub(s); $('#cartGo').disabled=!n; q.forEach((v,i)=>$('#q'+i).textContent=v); return s; }
+$('#dishes').innerHTML=DISH.map((d,i)=>'<div class="dish"><i aria-hidden="true">'+String(i+1).padStart(2,'0')+'</i><div>'+esc(d[0])+'<small>'+esc(d[1])+' · '+rub(d[2])+'</small></div><div class="qty"><button type="button" data-i="'+i+'" data-d="-1" aria-label="Убрать: '+esc(d[0])+'">−</button><output id="q'+i+'">0</output><button type="button" data-i="'+i+'" data-d="1" aria-label="Добавить: '+esc(d[0])+'">+</button></div></div>').join('');
+function cart(){ const n=q.reduce((a,b)=>a+b,0), s=q.reduce((a,b,i)=>a+b*DISH[i][2],0); $('#cartN').textContent=n?n+' шт · '+($('.modes [aria-pressed=true]').textContent.toLowerCase()):'Корзина пуста'; $('#cartSum').textContent=rub(s); $('#cartGo').disabled=!n; q.forEach((v,i)=>$('#q'+i).textContent=v); $$('#dishes .dish').forEach((r,i)=>r.classList.toggle('on',q[i]>0)); return s; }
 $('#dishes').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; const i=+b.dataset.i; q[i]=Math.max(0,Math.min(9,q[i]+ +b.dataset.d)); cart(); });
 $('.modes').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; pressGroup(b.parentElement,b); cart(); });
 $('#cartGo').addEventListener('click',()=>{ const s=cart(); orderNo++; $('#shopToastT').textContent='№'+orderNo+' · '+rub(s); const t=$('#shopToast'); t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),3400); q.fill(0); cart(); });
