@@ -631,6 +631,19 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .cs-film .stills .stage{min-height:200px;padding:0}
 .cs-film .stills img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 @media (max-width:860px){.cs-film{grid-template-columns:1fr}.cs-film .stills{grid-template-columns:1fr}.cs-film .stills .stage{min-height:0;aspect-ratio:16/10}}
+
+/* case pages: hairline lists instead of chips and step cards (as on pensatori-irrazionali); the home page keeps its own */
+.cs-sec .chips{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.cs-sec .chips li{padding:9px 0;border-radius:0;box-shadow:none;border-bottom:1px solid var(--line);font-size:14px;color:var(--tx)}
+.cs-sec .chips li:nth-child(-n+2){border-top:1px solid var(--line)}
+.cs-sec .steps{display:block}
+.cs-sec .steps li{display:grid;grid-template-columns:clamp(48px,8vw,112px) 1fr;align-items:baseline;min-height:0;padding:22px 0 24px;border-radius:0;background:none;border-top:1px solid var(--line)}
+.cs-sec .steps li:last-child{border-bottom:1px solid var(--line)}
+.cs-sec .steps li>div{display:grid;grid-template-columns:1fr 1fr;gap:6px var(--gut);align-items:baseline}
+.cs-sec .steps li b{transition:transform .5s var(--ease)}
+.cs-sec .steps li:hover b{transform:translateX(8px)}
+.cs-sec .steps li span{min-height:0;font-size:15px}
+@media (max-width:860px){.cs-sec .steps li>div{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
