@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>TETSAB — сайты, боты и визуал для малого бизнеса</title>
-<meta name="description" content="Сайты, Telegram- и MAX-боты, визуал и онлайн-заказы для малого бизнеса. Красноярск и онлайн. Сайт-визитка от 25 000 ₽.">
+<meta name="description" content="Сайты, Telegram- и MAX-боты, визуал и онлайн-заказы для малого бизнеса. Красноярск и онлайн. Сайт от 45 000 ₽.">
 <meta name="theme-color" content="#F5F5F5">
 <link rel="canonical" href="https://tetsab.ru/">
 <meta property="og:type" content="website">
@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="TETSAB">
 <meta property="og:url" content="https://tetsab.ru/">
 <meta property="og:title" content="TETSAB — сайты, боты и визуал для малого бизнеса">
-<meta property="og:description" content="Сайты, Telegram- и MAX-боты, визуал и онлайн-заказы для малого бизнеса. Красноярск и онлайн. Сайт-визитка от 25 000 ₽.">
+<meta property="og:description" content="Сайты, Telegram- и MAX-боты, визуал и онлайн-заказы для малого бизнеса. Красноярск и онлайн. Сайт от 45 000 ₽.">
 <meta property="og:image" content="https://tetsab.ru/og.jpg">
 <meta property="og:image:width" content="2400">
 <meta property="og:image:height" content="1260">
@@ -41,7 +41,7 @@
 html{background:var(--bg);scrollbar-gutter:stable}
 section[id],article[id]{scroll-margin-top:24px}
 html.lock{overflow:hidden}
-body{background:var(--bg);color:var(--tx);font:400 16px/1.5 var(--f);-webkit-font-smoothing:antialiased;overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.5 var(--f);-webkit-font-smoothing:antialiased;overflow-x:clip}   /* margin: the preview wrapper resets it, the live page didn't */
 ::selection{background:var(--blk);color:var(--bg)}
 a{color:inherit;text-decoration:none}
 a,button,summary,label,select,input[type=range]{cursor:pointer}
@@ -465,6 +465,8 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .pl{display:flex;justify-content:space-between;gap:16px;padding-block:12px;border-top:1px solid var(--line)}
 .pl span:last-child{color:var(--blk);white-space:nowrap}
 .pnote{padding-top:16px;font-size:14px;color:var(--sec)}
+.stmt .big-say span{color:var(--mute)}
+@media (max-width:520px){#h1,.stmt .big-say{font-size:1.375rem}}   /* phones: the two long statements one step smaller */
 @media (max-width:860px){.pcols{grid-template-columns:1fr}}
 
 /* process */
@@ -472,7 +474,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .steps li{padding:20px;border-radius:18px;background:var(--card);min-height:150px;display:grid;align-content:space-between;gap:24px}
 .steps li i{font-style:normal;font-size:13px;color:var(--mute)}
 .steps li b{display:block;font-weight:400;font-size:clamp(1.2rem,1.8vw,1.5rem);letter-spacing:-.02em;color:var(--blk)}
-.steps li span{font-size:14px;color:var(--sec)}
+.steps li span{display:block;min-height:3em;font-size:14px;color:var(--sec)}   /* two lines reserved, so titles in a row line up whatever the description length */
 @media (max-width:860px){.steps{grid-template-columns:1fr 1fr}}
 @media (max-width:520px){.steps{grid-template-columns:1fr}.steps li{min-height:0}}
 
@@ -668,16 +670,16 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
       <div class="r cta"><a class="pill" href="#contact">Оставить заявку</a><a class="pill ghost" href="#services">Посмотреть, что делаем</a></div>
     </div>
     <nav class="tiles" aria-label="Услуги коротко">
-      <a class="tile" href="#d-site"><span class="tn"><span>01</span><span>(Сайты)</span></span><span class="tt">Сайт или лендинг<small>Услуги, цены и кнопка «Записаться»</small></span><span class="tp"><span>от 25 000 ₽</span><i>↘</i></span></a>
-      <a class="tile" href="#d-visual"><span class="tn"><span>02</span><span>(Визуал)</span></span><span class="tt">Фото для рекламы<small>Из обычного фото с телефона</small></span><span class="tp"><span>от 5 000 ₽</span><i>↘</i></span></a>
-      <a class="tile" href="#d-bot"><span class="tn"><span>03</span><span>(Боты)</span></span><span class="tt">Бот в Telegram или MAX<small>Сам записывает клиентов</small></span><span class="tp"><span>от 7 000 ₽</span><i>↘</i></span></a>
-      <a class="tile" href="#d-order"><span class="tn"><span>04</span><span>(Заказы)</span></span><span class="tt">Меню и онлайн-заказ<small>Для кафе, шаурмы, магазинов</small></span><span class="tp"><span>от 50 000 ₽</span><i>↘</i></span></a>
+      <a class="tile" href="#d-site"><span class="tn"><span>01</span><span>(Сайты)</span></span><span class="tt">Сайт или лендинг<small>Услуги, цены и кнопка «Записаться»</small></span><span class="tp"><span>от 45 000 ₽</span><i>↘</i></span></a>
+      <a class="tile" href="#d-visual"><span class="tn"><span>02</span><span>(Визуал)</span></span><span class="tt">Фото для рекламы<small>Из обычного фото с телефона</small></span><span class="tp"><span>от 7 000 ₽</span><i>↘</i></span></a>
+      <a class="tile" href="#d-bot"><span class="tn"><span>03</span><span>(Боты)</span></span><span class="tt">Бот в Telegram или MAX<small>Сам записывает клиентов</small></span><span class="tp"><span>от 15 000 ₽</span><i>↘</i></span></a>
+      <a class="tile" href="#d-order"><span class="tn"><span>04</span><span>(Заказы)</span></span><span class="tt">Меню и онлайн-заказ<small>Для кафе, шаурмы, магазинов</small></span><span class="tp"><span>от 70 000 ₽</span><i>↘</i></span></a>
     </nav>
   </section>
 
   <section class="stmt wrap" aria-label="Для кого">
     <span class="lab lab-b">(Для кого)</span>
-    <p class="big-say">Работаем с мастерами, кондитерами, кафе, автосервисами и частными специалистами. Объясняем без терминов и делаем то, что пригодится вашему бизнесу.</p>
+    <p class="big-say">Работаем с мастерами, кондитерами, кафе, автосервисами — со всеми, кому нужен понятный сайт или бот. <span>Объясняем без терминов и делаем только то, что нужно вашему бизнесу.</span></p>
     <div class="place">
       <div>Из Красноярска<small>(56.01° N, 92.87° E)</small></div>
       <div>По всей России<small>(онлайн · <span id="clock">—</span> по Красноярску)</small></div>
@@ -695,10 +697,10 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
         <div class="info">
           <div class="num"><b>01</b><span class="lab">(Сайты)</span></div>
           <h3 id="d1">Сайт с ценами и записью</h3>
-          <p>Кто вы, что делаете и сколько это стоит. Клиент читает и тут же оставляет заявку — с телефона или компьютера.</p>
+          <p>Услуги, цены, примеры работ и понятный способ связаться с вами — всё в одном месте. Клиенту не нужно искать информацию по соцсетям и писать «а сколько стоит?».</p>
           <ul class="chips"><li>Лендинг</li><li>Сайт-визитка</li><li>Имиджевый сайт</li><li>Онлайн-запись</li><li>Заявки в мессенджер</li><li>Домен и хостинг</li></ul>
-          <div class="ba2"><p><b>(Было)</b>Только соцсети и «цена в личку». Многие так и не пишут.</p><p><b>(Стало)</b>Ссылка, которую можно отправить любому клиенту. Заявки приходят вам в мессенджер.</p></div>
-          <div class="buy"><a class="pill" href="#contact">Обсудить сайт</a><span>от 25 000 ₽</span></div>
+          <div class="ba2"><p><b>(Было)</b>Только соцсети и «цена в личку» — клиенту приходится писать и ждать ответа.</p><p><b>(Стало)</b>Одна ссылка с услугами, ценами, работами и формой заявки.</p></div>
+          <div class="buy"><a class="pill" href="#contact">Обсудить сайт</a><span>от 45 000 ₽</span></div>
         </div>
         <div class="stage" id="siteStage">
           <span class="cap">(Кейс · Бурение 124)</span>
@@ -722,9 +724,9 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
         <div class="info">
           <div class="num"><b>02</b><span class="lab">(Визуал)</span></div>
           <h3 id="d2">Обычное фото → картинка для рекламы</h3>
-          <p>Дорогая съёмка не нужна. Пришлите фото с телефона, и мы сделаем из него картинку для сайта, соцсетей, Авито или маркетплейса. Подвигайте разделитель, чтобы сравнить.</p>
+          <p>Не нужно каждый раз устраивать съёмку: адаптируем ваши фото для сайта, соцсетей, Авито или маркетплейса. Подвигайте разделитель, чтобы сравнить.</p>
           <ul class="chips"><li>Предметные фото</li><li>Замена фона</li><li>Рекламные изображения</li><li>Для соцсетей</li><li>Для маркетплейсов</li></ul>
-          <div class="buy"><a class="pill" href="#contact">Обработать мои фото</a><span>от 5 000 ₽</span></div>
+          <div class="buy"><a class="pill" href="#contact">Обработать мои фото</a><span>от 7 000 ₽</span></div>
         </div>
         <div class="stage">
           <div class="cmp" id="cmp">
@@ -742,11 +744,11 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
       <article class="demo" id="d-bot" aria-labelledby="d3">
         <div class="info">
           <div class="num"><b>03</b><span class="lab">(Боты)</span></div>
-          <h3 id="d3">Бот, который записывает клиентов</h3>
-          <p>Бот в Telegram или MAX сам записывает клиентов и отвечает на частые вопросы. Вам приходит уведомление о каждой записи. Сложные программы осваивать не нужно.</p>
+          <h3 id="d3">Меньше переписки — больше автоматизации</h3>
+          <p>Бот в Telegram или MAX отвечает на частые вопросы, собирает данные и проводит клиента через запись. После этого вам приходит готовая заявка — уже с нужной информацией.</p>
           <ul class="chips"><li>Запись клиентов</li><li>Приём заявок</li><li>Расчёт стоимости</li><li>Ответы на вопросы</li><li>Напоминания</li></ul>
-          <div class="ba2"><p><b>(Было)</b>Одни и те же вопросы каждый день и записи в блокноте.</p><p><b>(Стало)</b>Бот записывает сам, вам приходит готовая заявка.</p></div>
-          <div class="buy"><a class="pill" href="#contact">Обсудить бота</a><span>от 7 000 ₽</span></div>
+          <div class="ba2"><p><b>(Было)</b>«Сколько стоит?», «А на завтра можно?» — одни и те же вопросы каждый день.</p><p><b>(Стало)</b>Клиент получает ответы и записывается сам, вам приходит готовая заявка.</p></div>
+          <div class="buy"><a class="pill" href="#contact">Обсудить бота</a><span>от 15 000 ₽</span></div>
         </div>
         <div class="stage" id="botStage">
           <div class="flow" aria-hidden="true"><span data-f="0">Клиент</span><em>→</em><span data-f="1">Бот</span><em>→</em><span data-f="2">Запись</span><em>→</em><span data-f="3">Вам</span></div>
@@ -767,7 +769,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
           <h3 id="d4">Меню и заказ прямо на сайте</h3>
           <p>Клиент выбирает блюда, способ получения и оформляет заказ без звонка. Заказ сразу приходит вам в Telegram. Попробуйте добавить что-нибудь.</p>
           <ul class="chips"><li>Меню или каталог</li><li>Добавки и размеры</li><li>Корзина</li><li>Доставка / самовывоз</li><li>Уведомления</li></ul>
-          <div class="buy"><a class="pill" href="#contact">Обсудить заказы</a><span>от 50 000 ₽</span></div>
+          <div class="buy"><a class="pill" href="#contact">Обсудить заказы</a><span>от 70 000 ₽</span></div>
         </div>
         <div class="stage">
           <span class="cap">(Пример · шаурма)</span>
@@ -804,19 +806,18 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
     </div>
     <div class="prices wrap">
       <div class="packs">
-        <div class="pk"><span class="lab">(Для мастеров и экспертов)</span><h3>Старт</h3><p>Сайт-визитка или лендинг, визуал для сайта, заявки в мессенджер.</p><div class="pp"><span>от 30 000 ₽</span><a class="pill" href="#contact">Хочу</a></div></div>
-        <div class="pk hi"><span class="lab">(Для записи клиентов)</span><h3>Заявки</h3><p>Сайт с услугами и ценами, бот записи, уведомления администратору.</p><div class="pp"><span>от 32 000 ₽</span><a class="pill" href="#contact">Хочу</a></div></div>
-        <div class="pk"><span class="lab">(Для кафе и магазинов)</span><h3>Заказы</h3><p>Меню или каталог, корзина, доставка или самовывоз.</p><div class="pp"><span>от 50 000 ₽</span><a class="pill" href="#contact">Хочу</a></div></div>
+        <div class="pk"><span class="lab">(Для мастеров и экспертов)</span><h3>Старт</h3><p>Сайт-визитка или лендинг, мобильная версия, визуалы, заявки в мессенджер.</p><div class="pp"><span>от 45 000 ₽</span><a class="pill" href="#contact">Хочу</a></div></div>
+        <div class="pk hi"><span class="lab">(Для записи клиентов)</span><h3>Заявки</h3><p>Сайт с услугами и ценами, бот в Telegram или MAX, уведомления о заявках.</p><div class="pp"><span>от 65 000 ₽</span><a class="pill" href="#contact">Хочу</a></div></div>
+        <div class="pk"><span class="lab">(Для кафе и магазинов)</span><h3>Заказы</h3><p>Каталог или меню, корзина, доставка или самовывоз, уведомления о заказах.</p><div class="pp"><span>от 90 000 ₽</span><a class="pill" href="#contact">Хочу</a></div></div>
       </div>
       <div class="half plist">
         <span class="lab">(Отдельно)</span>
         <div class="r">
-          <div class="pl"><span>Сайт-визитка / лендинг</span><span>от 25 000 ₽</span></div>
-          <div class="pl"><span>Имиджевый / небольшой корпоративный сайт</span><span>от 50 000 ₽</span></div>
-          <div class="pl"><span>Сайт для кафе с меню и заказом</span><span>от 50 000 ₽</span></div>
-          <div class="pl"><span>Визуал под задачу</span><span>от 5 000 ₽</span></div>
-          <div class="pl"><span>Telegram-бот простой / расширенный</span><span>от 7 000 / 15 000 ₽</span></div>
-          <div class="pl"><span>MAX-бот простой / расширенный</span><span>от 10 000 / 20 000 ₽</span></div>
+          <div class="pl"><span>Небольшой корпоративный сайт</span><span>от 60 000 ₽</span></div>
+          <div class="pl"><span>Сайт для кафе с меню и заказом</span><span>от 70 000 ₽</span></div>
+          <div class="pl"><span>Визуал под задачу</span><span>от 7 000 ₽</span></div>
+          <div class="pl"><span>Telegram-бот</span><span>от 15 000 ₽</span></div>
+          <div class="pl"><span>MAX-бот</span><span>от 20 000 ₽</span></div>
           <p class="pnote">Точная стоимость — после знакомства с задачей.</p>
         </div>
       </div>
@@ -896,8 +897,8 @@ function toggle(d){
 })();
 </script>
 
-  <section class="fin wrap" aria-label="О названии">
-    <p id="fin">Tetsab — это Bastet наоборот. <span class="dim">Мы делаем бизнес заметным.</span></p>
+  <section class="fin wrap" aria-label="TETSAB">
+    <p id="fin">Tetsab — <span class="dim">мы делаем бизнес заметным.</span></p>
   </section>
 
   <section id="contact" class="contact wrap" aria-labelledby="cT">
