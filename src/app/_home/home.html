@@ -394,6 +394,8 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .cs-hero h2{font-size:clamp(3.2rem,11vw,9.5rem);line-height:.92;letter-spacing:-.055em;color:var(--blk)}
 .cs-sub{margin-top:28px}
 .cs-demo{margin-top:14px;font-size:14px;color:var(--mute)}
+.cs-soon{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;color:var(--sec)}
+.cs-soon b{font-weight:400;padding:4px 11px;border-radius:99px;background:var(--lime);color:var(--blk);white-space:nowrap}
 .cs-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-size:15px;color:var(--blk)}
 .cs-meta small{display:block;font-size:13px;color:var(--mute);margin-bottom:4px}
 @media (max-width:860px){.cs-meta{grid-template-columns:1fr 1fr}}
@@ -439,8 +441,6 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .wrow .nm .roll{line-height:1.3;height:1.3em;margin-block:-.1em}
 .wrow .ct{display:flex;justify-content:space-between;gap:16px;font-size:14px;color:var(--sec)}
 .wrow.demo-w .nm{color:var(--mute)}
-.wrow.soon{cursor:default}
-.wrow.soon .nm{color:#C4C4C4}
 @media (max-width:860px){.wrow{grid-template-columns:1fr}.wrow .ct{padding-top:6px}}
 #pv{position:fixed;left:0;top:0;z-index:25;width:min(30vw,340px);aspect-ratio:4/3;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.92);transition:opacity .35s,transform .6s var(--ease);display:grid;align-content:end;gap:2px;padding:16px;font-size:14px;color:#fff;border-radius:6px}
 #pv.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
@@ -1152,9 +1152,9 @@ function filmScreens(c){
   return '<section class="cs-sec"><span class="lab lab-b">(03) Экраны и кадры</span><div class="cs-film"><div class="stage run dk"><span class="cap">(Телефон)</span>'+filmSite(c,false,true)+'</div><div class="stills">'+
     c.film.shots.map(([cap,src])=>'<div class="stage dk"><span class="cap">('+esc(cap)+')</span><img src="'+src+'" alt="" loading="lazy" decoding="async"></div>').join('')+'</div></div></section>'; }
 function renderCase(slug){
-  const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], OPEN=WORKS.filter(x=>!x.soon), nx=OPEN[(OPEN.indexOf(w)+1)%OPEN.length], demo=!w.url||w.concept;
+  const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], nx=WORKS[(i+1)%WORKS.length], demo=!w.url||w.concept;
   const two=n=>String(n).padStart(2,'0');
-  return '<header class="cs-hero"><span class="lab lab-b">('+(w.concept?'Концепт':demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(w.concept?'<p class="cs-demo">Это концепт: бренд придуман, а сайт настоящий — его можно открыть и собрать заказ.</p>':demo?'<p class="cs-demo">Это демо: пример того, как мы сделали бы сайт для такого бизнеса.</p>':'')+
+  return '<header class="cs-hero"><span class="lab lab-b">('+(w.soon?'Кейс в разработке':w.concept?'Концепт':demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(w.concept?'<p class="cs-demo">Это концепт: бренд придуман, а сайт настоящий — его можно открыть и собрать заказ.</p>':w.soon?'<p class="cs-demo cs-soon"><b>В разработке</b>Кейс ещё в работе: показываем идею и первые экраны, финальная версия появится позже.</p>':demo?'<p class="cs-demo">Это демо: пример того, как мы сделали бы сайт для такого бизнеса.</p>':'')+
     '<div class="cs-meta"><div><small>Ниша</small>'+esc(w.k)+'</div><div><small>Что сделали</small>'+esc(w.w)+'</div><div><small>Город</small>'+esc(c.city)+'</div><div><small>Статус</small>'+esc(w.s)+'</div></div></header>'+
     '<div class="cs-cover run" style="background:'+c.cover+'">'+(c.film?filmSite(c):c.real?realShot(c,c.real.desk):siteMock(c))+'</div>'+
     '<section class="cs-sec half"><span class="lab">(01) Задача</span><p class="r cs-txt">'+esc(c.task)+'</p></section>'+
@@ -1166,7 +1166,7 @@ function renderCase(slug){
     '<section class="cs-cta"><p class="big-say">'+(demo?'Хотите такой же для своего бизнеса?':'Нужен похожий сайт?')+'</p><div class="cta"><a class="pill" href="#contact">Обсудить проект</a>'+(w.url?'<a class="pill ghost" href="'+w.url+'" target="_blank" rel="noopener">Открыть сайт ↗</a>':'')+'</div></section>'+
     '<a class="cs-next" href="'+caseHref(nx.slug)+'"><span class="lab">(Следующий кейс)</span><span class="nm">'+esc(nx.n)+' →</span></a>';
 }
-const caseCnt=slug=>{ const OPEN=WORKS.filter(w=>!w.soon), i=OPEN.findIndex(w=>w.slug===slug); return 'Кейс '+String(i+1).padStart(2,'0')+' / '+String(OPEN.length).padStart(2,'0'); };
+const caseCnt=slug=>{ const i=WORKS.findIndex(w=>w.slug===slug); return 'Кейс '+String(i+1).padStart(2,'0')+' / '+String(WORKS.length).padStart(2,'0'); };
 </script>
 <script>
 (function(){
@@ -1330,7 +1330,6 @@ q[0]=1; q[3]=1; cart();
 $('#wlist').innerHTML=WORKS.map((w,i)=>{
   const nm='<span class="roll"><span data-t="'+esc(w.n)+' →">'+esc(w.n)+'</span></span>';
   const inner='<span class="nm">'+nm+'</span><span class="ct"><span>'+esc(w.k)+' · '+esc(w.w)+'</span><span>('+w.s+')</span></span>';
-  if(w.soon) return '<div class="wrow demo-w soon" data-i="'+i+'"><span class="nm">'+esc(w.n)+'</span><span class="ct"><span>'+esc(w.k)+' · '+esc(w.w)+'</span><span>(В разработке)</span></span></div>';   /* not open yet: no link, no preview */
   return '<a class="wrow'+(w.url?'':' demo-w')+'" href="'+caseHref(w.slug)+'" data-i="'+i+'">'+inner+'</a>';
 }).join('');
 $('#filters').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; pressGroup(b.parentElement,b); const t=b.dataset.t; $$('.wrow').forEach(r=>r.hidden=!(t==='all'||WORKS[+r.dataset.i].t.includes(t))); });
@@ -1338,9 +1337,9 @@ const pv=$('#pv'); let pvOn=false, px=0, py=0, tx=0, ty=0;
 if(fine){
   /* hover card: the real site's first screen for live cases, the same mock as inside the case for demos */
   let pvI=-1;
-  $('#wlist').addEventListener('pointerover',e=>{ const r=e.target.closest('.wrow'); if(!r||r.classList.contains('soon')){ pv.classList.remove('on'); pvOn=false; return; } const i=+r.dataset.i, w=WORKS[i], c=CASES[w.slug];
+  $('#wlist').addEventListener('pointerover',e=>{ const r=e.target.closest('.wrow'); if(!r) return; const i=+r.dataset.i, w=WORKS[i], c=CASES[w.slug];
     if(i!==pvI){ pvI=i; pv.style.background=w.bg;
-      pv.innerHTML='<div class="pv-in">'+(c&&c.film?filmSite(c,true):c&&c.real?realShot(c,c.real.desk):c?siteMock(c):'')+'</div><div class="pv-t">'+esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.concept?'Концепт · сайт работает':w.url?'Кейс · сайт работает':'Демо-кейс')+'</small></div>';
+      pv.innerHTML='<div class="pv-in">'+(c&&c.film?filmSite(c,true):c&&c.real?realShot(c,c.real.desk):c?siteMock(c):'')+'</div><div class="pv-t">'+esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.soon?'В разработке':w.concept?'Концепт · сайт работает':w.url?'Кейс · сайт работает':'Демо-кейс')+'</small></div>';
       pv.style.setProperty('--k',((pv.offsetWidth-28)/560).toFixed(3)); }
     pv.classList.add('on'); pvOn=true; wake(); });
   $('#wlist').addEventListener('pointerleave',()=>{ pv.classList.remove('on'); pvOn=false; });
@@ -1352,7 +1351,7 @@ if(fine){
 const caseVids=new IntersectionObserver(es=>es.forEach(e=>{ const v=e.target; if(e.isIntersecting&&$('#case').classList.contains('open')) v.play().catch(()=>{}); else v.pause(); }),{root:$('#case'),threshold:.15});
 const caseEl=$('#case'), caseBody=$('#caseBody'), baseTitle=document.documentElement.dataset.title||document.title; /* a case page opened directly keeps the homepage title here */ let caseFrom=null;
 function openCase(slug){
-  if(!CASES[slug]||!WORKS.some(w=>w.slug===slug&&!w.soon)) return false;   /* cases still in progress don't open */
+  if(!CASES[slug]||!WORKS.some(w=>w.slug===slug)) return false;
   caseBody.innerHTML=renderCase(slug); caseEl.scrollTop=0; caseVids.disconnect(); if(!reduce) caseBody.querySelectorAll('video').forEach(v=>{ v.muted=true; caseVids.observe(v); }); $('#caseCnt').textContent=caseCnt(slug);
   pv.classList.remove('on'); pvOn=false;
   if(!caseEl.classList.contains('open')){ caseEl.classList.add('open'); caseEl.removeAttribute('inert'); lock(true); }

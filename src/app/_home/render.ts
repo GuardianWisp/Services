@@ -13,7 +13,7 @@ const SITE = "https://tetsab.ru";
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const YANDEX_METRIKA_ID = process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID;
 
-type Work = { slug: string; n: string; k: string; url?: string; soon?: boolean };
+type Work = { slug: string; n: string; k: string; url?: string };
 type Case = { lead: string; real?: { desk: string } };
 type Data = {
   renderCase: (slug: string) => string;
@@ -59,8 +59,7 @@ function swap(html: string, from: string, to: string) {
   return html.replace(from, () => to);
 }
 
-// cases marked soon («В разработке») get no page and stay out of the sitemap
-export const caseSlugs = () => data.WORKS.filter((w) => data.CASES[w.slug] && !w.soon).map((w) => w.slug);
+export const caseSlugs = () => data.WORKS.filter((w) => data.CASES[w.slug]).map((w) => w.slug);
 
 export function homePage() {
   return homeHtml;
@@ -69,7 +68,7 @@ export function homePage() {
 export function casePage(slug: string): string | null {
   const work = data.WORKS.find((w) => w.slug === slug);
   const c = data.CASES[slug];
-  if (!work || !c || work.soon) return null;
+  if (!work || !c) return null;
 
   const url = `${SITE}/cases/${slug}`;
   const title = `${work.n} — кейс TETSAB`;
