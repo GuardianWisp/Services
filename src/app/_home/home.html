@@ -669,6 +669,22 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .sig-cv canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 @media (max-width:860px){.sig-in{grid-template-columns:1fr;gap:0}.sig-in>div:first-child{display:contents}.sig-cv{order:1;aspect-ratio:1/1;margin-top:28px}.sig-tabs{order:2;margin-top:16px}}   /* phones: the drawing above the tabs, so opening a tab never moves it */
 @media (prefers-reduced-motion:reduce){.sig-tab.on::after{animation:none;transform:none}}
+
+/* request drawer: «Оставить заявку» and the other request buttons open the form over the page instead of scrolling
+   the whole site down to it (that long smooth scroll woke every heavy block on the way and stuttered) */
+.dr-scrim{position:fixed;inset:0;z-index:55;background:rgba(20,20,20,.32);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s .4s}
+.drawer{box-sizing:border-box;position:fixed;z-index:56;top:10px;right:10px;bottom:10px;width:min(540px,calc(100vw - 20px));overflow-y:auto;overscroll-behavior:contain;background:var(--bg);border-radius:18px;padding:22px clamp(20px,3vw,32px) 28px;box-shadow:0 30px 80px rgba(0,0,0,.18);transform:translateX(calc(100% + 24px));visibility:hidden;transition:transform .55s cubic-bezier(.7,0,.84,0),visibility 0s .55s}
+.dr-open .dr-scrim{opacity:1;visibility:visible;transition:opacity .4s ease}
+.dr-open .drawer{transform:none;visibility:visible;transition:transform .7s var(--ease)}
+.dr-open,.dr-open body{overflow:hidden}
+.dr-top{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.dr-top span{font-size:14px;color:var(--sec)}
+.dr-x{width:40px;height:40px;border:0;border-radius:12px;background:#1c1c1c;color:#fff;font-size:20px;line-height:1;display:grid;place-items:center;padding:0;cursor:pointer;transition:background .3s,color .3s}
+.dr-x:hover,.dr-x:focus-visible{background:var(--lime);color:var(--blk)}
+.dr-t{margin:clamp(28px,5vh,48px) 0 0;font-weight:400;font-size:clamp(1.7rem,3vw,2.3rem);line-height:1.08;letter-spacing:-.03em;color:var(--tx)}
+.dr-say{margin:12px 0 0;font-size:16px;color:var(--sec);max-width:34ch}
+.drawer .form{padding-top:32px}
+@media (max-width:640px){.drawer{top:auto;left:0;right:0;bottom:0;width:auto;max-height:92svh;border-radius:20px 20px 0 0;padding-bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateY(100%)}}
 </style>
 </head>
 <body>
@@ -984,6 +1000,13 @@ function toggle(d){
     </div>
   </section>
 </main>
+<div class="dr-scrim" id="drScrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drT" inert>
+  <div class="dr-top"><span>(Заявка)</span><button class="dr-x" type="button" id="drX" aria-label="Закрыть">×</button></div>
+  <h2 class="dr-t" id="drT">Оставить заявку</h2>
+  <p class="dr-say">Напишите, чем занимаетесь. Подскажем, что вам подойдёт и сколько это будет стоить.</p>
+  <div id="drSlot"></div>
+</aside>
 <div class="case" id="case" role="dialog" aria-modal="true" aria-labelledby="caseT" inert>
   <div class="case-bar"><button class="back" type="button" id="caseBack">← Все работы</button><span class="cnt" id="caseCnt"></span></div>
   <div id="caseBody"></div>
@@ -1366,6 +1389,25 @@ function tickTick(dt){
 /* finale letters */
 const letters=node=>{ [...node.childNodes].forEach(n=>{ if(n.nodeType===3){ const frag=document.createDocumentFragment(); n.textContent.split(/( +)/).forEach(w=>{ if(!w) return; if(/^ +$/.test(w)){ frag.appendChild(document.createTextNode(' ')); return; } const wd=document.createElement('span'); wd.className='wd'; [...w].forEach(c=>{ const s=document.createElement('span'); s.className='ch'; const i=document.createElement('span'); i.textContent=c; i.dataset.c=c; s.appendChild(i); wd.appendChild(s); }); frag.appendChild(wd); }); n.replaceWith(frag); } else letters(n); }); }; // letters grouped by word so lines only break between words
 letters($('#fin'));
+/* request drawer: the one real form moves into the drawer while it is open and back after, so sending, the spam
+   trap and the consent stay exactly as they are. The button that opened it ticks what the visitor asked about. */
+(()=>{ const dr=$('#drawer'), slot=$('#drSlot'), form=$('#form'); if(!dr||!form) return;
+  const home=document.createComment('form'); let opener=null, touched=false;
+  form.addEventListener('change',e=>{ if(e.isTrusted) touched=true; });
+  const NEED={'d-site':['o1'],'d-visual':['o2'],'d-bot':['o3'],'d-order':['o4'],'Старт':['o1'],'Заявки':['o1','o3'],'Заказы':['o4']};
+  function open(a){ opener=a; const sec=a.closest('.demo'), pk=a.closest('.pk'), key=sec?sec.id:pk?pk.querySelector('h3').textContent:'';
+    const t=a.textContent.trim(); $('#drT').textContent=pk?'Пакет «'+key+'»':/^Обсудить|^Обработать/.test(t)?t:'Оставить заявку';
+    if(!touched){ form.querySelectorAll('.opts input').forEach(i=>{ i.checked=(NEED[key]||[]).includes(i.id); }); }
+    form.before(home); slot.append(form); dr.inert=false; root.classList.add('dr-open');
+    if(matchMedia('(hover:hover) and (pointer:fine)').matches) setTimeout(()=>$('#fName').focus({preventScroll:true}),350); }
+  function close(){ if(!root.classList.contains('dr-open')) return; root.classList.remove('dr-open'); dr.inert=true;
+    setTimeout(()=>{ if(!root.classList.contains('dr-open')&&home.parentNode){ home.replaceWith(form); } },560);
+    opener&&opener.focus({preventScroll:true}); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('a.pill[href="#contact"]'); if(!a||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey) return;
+    e.preventDefault(); e.stopPropagation(); open(a); },true);
+  $('#drX').addEventListener('click',close); $('#drScrim').addEventListener('click',close);
+  addEventListener('keydown',e=>{ if(e.key==='Escape'&&root.classList.contains('dr-open')){ e.stopImmediatePropagation(); close(); } },true);
+})();
 /* dark block «Все заявки — в одном месте»: three tabs, three line drawings on one canvas.
    Runs only while the block is on screen; the pointer bends each drawing a little. */
 (()=>{
