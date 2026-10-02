@@ -154,7 +154,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .pre-logo b{font-weight:500;font-size:clamp(1.8rem,3.4vw,2.8rem);letter-spacing:-.05em;color:#434343;line-height:1}
 .pre-logo span{display:flex;width:100%;height:6px}
 .pre-logo span i{flex:1;background:#434343;transform:scaleY(0);transition:transform .4s cubic-bezier(.65,0,.35,1)}
-.pre-logo span i:nth-child(2){background:var(--lime);transition-delay:.3s}.pre-logo span i:nth-child(3){transition-delay:.6s}
+.pre-logo span i:nth-child(2){background:var(--lime);transition-delay:.3s}   /* two halves: dark, then lime */
 .pre.p-lg .pre-logo{opacity:1}
 .pre.p-lg .pre-logo span i{transform:scaleY(1)}
 @media (max-width:860px){.pre-grid{grid-template-columns:1fr;grid-template-rows:1fr 1fr}.pb.hm{display:none}.pb.w2{grid-column:auto}.pc.m{display:none}.prad{width:min(34vh,240px)}}
@@ -253,6 +253,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .buy span{color:var(--blk);font-size:18px}
 .stage{position:relative;border-radius:22px;background:var(--stage);min-height:clamp(420px,58vh,600px);display:grid;place-items:center;padding:clamp(16px,3vw,36px);overflow:hidden}
 .stage .cap{position:absolute;left:18px;top:14px;font-size:13px;color:var(--sec);z-index:3}
+#d-order .stage{padding-top:48px}   /* room for the caption: on phones the card fills the whole height */
 .stage .cap2{position:absolute;right:18px;top:14px;font-size:13px;color:var(--sec);z-index:3}
 @media (max-width:860px){.demo,.demo.flip{grid-template-columns:1fr}.demo.flip .info{order:0}.ba2{grid-template-columns:1fr}.stage{min-height:460px}}
 
@@ -698,7 +699,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
   </div>
   <svg class="prad" viewBox="-100 -100 200 200" aria-hidden="true"><circle r="99"/><circle r="80"/><circle class="rot" r="62"/><circle r="44"/><circle r="22"/><line x1="100" y1="0" x2="0" y2="0"/><line x1="100" y1="-34" x2="0" y2="0"/><line x1="100" y1="34" x2="0" y2="0"/></svg><svg class="prad r" viewBox="-100 -100 200 200" aria-hidden="true"><circle r="99"/><circle r="80"/><circle class="rot" r="62"/><circle r="44"/><circle r="22"/><line x1="-100" y1="0" x2="0" y2="0"/><line x1="-100" y1="-34" x2="0" y2="0"/><line x1="-100" y1="34" x2="0" y2="0"/></svg>
   <div class="pre-close"><i></i><i class="x"></i><i class="x"></i><i class="x"></i><i></i></div>
-  <div class="pre-logo"><b>TETSAB</b><span><i></i><i></i><i></i></span></div>
+  <div class="pre-logo"><b>TETSAB</b><span><i></i><i></i></span></div>
 </div>
 <div id="pv" aria-hidden="true"></div>
 
@@ -841,7 +842,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
           <div class="buy"><a class="pill" href="#contact">Обсудить заказы</a><span>от 70 000 ₽</span></div>
         </div>
         <div class="stage">
-          <span class="cap">(Пример · шаурма)</span>
+          <span class="cap">(Пример · меню и корзина)</span>
           <div class="shop">
             <div class="shop-h"><b>УГЛИ</b><span>до 23:00</span></div>
             <div class="modes" role="group" aria-label="Способ получения"><button type="button" aria-pressed="true">Доставка</button><button type="button" aria-pressed="false">Самовывоз</button></div>
@@ -1505,7 +1506,7 @@ const card=(()=>{ let P=[];
       ctx.beginPath(); ctx.arc(b.x+b.w*.9,b.y+b.h*.205,4,0,Math.PI*2); ctx.fillStyle='rgb('+LIME+')'; ctx.fill();
       ctx.font=(f*1.25)+'px '+FONT; ctx.fillStyle='#fff'; ctx.fillText('Новая заявка',b.x+b.w*.08,b.y+b.h*.46);
       ctx.font=f+'px '+FONT; ctx.fillStyle='rgba(255,255,255,.75)'; ctx.fillText('Анна · маникюр · пт 14:00',b.x+b.w*.08,b.y+b.h*.66);
-      ctx.fillStyle='rgb('+LIME+')'; ctx.fillText('Telegram: @anna_k',b.x+b.w*.08,b.y+b.h*.82); ctx.globalAlpha=1; } }};
+      ctx.fillStyle='rgb('+LIME+')'; ctx.fillText('Telegram: @wisplink',b.x+b.w*.08,b.y+b.h*.82); ctx.globalAlpha=1; } }};
 })();
 
 const scenes=[well,router,card];
