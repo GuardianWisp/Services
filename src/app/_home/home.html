@@ -254,6 +254,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .stage{position:relative;border-radius:22px;background:var(--stage);min-height:clamp(420px,58vh,600px);display:grid;place-items:center;padding:clamp(16px,3vw,36px);overflow:hidden}
 .stage .cap{position:absolute;left:18px;top:14px;font-size:13px;color:var(--sec);z-index:3}
 #d-order .stage{padding-top:48px}   /* room for the caption: on phones the card fills the whole height */
+#d-bot .stage{padding-top:56px;padding-bottom:56px}   /* the same for the «Клиент → Бот → Запись → Вам» strip above the phone and «Ещё раз» below it */
 .stage .cap2{position:absolute;right:18px;top:14px;font-size:13px;color:var(--sec);z-index:3}
 @media (max-width:860px){.demo,.demo.flip{grid-template-columns:1fr}.demo.flip .info{order:0}.ba2{grid-template-columns:1fr}.stage{min-height:460px}}
 
