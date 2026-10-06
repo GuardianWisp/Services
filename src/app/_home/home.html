@@ -1043,7 +1043,7 @@ const DISH=[['Шаурма классическая','Курица, овощи, 
 const WORKS=[
   {slug:'burenie',n:'Бурение 124',k:'Бурение скважин',w:'Сайт мастера',s:'Запущен',t:['site'],url:'https://burenie124.ru',bg:'linear-gradient(160deg,#9fc3e6,#2f6fae)'},
   {slug:'vanil',n:'Ателье Ваниль',k:'Кондитерская',w:'Сайт с заказом и админкой',s:'Концепт',t:['site','order'],url:'https://vanil.tetsab.ru',concept:true,bg:'linear-gradient(160deg,#f3dcdc,#7a1f2e)'},
-  {slug:'tverd',n:'Твердь',k:'Цементный завод',w:'Ключевой визуал',s:'Демо',t:['visual'],bg:'linear-gradient(160deg,#4a4a4a,#121212)'},
+  {slug:'tverd',n:'Твердь',k:'Цементный завод',w:'Ключевой визуал',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#4a4a4a,#121212)'},
   {slug:'foton',n:'Фотоника',k:'Электронные компоненты',w:'3D-визуалы направлений',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f0f0f0,#9d9d9d)'},
   {slug:'lak',n:'Лак',k:'Маникюрная студия',w:'Сайт + бот записи',s:'В разработке',soon:true,t:['site','bot'],bg:'linear-gradient(160deg,#ddd0ee,#7e5fb8)'},
   {slug:'ugli',n:'Угли',k:'Шаурма и шашлык',w:'Меню и заказ',s:'В разработке',soon:true,t:['order'],bg:'linear-gradient(160deg,#f6cfa4,#c4561c)'},
@@ -1195,7 +1195,7 @@ function renderCase(slug){
       (c.quote?'<div class="stage"><span class="cap">(Отзыв)</span><figure class="quote"><blockquote>«'+esc(c.quote.t)+'»</blockquote><figcaption>— '+esc(c.quote.a)+'</figcaption></figure></div>':'')+'</div></section>')+
     '<section class="cs-sec half"><span class="lab">(04) Было → стало</span><div class="r ba2 cs-ba"><p><b>(Было)</b>'+esc(c.was)+'</p><p><b>(Стало)</b>'+esc(c.now)+'</p></div></section>'+
     '<section class="cs-sec"><span class="lab lab-b">(05) Что это даёт</span><ol class="steps">'+c.gives.map((g,k)=>'<li><i>'+two(k+1)+'</i><div><b>'+esc(g[0])+'</b><span>'+esc(g[1])+'</span></div></li>').join('')+'</ol></section>'+
-    '<section class="cs-cta"><p class="big-say">'+(demo?'Хотите такой же для своего бизнеса?':c.objs?'Нужен похожий визуал?':'Нужен похожий сайт?')+'</p><div class="cta"><a class="pill" href="#contact">Обсудить проект</a>'+(w.url?'<a class="pill ghost" href="'+w.url+'" target="_blank" rel="noopener">Открыть сайт ↗</a>':'')+'</div></section>'+
+    '<section class="cs-cta"><p class="big-say">'+(demo?'Хотите такой же для своего бизнеса?':c.objs||c.film?'Нужен похожий визуал?':'Нужен похожий сайт?')+'</p><div class="cta"><a class="pill" href="#contact">Обсудить проект</a>'+(w.url?'<a class="pill ghost" href="'+w.url+'" target="_blank" rel="noopener">Открыть сайт ↗</a>':'')+'</div></section>'+
     '<a class="cs-next" href="'+caseHref(nx.slug)+'"><span class="lab">(Следующий кейс)</span><span class="nm">'+esc(nx.n)+' →</span></a>';
 }
 const caseCnt=slug=>{ const i=WORKS.findIndex(w=>w.slug===slug); return 'Кейс '+String(i+1).padStart(2,'0')+' / '+String(WORKS.length).padStart(2,'0'); };
