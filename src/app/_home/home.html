@@ -1179,7 +1179,7 @@ function filmScreens(c){
 /* electronics case: rotating components on a transparent background.
    Safari takes the HEVC-with-alpha file (the quicktime type keeps Chrome, which would drop the alpha, off it), the rest take VP9 WebM */
 const EKB='/img/cases/foton/';
-const objVid=k=>'<video muted loop playsinline preload="none" poster="'+EKB+k+'.webp"><source src="'+EKB+k+'-h.mp4" type=\'video/quicktime; codecs="hvc1"\'><source src="'+EKB+k+'.webm" type="video/webm"></video>';
+const objVid=k=>'<video muted loop playsinline preload="none" poster="'+EKB+k+'.webp"><source src="'+EKB+k+'-p.mp4" type=\'video/quicktime; codecs="hvc1"\'><source src="'+EKB+k+'.webm" type="video/webm"></video>';
 function ekbCover(c,still){
   return '<div class="ekb-row" aria-hidden="true">'+c.objs.map(o=>'<figure>'+(still?'<img src="'+EKB+o[2]+'.webp" alt="" decoding="async">':objVid(o[2]))+'<figcaption>'+esc(o[0])+'</figcaption></figure>').join('')+'</div>'; }
 function objScreens(c){
