@@ -689,6 +689,17 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .dr-say{margin:12px 0 0;font-size:16px;color:var(--sec);max-width:34ch}
 .drawer .form{padding-top:32px}
 @media (max-width:640px){.drawer{top:auto;left:0;right:0;bottom:0;width:auto;max-height:92svh;border-radius:20px 20px 0 0;padding-bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateY(100%)}}
+
+/* electronics case: the four components side by side on the cover */
+.ekb-row{width:100%;max-width:1200px;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,2vw,28px);align-items:end}
+.ekb-row figure{margin:0;display:grid;gap:14px;justify-items:center}
+.ekb-row video,.ekb-row img{width:100%;aspect-ratio:3/4;object-fit:contain}
+.ekb-row figcaption{font-size:13px;color:#6b6b6b}
+#pv .pv-in .ekb-row{gap:8px}
+.cs-objs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stage.ob{background:#e9e9e9;min-height:0;aspect-ratio:4/3;padding:0}
+.stage.ob video{position:absolute;left:12%;right:12%;top:14%;bottom:8%;width:76%;height:78%;object-fit:contain}
+@media (max-width:700px){.ekb-row{grid-template-columns:1fr 1fr;row-gap:24px}.cs-objs{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1033,6 +1044,7 @@ const WORKS=[
   {slug:'burenie',n:'Бурение 124',k:'Бурение скважин',w:'Сайт мастера',s:'Запущен',t:['site'],url:'https://burenie124.ru',bg:'linear-gradient(160deg,#9fc3e6,#2f6fae)'},
   {slug:'vanil',n:'Ателье Ваниль',k:'Кондитерская',w:'Сайт с заказом и админкой',s:'Концепт',t:['site','order'],url:'https://vanil.tetsab.ru',concept:true,bg:'linear-gradient(160deg,#f3dcdc,#7a1f2e)'},
   {slug:'tverd',n:'Твердь',k:'Цементный завод',w:'Ключевой визуал',s:'Демо',t:['visual'],bg:'linear-gradient(160deg,#4a4a4a,#121212)'},
+  {slug:'ekb',n:'Фотоника',k:'Электронные компоненты',w:'3D-визуалы направлений',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f0f0f0,#9d9d9d)'},
   {slug:'lak',n:'Лак',k:'Маникюрная студия',w:'Сайт + бот записи',s:'В разработке',soon:true,t:['site','bot'],bg:'linear-gradient(160deg,#ddd0ee,#7e5fb8)'},
   {slug:'ugli',n:'Угли',k:'Шаурма и шашлык',w:'Меню и заказ',s:'В разработке',soon:true,t:['order'],bg:'linear-gradient(160deg,#f6cfa4,#c4561c)'},
   {slug:'rovno',n:'Ровно',k:'Ремонт квартир',w:'Лендинг с расчётом',s:'В разработке',soon:true,t:['site'],bg:'linear-gradient(160deg,#dcd7ca,#9b7a2c)'},
@@ -1064,6 +1076,17 @@ const CASES={
     gives:[['Запоминается','Такой первый экран не спутать с сайтами других поставщиков.'],['Понятно без слов','Сразу видно, для каких объектов подходит цемент.'],['Один визуал на всё','Кадры из ролика работают на сайте, в презентациях и на стенде.']],
     film:{src:'/img/cases/tverd/dark-1280.mp4',srcS:'/img/cases/tverd/dark-768.mp4',srcV:'/img/cases/tverd/dark-v.mp4',poster:'/img/cases/tverd/bridge.jpg',
       shots:[['Мост','/img/cases/tverd/bridge.jpg'],['Завод','/img/cases/tverd/plant.jpg'],['Плотина','/img/cases/tverd/dam.jpg'],['Стадион','/img/cases/tverd/stadium.jpg']]}},
+  ekb:{city:'Удалённо',cover:'#e9e9e9',
+    lead:'3D-визуалы для сайта производителя электронных компонентов: у каждого направления свой компонент, который плавно поворачивается.',
+    task:'У компании четыре направления: фотоника, оптоэлектроника, силовая электроника и СВЧ. На сайт приходят инженеры, и им нужно сразу понять, что именно здесь производят. Стоковые картинки микросхем одинаковые у всех и про продукцию ничего не говорят.',
+    solution:'Для каждого направления сделали в 3D свой характерный компонент: фотоприёмник, светодиод, силовой транзистор и микросхему. Все в одном свете и материалах, с коротким поворотом на прозрачном фоне. Ролики встают на любой фон: на сайте, в презентации, на стенде.',
+    chips:['3D-моделирование','4 компонента','Анимация поворота','Прозрачный фон','Единый свет и материалы','Для сайта и презентаций'],
+    was:'Стоковые картинки микросхем, одинаковые у всех поставщиков.',now:'Свой компонент для каждого направления, все в едином стиле.',
+    gives:[['Понятно с первого взгляда','По картинке видно, какие компоненты делают в каждом направлении.'],['Живая страница','Компонент поворачивается, и раздел не выглядит каталогом из таблиц.'],['Один визуал на всё','Те же ролики и кадры подходят для сайта, презентаций и стенда.']],
+    objs:[['Фотоника','Фотоприёмник','photon'],
+      ['Оптоэлектроника','Светодиод','led'],
+      ['Силовая электроника','Силовой транзистор','tr'],
+      ['СВЧ ЭКБ','Микросхема','ic']]},
   vanil:{domain:'vanil.tetsab.ru',city:'Москва',cover:'linear-gradient(160deg,#f5ebe3,#e3c3c3)',
     lead:'Сайт авторской кондитерской: меню с ценами, конструктор торта, витрина с остатками и админка, где кондитер сам всё меняет с телефона.',
     task:'Домашний кондитер продаёт через Инстаграм. Цены спрашивают в директ, каждый заказ — длинная переписка, а про витрину готовых десертов узнают из сторис, когда половину уже разобрали.',
@@ -1151,19 +1174,28 @@ function filmSite(c,still,ph){ const f=c.film;
 function filmScreens(c){
   return '<section class="cs-sec"><span class="lab lab-b">(03) Экраны и кадры</span><div class="cs-film"><div class="stage run dk"><span class="cap">(Телефон)</span>'+filmSite(c,false,true)+'</div><div class="stills">'+
     c.film.shots.map(([cap,src])=>'<div class="stage dk"><span class="cap">('+esc(cap)+')</span><img src="'+src+'" alt="" loading="lazy" decoding="async"></div>').join('')+'</div></div></section>'; }
+/* electronics case: rotating components on a transparent background.
+   Safari takes the HEVC-with-alpha file (the quicktime type keeps Chrome, which would drop the alpha, off it), the rest take VP9 WebM */
+const EKB='/img/cases/ekb/';
+const objVid=k=>'<video muted loop playsinline preload="none" poster="'+EKB+k+'.webp"><source src="'+EKB+k+'-a.mp4" type=\'video/quicktime; codecs="hvc1"\'><source src="'+EKB+k+'.webm" type="video/webm"></video>';
+function ekbCover(c,still){
+  return '<div class="ekb-row" aria-hidden="true">'+c.objs.map(o=>'<figure>'+(still?'<img src="'+EKB+o[2]+'.webp" alt="" decoding="async">':objVid(o[2]))+'<figcaption>'+esc(o[0])+'</figcaption></figure>').join('')+'</div>'; }
+function objScreens(c){
+  return '<section class="cs-sec"><span class="lab lab-b">(03) Визуалы</span><div class="cs-objs">'+
+    c.objs.map(o=>'<div class="stage ob"><span class="cap">('+esc(o[0])+' · '+esc(o[1])+')</span>'+objVid(o[2])+'</div>').join('')+'</div></section>'; }
 function renderCase(slug){
-  const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], nx=WORKS[(i+1)%WORKS.length], demo=!w.url||w.concept;
+  const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], nx=WORKS[(i+1)%WORKS.length], demo=(!w.url&&!w.done)||w.concept;
   const two=n=>String(n).padStart(2,'0');
   return '<header class="cs-hero"><span class="lab lab-b">('+(w.soon?'Кейс в разработке':w.concept?'Концепт':demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(w.concept?'<p class="cs-demo">Это концепт: бренд придуман, а сайт настоящий — его можно открыть и собрать заказ.</p>':w.soon?'<p class="cs-demo cs-soon"><b>В разработке</b>Кейс ещё в работе: показываем идею и первые экраны, финальная версия появится позже.</p>':demo?'<p class="cs-demo">Это демо: пример того, как мы сделали бы сайт для такого бизнеса.</p>':'')+
     '<div class="cs-meta"><div><small>Ниша</small>'+esc(w.k)+'</div><div><small>Что сделали</small>'+esc(w.w)+'</div><div><small>Город</small>'+esc(c.city)+'</div><div><small>Статус</small>'+esc(w.s)+'</div></div></header>'+
-    '<div class="cs-cover run" style="background:'+c.cover+'">'+(c.film?filmSite(c):c.real?realShot(c,c.real.desk):siteMock(c))+'</div>'+
+    '<div class="cs-cover run" style="background:'+c.cover+'">'+(c.objs?ekbCover(c):c.film?filmSite(c):c.real?realShot(c,c.real.desk):siteMock(c))+'</div>'+
     '<section class="cs-sec half"><span class="lab">(01) Задача</span><p class="r cs-txt">'+esc(c.task)+'</p></section>'+
     '<section class="cs-sec half"><span class="lab">(02) Решение</span><div class="r"><p class="cs-txt">'+esc(c.solution)+'</p><ul class="chips">'+c.chips.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></section>'+
-    (c.film?filmScreens(c):c.real?realScreens(c):    '<section class="cs-sec"><span class="lab lab-b">(03) Экраны</span><div class="cs-shots"><div class="stage run"><span class="cap">(Телефон)</span>'+siteMock(c,true)+'</div><div class="stage">'+(c.extra==='visual'?'':'<span class="cap">('+({bot:'Бот',order:'Заказ',calc:'Калькулятор',form:'Заявка'}[c.extra])+')</span>')+caseExtra(c)+'</div>'+
+    (c.objs?objScreens(c):c.film?filmScreens(c):c.real?realScreens(c):    '<section class="cs-sec"><span class="lab lab-b">(03) Экраны</span><div class="cs-shots"><div class="stage run"><span class="cap">(Телефон)</span>'+siteMock(c,true)+'</div><div class="stage">'+(c.extra==='visual'?'':'<span class="cap">('+({bot:'Бот',order:'Заказ',calc:'Калькулятор',form:'Заявка'}[c.extra])+')</span>')+caseExtra(c)+'</div>'+
       (c.quote?'<div class="stage"><span class="cap">(Отзыв)</span><figure class="quote"><blockquote>«'+esc(c.quote.t)+'»</blockquote><figcaption>— '+esc(c.quote.a)+'</figcaption></figure></div>':'')+'</div></section>')+
     '<section class="cs-sec half"><span class="lab">(04) Было → стало</span><div class="r ba2 cs-ba"><p><b>(Было)</b>'+esc(c.was)+'</p><p><b>(Стало)</b>'+esc(c.now)+'</p></div></section>'+
     '<section class="cs-sec"><span class="lab lab-b">(05) Что это даёт</span><ol class="steps">'+c.gives.map((g,k)=>'<li><i>'+two(k+1)+'</i><div><b>'+esc(g[0])+'</b><span>'+esc(g[1])+'</span></div></li>').join('')+'</ol></section>'+
-    '<section class="cs-cta"><p class="big-say">'+(demo?'Хотите такой же для своего бизнеса?':'Нужен похожий сайт?')+'</p><div class="cta"><a class="pill" href="#contact">Обсудить проект</a>'+(w.url?'<a class="pill ghost" href="'+w.url+'" target="_blank" rel="noopener">Открыть сайт ↗</a>':'')+'</div></section>'+
+    '<section class="cs-cta"><p class="big-say">'+(demo?'Хотите такой же для своего бизнеса?':c.objs?'Нужен похожий визуал?':'Нужен похожий сайт?')+'</p><div class="cta"><a class="pill" href="#contact">Обсудить проект</a>'+(w.url?'<a class="pill ghost" href="'+w.url+'" target="_blank" rel="noopener">Открыть сайт ↗</a>':'')+'</div></section>'+
     '<a class="cs-next" href="'+caseHref(nx.slug)+'"><span class="lab">(Следующий кейс)</span><span class="nm">'+esc(nx.n)+' →</span></a>';
 }
 const caseCnt=slug=>{ const i=WORKS.findIndex(w=>w.slug===slug); return 'Кейс '+String(i+1).padStart(2,'0')+' / '+String(WORKS.length).padStart(2,'0'); };
@@ -1330,7 +1362,7 @@ q[0]=1; q[3]=1; cart();
 $('#wlist').innerHTML=WORKS.map((w,i)=>{
   const nm='<span class="roll"><span data-t="'+esc(w.n)+' →">'+esc(w.n)+'</span></span>';
   const inner='<span class="nm">'+nm+'</span><span class="ct"><span>'+esc(w.k)+' · '+esc(w.w)+'</span><span>('+w.s+')</span></span>';
-  return '<a class="wrow'+(w.url?'':' demo-w')+'" href="'+caseHref(w.slug)+'" data-i="'+i+'">'+inner+'</a>';
+  return '<a class="wrow'+(w.url||w.done?'':' demo-w')+'" href="'+caseHref(w.slug)+'" data-i="'+i+'">'+inner+'</a>';
 }).join('');
 $('#filters').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; pressGroup(b.parentElement,b); const t=b.dataset.t; $$('.wrow').forEach(r=>r.hidden=!(t==='all'||WORKS[+r.dataset.i].t.includes(t))); });
 const pv=$('#pv'); let pvOn=false, px=0, py=0, tx=0, ty=0;
@@ -1339,7 +1371,7 @@ if(fine){
   let pvI=-1;
   $('#wlist').addEventListener('pointerover',e=>{ const r=e.target.closest('.wrow'); if(!r) return; const i=+r.dataset.i, w=WORKS[i], c=CASES[w.slug];
     if(i!==pvI){ pvI=i; pv.style.background=w.bg;
-      pv.innerHTML='<div class="pv-in">'+(c&&c.film?filmSite(c,true):c&&c.real?realShot(c,c.real.desk):c?siteMock(c):'')+'</div><div class="pv-t">'+esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.soon?'В разработке':w.concept?'Концепт · сайт работает':w.url?'Кейс · сайт работает':'Демо-кейс')+'</small></div>';
+      pv.innerHTML='<div class="pv-in">'+(c&&c.objs?ekbCover(c,true):c&&c.film?filmSite(c,true):c&&c.real?realShot(c,c.real.desk):c?siteMock(c):'')+'</div><div class="pv-t">'+esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.soon?'В разработке':w.done?'Кейс · визуалы':w.concept?'Концепт · сайт работает':w.url?'Кейс · сайт работает':'Демо-кейс')+'</small></div>';
       pv.style.setProperty('--k',((pv.offsetWidth-28)/560).toFixed(3)); }
     pv.classList.add('on'); pvOn=true; wake(); });
   $('#wlist').addEventListener('pointerleave',()=>{ pv.classList.remove('on'); pvOn=false; });
