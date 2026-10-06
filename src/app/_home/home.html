@@ -704,6 +704,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .stage.ob{background:#e9e9e9;min-height:0;aspect-ratio:4/3;padding:0}
 .stage.ob video{position:absolute;left:12%;right:12%;top:14%;bottom:8%;width:76%;height:78%;object-fit:contain}
 @media (max-width:700px){.ekb-row{grid-template-columns:1fr 1fr;row-gap:24px}.cs-objs{grid-template-columns:1fr}}
+html.fwait .hero{visibility:hidden}
 </style>
 </head>
 <body>
@@ -733,6 +734,11 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
   <div class="m-foot"><a href="https://t.me/tetsab" target="_blank" rel="noopener"><span class="roll"><span data-t="Telegram-канал ↗">Telegram-канал ↗</span></span></a><span class="m-egg" title="Прочитайте наоборот">TETSAB ↔ BASTET</span></div>
 </aside>
 
+<script>/* the first screen stays hidden until Golos is in (3 s at most): text set in the fallback font wraps differently,
+   and the swap shifted the service tiles. Hidden boxes don't count as layout shift; on repeat visits the font is cached. */
+(()=>{ const r=document.documentElement, done=()=>requestAnimationFrame(()=>requestAnimationFrame(()=>r.classList.remove('fwait')));
+  if(!document.fonts||document.fonts.check('400 16px "Golos Text"','TETSAB Сайт ₽')) return; r.classList.add('fwait'); setTimeout(done,3000);
+  Promise.all(['400','500'].map(w=>document.fonts.load(w+' 16px "Golos Text"','TETSAB Сайт ₽'))).then(done,done); })();</script>
 <main id="top">
   <section class="hero wrap" aria-labelledby="h1">
     <canvas class="glass" id="glass" aria-hidden="true"></canvas>
