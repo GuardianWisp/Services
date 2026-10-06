@@ -43,6 +43,7 @@
 html{background:var(--bg);scrollbar-gutter:stable}
 section[id],article[id]{scroll-margin-top:24px}
 html.lock{overflow:hidden}
+html{scrollbar-gutter:stable}   /* locking the page for the menu or a case must not change its width: that relaid out (and blinked) the hero scene */
 body{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.5 var(--f);-webkit-font-smoothing:antialiased;overflow-x:clip}   /* margin: the preview wrapper resets it, the live page didn't */
 ::selection{background:var(--blk);color:var(--bg)}
 a{color:inherit;text-decoration:none}
@@ -1045,8 +1046,8 @@ const rub=n=>n.toLocaleString('ru-RU')+' ₽';
 /* on tetsab.ru cases live at /cases/slug; in a single-file preview they fall back to #case/slug */
 const caseHref=slug=>(globalThis.__paths?'/cases/':'#case/')+slug;
 const ART={
-  cake:{t:'Торт на заказ',s:'Рекламный кадр для соцсетей',ph:{b:'/img/cases/visual/dessert-before',a:'/img/cases/visual/dessert-after',w:1448,t:'Десерт для меню',s:'Кадр для сайта и доставки',ab:'Исходное фото десерта: тусклый свет, мягкий фокус',aa:'Тот же десерт после обработки: свет, резкость, цвет'},svg:'<svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="170" rx="78" ry="12" fill="#e9e6e0"/><rect x="38" y="104" width="124" height="62" rx="10" fill="#f3d9de"/><rect x="54" y="62" width="92" height="48" rx="9" fill="#f7e6e9"/><path d="M54 74c8 10 12-4 20 6s12-6 20 4 12-6 20 2 12-6 20 4 10-4 12-2V70c0-5-4-8-9-8H63c-5 0-9 3-9 8z" fill="#8c3b4f"/><path d="M38 116c10 12 14-4 24 6s14-6 24 4 14-6 24 2 14-6 24 4 14-4 18-2v-12c0-6-4-10-10-10H48c-6 0-10 4-10 10z" fill="#b65a6f"/><circle cx="82" cy="58" r="7" fill="#c21f3a"/><circle cx="100" cy="55" r="7" fill="#d4273f"/><circle cx="118" cy="58" r="7" fill="#c21f3a"/><rect x="98" y="30" width="4" height="22" rx="2" fill="#e8c35a"/><path d="M100 20c4 5 4 9 0 11-4-2-4-6 0-11z" fill="#f5a623"/></svg>'},
-  bottle:{t:'Масло для рук',s:'Карточка для маркетплейса',ph:{b:'/img/cases/visual/perfume-before',a:'/img/cases/visual/perfume-after',w:1024,t:'Флакон для каталога',s:'Кадр для маркетплейса',light:1,ab:'Исходное фото флакона: тёплый свет, мягкий фокус',aa:'Тот же флакон после обработки: каменный подиум, дневной свет'},svg:'<svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="176" rx="52" ry="8" fill="#e6e3dc"/><rect x="84" y="22" width="32" height="26" rx="5" fill="#2b2b2b"/><rect x="90" y="44" width="20" height="12" fill="#cfcfcf"/><rect x="58" y="54" width="84" height="120" rx="20" fill="#c9a36a"/><rect x="58" y="54" width="84" height="120" rx="20" fill="url(#g1)"/><rect x="70" y="92" width="60" height="50" rx="6" fill="#f6f1e7"/><rect x="80" y="104" width="40" height="5" rx="2" fill="#2b2b2b"/><rect x="86" y="116" width="28" height="3" rx="1.5" fill="#8a8a8a"/><rect x="84" y="124" width="32" height="3" rx="1.5" fill="#8a8a8a"/><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".15"/></linearGradient></defs></svg>'},
+  cake:{t:'Торт на заказ',s:'Рекламный кадр для соцсетей',ph:{b:'/img/cases/visual/dessert-before',a:'/img/cases/visual/dessert-after',w:1358,t:'Десерт для меню',s:'Кадр для сайта и доставки',ab:'Исходное фото десерта: тусклый свет, мягкий фокус',aa:'Тот же десерт после обработки: свет, резкость, цвет'},svg:'<svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="170" rx="78" ry="12" fill="#e9e6e0"/><rect x="38" y="104" width="124" height="62" rx="10" fill="#f3d9de"/><rect x="54" y="62" width="92" height="48" rx="9" fill="#f7e6e9"/><path d="M54 74c8 10 12-4 20 6s12-6 20 4 12-6 20 2 12-6 20 4 10-4 12-2V70c0-5-4-8-9-8H63c-5 0-9 3-9 8z" fill="#8c3b4f"/><path d="M38 116c10 12 14-4 24 6s14-6 24 4 14-6 24 2 14-6 24 4 14-4 18-2v-12c0-6-4-10-10-10H48c-6 0-10 4-10 10z" fill="#b65a6f"/><circle cx="82" cy="58" r="7" fill="#c21f3a"/><circle cx="100" cy="55" r="7" fill="#d4273f"/><circle cx="118" cy="58" r="7" fill="#c21f3a"/><rect x="98" y="30" width="4" height="22" rx="2" fill="#e8c35a"/><path d="M100 20c4 5 4 9 0 11-4-2-4-6 0-11z" fill="#f5a623"/></svg>'},
+  bottle:{t:'Масло для рук',s:'Карточка для маркетплейса',ph:{b:'/img/cases/visual/perfume-before',a:'/img/cases/visual/perfume-after',w:983,t:'Флакон для каталога',s:'Кадр для маркетплейса',light:1,ab:'Исходное фото флакона: тёплый свет, мягкий фокус',aa:'Тот же флакон после обработки: каменный подиум, дневной свет'},svg:'<svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="176" rx="52" ry="8" fill="#e6e3dc"/><rect x="84" y="22" width="32" height="26" rx="5" fill="#2b2b2b"/><rect x="90" y="44" width="20" height="12" fill="#cfcfcf"/><rect x="58" y="54" width="84" height="120" rx="20" fill="#c9a36a"/><rect x="58" y="54" width="84" height="120" rx="20" fill="url(#g1)"/><rect x="70" y="92" width="60" height="50" rx="6" fill="#f6f1e7"/><rect x="80" y="104" width="40" height="5" rx="2" fill="#2b2b2b"/><rect x="86" y="116" width="28" height="3" rx="1.5" fill="#8a8a8a"/><rect x="84" y="124" width="32" height="3" rx="1.5" fill="#8a8a8a"/><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".15"/></linearGradient></defs></svg>'},
   chair:{t:'Кресло из массива',s:'Фото для сайта и Авито',svg:'<svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="178" rx="70" ry="9" fill="#e6e3dc"/><path d="M52 38c0-8 6-14 14-14h68c8 0 14 6 14 14v70H52z" fill="#7d8f7a"/><rect x="40" y="100" width="120" height="34" rx="14" fill="#8fa38b"/><rect x="36" y="78" width="18" height="58" rx="8" fill="#6f806c"/><rect x="146" y="78" width="18" height="58" rx="8" fill="#6f806c"/><path d="M52 134l-6 42M148 134l6 42M76 134l-2 38M124 134l2 38" stroke="#6b4a2f" stroke-width="7" stroke-linecap="round"/></svg>'}
 };
 const DISH=[['Шаурма классическая','Курица, овощи, чесночный соус',290,'linear-gradient(150deg,#f3d2a5,#c47a34)'],['Шаурма сырная','Двойной сыр, халапеньо',330,'linear-gradient(150deg,#f6e2a0,#d19a2a)'],['Фалафель-ролл','Без мяса, хумус',270,'linear-gradient(150deg,#dfe6b5,#8c9a3e)'],['Морс домашний','Клюква, 0,4 л',120,'linear-gradient(150deg,#f0b8c0,#b8324a)']];
@@ -1755,8 +1756,12 @@ function drawMark(){
   const b=mark.getBoundingClientRect(), fs=parseFloat(cs.fontSize), ls=parseFloat(cs.letterSpacing)||0;
   tx.fillStyle=cs.color; tx.font=cs.fontWeight+' '+fs*k+'px '+cs.fontFamily; tx.textBaseline='alphabetic';
   let x=(b.left-r.left)*k; const y=(base-r.top)*k;
-  if('letterSpacing' in tx){ tx.letterSpacing=ls*k+'px'; tx.fillText(mark.textContent,x,y); }
-  else for(const ch of mark.textContent){ tx.fillText(ch,x,y); x+=tx.measureText(ch).width+ls*k; }
+  /* each letter where the page put it (kerning and spacing included), so the copy lands exactly on the HTML wordmark
+     in every browser; canvas letterSpacing and its own kerning differ between engines and made the letters jump */
+  const tn=mark.firstChild, rg=document.createRange();
+  if(tn&&tn.nodeType===3){ if('letterSpacing' in tx) tx.letterSpacing='0px';
+    for(let i=0;i<tn.length;i++){ rg.setStart(tn,i); rg.setEnd(tn,i+1); tx.fillText(tn.data[i],(rg.getBoundingClientRect().left-r.left)*k,y); } }
+  else tx.fillText(mark.textContent,x,y);
   tex.needsUpdate=true;
   cy=H/2-((b.top+b.bottom)/2-r.top);
 }
@@ -1872,7 +1877,11 @@ function govern(raw){ if(raw>1) return;   /* a pause (tab switch, sleep), not a 
   if(ratio>.75){ ratio=Math.max(.75,+(ratio-.25).toFixed(2)); renderer.setPixelRatio(ratio); renderer.setSize(W,H,false); }
   else if(mat.dispersion){ mat.dispersion=0; mat.needsUpdate=true; }
   else quit(); }
-function frame(now){ raf=0; window.__glFrames=(window.__glFrames||0)+1; if(dead) return; const raw=Math.max(0,(now-last)/1000); govern(raw); step(Math.min(.05,raw)); last=now; renderer.render(scene,cam); drawOverlay(now); if(vis) raf=requestAnimationFrame(frame); }
+const menuOpen=()=>document.documentElement.classList.contains('m-open');
+/* while the menu is open the scene holds still: its blurred backdrop had to be recomputed over a moving scene every frame,
+   which made opening and closing stutter. It picks up again once the menu has finished closing. */
+new MutationObserver(()=>{ if(!menuOpen()) setTimeout(()=>{ if(!menuOpen()) wake(); },450); }).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+function frame(now){ raf=0; window.__glFrames=(window.__glFrames||0)+1; if(dead) return; if(menuOpen()) return; const raw=Math.max(0,(now-last)/1000); govern(raw); step(Math.min(.05,raw)); last=now; renderer.render(scene,cam); drawOverlay(now); if(vis) raf=requestAnimationFrame(frame); }
 function wake(){ if(!raf&&vis&&!dead){ last=performance.now(); raf=requestAnimationFrame(frame); } }
 
 await Promise.race([document.fonts?document.fonts.load('400 1em "Golos Text"').catch(()=>{}):0,new Promise(r=>setTimeout(r,3000))]);
@@ -1902,7 +1911,8 @@ const launch=()=>{ const T=performance.now(); objs.forEach((b,i)=>{ b.born=T+160
 if(!pre||pre.matches('.gone,.out')) launch();
 else new MutationObserver((_,mo)=>{ if(pre.matches('.gone,.out')){ mo.disconnect(); launch(); } }).observe(pre,{attributes:true,attributeFilter:['class']});
 renderer.render(scene,cam); cv.classList.add('on'); ov.classList.add('on');
-new ResizeObserver(()=>{ layout(); if(!raf){ renderer.render(scene,cam); drawOverlay(performance.now()); } }).observe(hero);
+/* resizing the canvas clears it: draw again in the same callback, or the glass blinks until the next frame */
+let lastW=0; new ResizeObserver(()=>{ const w=hero.clientWidth, h=hero.clientHeight; if(w===lastW&&Math.abs(h-H)<2) return; lastW=w; layout(); renderer.render(scene,cam); drawOverlay(performance.now()); }).observe(hero);
 document.fonts&&document.fonts.addEventListener('loadingdone',()=>setTimeout(()=>{ if(!dead){ layout(); if(!raf){ renderer.render(scene,cam); drawOverlay(performance.now()); } } },0));   /* the page refits the wordmark first */
 new IntersectionObserver(es=>{ vis=es[es.length-1].isIntersecting; wake(); }).observe(hero);   /* the latest entry: a reload can batch 'restored scroll, off screen' with 'scrolled back to top' */
 /* if the GPU drops the context (sleep, driver reset) fall back to the plain wordmark */
