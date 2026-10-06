@@ -1654,6 +1654,10 @@ hero.dataset.gl='loading';
 let renderer;
 /* default GPU: 'high-performance' would wake the discrete one on dual-GPU laptops */
 try{ renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true}); }catch(_){ hero.dataset.gl='fallback:no-webgl'; return; }
+/* WebGL drawn by the CPU (no GPU, or a blocked driver: SwiftShader, llvmpipe…) can't carry the glass: every frame takes
+   hundreds of ms and the page freezes. Keep the plain wordmark there. */
+{ const gl=renderer.getContext(), ri=gl.getExtension('WEBGL_debug_renderer_info'), rn=ri?String(gl.getParameter(ri.UNMASKED_RENDERER_WEBGL)):'';
+  if(/swiftshader|llvmpipe|softpipe|software|basic render/i.test(rn)){ hero.dataset.gl='fallback:software'; renderer.dispose(); return; } }
 renderer.outputColorSpace=THREE.SRGBColorSpace; renderer.toneMapping=THREE.ACESFilmicToneMapping;
 renderer.transmissionResolutionScale=.5;   /* the refraction pass at half resolution: under the glass it isn't visible, and it halves the cost */
 
@@ -1849,12 +1853,14 @@ function step(dt){
 }
 /* quality governor: if frames keep running late, render fewer pixels, then drop the dispersion,
    and as a last resort hand the hero back to the plain wordmark */
-let slow=0, ema=1/60, dead=false;
+let slow=0, ema=1/60, dead=false, crawl=0;
 function quit(why){ hero.dataset.gl='fallback:'+(why||'slow'); dead=true; vis=false; cv.classList.remove('on'); ov.classList.remove('on'); tags.forEach(t=>t.remove()); hero.style.cursor=''; }
 function govern(raw){ if(raw>1) return;   /* a pause (tab switch, sleep), not a slow frame */
+  /* frames this slow (under ~6 fps) mean the device can't run it at all: don't wait for the gradual steps below */
+  if(raw>.16){ if(++crawl>=4){ quit('crawl'); return; } } else crawl=0;
   ema+=(Math.min(raw,.5)-ema)*.1;
   if(ema<=1/40){ slow=0; return; }
-  if(++slow<20) return; slow=0; ema=1/60;
+  if(++slow<12) return; slow=0; ema=1/60;
   if(ratio>.75){ ratio=Math.max(.75,+(ratio-.25).toFixed(2)); renderer.setPixelRatio(ratio); renderer.setSize(W,H,false); }
   else if(mat.dispersion){ mat.dispersion=0; mat.needsUpdate=true; }
   else quit(); }
