@@ -246,7 +246,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .info .num{display:flex;align-items:baseline;gap:14px;margin-bottom:18px}
 .info .num b{font-weight:400;font-size:clamp(2rem,4vw,3rem);letter-spacing:-.04em;color:var(--blk);line-height:1}
 .info h3{font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.08;letter-spacing:-.03em;color:var(--blk)}
-.info>p{margin-top:18px;font-size:17px;color:var(--sec);max-width:40ch}
+.info>p,.vi>p{margin-top:18px;font-size:17px;color:var(--sec);max-width:40ch}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:26px;padding:0;list-style:none}
 .chips li{font-size:13px;padding:6px 11px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.14);color:var(--tx)}
 .ba2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px;font-size:15px}
@@ -337,6 +337,16 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .cmp .handle::after{content:"↔";position:absolute;top:50%;left:0;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:16px;color:var(--blk);box-shadow:0 6px 18px rgba(0,0,0,.18)}
 .cmp input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;z-index:5;touch-action:pan-y;pointer-events:none}   /* keyboard only: the pointer is handled on the whole photo */
 #cmp{touch-action:pan-y;cursor:ew-resize}
+#cmp.solo{cursor:default}
+.cmp.solo .before,.cmp.solo .lb,.cmp.solo .handle,.cmp.solo input{display:none}
+.cmp.solo .after{clip-path:none}
+/* both texts share one cell, so switching tabs never changes the block's height (on phones the text sits above the picture) */
+.vis{display:grid}
+.vis>.vi{grid-area:1/1;transition:opacity .35s ease}
+.vis>.vi.off{opacity:0;visibility:hidden;transition:opacity .2s ease,visibility 0s .2s}
+.cmp.solo .after video{width:72%;height:62%;object-fit:contain}   /* no CSS shadow: Safari draws a filter on video around its whole box, not the object */
+.cmp.solo .adtag b{white-space:nowrap}
+@media (max-width:520px){.cmp.solo .after .adtag{flex-direction:column;align-items:flex-start;gap:4px}}
 .cmp .lb{position:absolute;top:14px;z-index:3;font-size:13px;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.75);color:var(--blk)}
 .cmp .lb.l{left:14px}.cmp .lb.r{right:14px}
 
@@ -818,10 +828,20 @@ html.fwait .hero{visibility:hidden}
       <article class="demo flip" id="d-visual" aria-labelledby="d2">
         <div class="info">
           <div class="num"><b>02</b><span class="lab">(Визуал)</span></div>
-          <h3 id="d2">Обычное фото → картинка для рекламы</h3>
-          <p>Не нужно каждый раз устраивать съёмку: адаптируем ваши фото для сайта, соцсетей, Авито или маркетплейса. Подвигайте разделитель, чтобы сравнить.</p>
-          <ul class="chips"><li>Предметные фото</li><li>Замена фона</li><li>Рекламные изображения</li><li>Для соцсетей</li><li>Для маркетплейсов</li></ul>
-          <div class="buy"><a class="pill" href="#contact">Обработать мои фото</a><span>от 500 ₽ за фото</span></div>
+          <div class="vis">
+          <div class="vi" data-v="3d">
+            <h3 id="d2">3D и контент для рекламы</h3>
+            <p>Делаем 3D-визуалы и короткие ролики под ваш продукт, а ещё доводим ваши фото до рекламного вида. Для сайта, соцсетей, Авито и маркетплейсов.</p>
+            <ul class="chips"><li>3D-визуалы</li><li>Анимация и ролики</li><li>Картинки для рекламы</li><li>Для соцсетей</li><li>Обработка фото</li></ul>
+            <div class="buy"><a class="pill" href="#contact">Обсудить контент</a><span>3D — по задаче, фото — от 500 ₽</span></div>
+          </div>
+          <div class="vi off" data-v="photo" inert>
+            <h3>Обычное фото → картинка для рекламы</h3>
+            <p>Не нужно каждый раз устраивать съёмку: адаптируем ваши фото для сайта, соцсетей, Авито или маркетплейса. Подвигайте разделитель, чтобы сравнить.</p>
+            <ul class="chips"><li>Предметные фото</li><li>Замена фона</li><li>Рекламные изображения</li><li>Для соцсетей</li><li>Для маркетплейсов</li></ul>
+            <div class="buy"><a class="pill" href="#contact">Обработать мои фото</a><span>от 500 ₽ за фото</span></div>
+          </div>
+          </div>
         </div>
         <div class="stage">
           <div class="cmp" id="cmp">
@@ -831,7 +851,7 @@ html.fwait .hero{visibility:hidden}
             <div class="handle" aria-hidden="true"></div>
             <input type="range" min="0" max="100" value="50" id="cmpR" aria-label="Сравнить до и после">
           </div>
-          <div class="tabs" role="group" aria-label="Пример" id="cmpTabs"><button type="button" aria-pressed="true" data-k="cake">Десерт</button><button type="button" aria-pressed="false" data-k="bottle">Товар</button><button type="button" aria-pressed="false" data-k="chair">Мебель</button></div>
+          <div class="tabs" role="group" aria-label="Пример" id="cmpTabs"><button type="button" aria-pressed="true" data-k="3d">3D</button><button type="button" aria-pressed="false" data-k="cake">Десерт</button><button type="button" aria-pressed="false" data-k="bottle">Товар</button></div>
         </div>
       </article>
 
@@ -1313,13 +1333,22 @@ whenVisible($('#siteStage'),()=>{ siteOn=true; loadShots(mode()); scrollA?scroll
 /* 02 before / after: same object, phone snapshot vs. ad shot */
 const cmp=$('#cmp');
 /* a real photo pair where there is one (same framing, so the wipe lines up), the drawing otherwise */
-function setArt(k){ const a=ART[k], p=a.ph; cmp.classList.toggle('photo',!!p); cmp.classList.toggle('light',!!(p&&p.light));
+/* the 3D tab: one object turning on its own, so no before/after, no divider; the text beside it switches too */
+const vis3d=on=>{ cmp.classList.toggle('solo',on); $$('#d-visual .vi').forEach(v=>{ const off=(v.dataset.v==='3d')!==on; v.classList.toggle('off',off); v.inert=off; }); };
+function setArt(k){
+  if(k==='3d'){ vis3d(true); cmp.classList.remove('photo','light'); $('#cmpB').innerHTML='';
+    $('#cmpA').innerHTML=objVid('ic')+'<div class="adtag"><b>3D-визуал</b><span>Для сайта, соцсетей и рекламы</span></div>';
+    const v=$('#cmpA video'); v.preload='auto'; if(cmpSeen&&!reduce) v.play().catch(()=>{}); return; }
+  vis3d(false); $('#cmpA video')&&$('#cmpA video').pause();
+  const a=ART[k], p=a.ph; cmp.classList.toggle('photo',!!p); cmp.classList.toggle('light',!!(p&&p.light));
   const tag=p?'<div class="adtag"><b>'+esc(p.t)+'</b><span>'+esc(p.s)+'</span></div>':'<div class="adtag"><b>'+esc(a.t)+'</b><span>'+esc(a.s)+'</span></div>';
   /* WebP in two widths; lazy, so the pair loads only as the block nears the screen, not with the first screen */
   const img=(f,alt)=>'<img src="'+f+'-800.webp" srcset="'+f+'-800.webp 800w, '+f+'.webp '+p.w+'w" sizes="(max-width:860px) 100vw, 50vw" alt="'+esc(alt)+'" loading="lazy" decoding="async">';
   if(p){ $('#cmpB').innerHTML=img(p.b,p.ab); $('#cmpA').innerHTML=img(p.a,p.aa)+tag; return; }
   $('#cmpB').innerHTML=a.svg; $('#cmpA').innerHTML=a.svg.replace(/id="g1"/,'id="g2"').replace(/url\(#g1\)/,'url(#g2)')+tag; }
-setArt('cake');
+let cmpSeen=false;
+setArt('3d');
+whenVisible(cmp,()=>{ cmpSeen=true; const v=$('#cmpA video'); if(v&&!reduce) v.play().catch(()=>{}); },()=>{ cmpSeen=false; const v=$('#cmpA video'); v&&v.pause(); });
 $('#cmpTabs').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; pressGroup(b.parentElement,b); setArt(b.dataset.k); });
 let cmpUsed=false;
 const cmpR=$('#cmpR'); cmpR.addEventListener('input',()=>{ pT=pC=+cmpR.value; cmp.style.setProperty('--p',cmpR.value+'%'); cmpUsed=true; });
@@ -1327,10 +1356,10 @@ const cmpR=$('#cmpR'); cmpR.addEventListener('input',()=>{ pT=pC=+cmpR.value; cm
    It eases toward the pointer so it glides rather than jumps. The range input stays for the keyboard. */
 let pT=50, pC=50, pRaf=0;
 const pStep=()=>{ pC+=(pT-pC)*.28; if(Math.abs(pT-pC)<.05) pC=pT; cmp.style.setProperty('--p',pC+'%'); cmpR.value=pC; pRaf=pC!==pT?requestAnimationFrame(pStep):0; };
-const aim=e=>{ const r=cmp.getBoundingClientRect(); pT=Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100)); pC=+cmpR.value; cmpUsed=true; if(!pRaf) pRaf=requestAnimationFrame(pStep); };
+const aim=e=>{ if(cmp.classList.contains('solo')) return; const r=cmp.getBoundingClientRect(); pT=Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100)); pC=+cmpR.value; cmpUsed=true; if(!pRaf) pRaf=requestAnimationFrame(pStep); };
 cmp.addEventListener('pointermove',e=>{ if(e.pointerType==='mouse'||e.buttons) aim(e); });
 cmp.addEventListener('pointerdown',aim);
-whenVisible(cmp,async()=>{ if(cmpUsed||reduce) return; for(const v of [50,72,28,50]){ if(cmpUsed) return; const from=+cmpR.value, t0=performance.now(); await new Promise(res=>{ const st=now=>{ const k=Math.min(1,(now-t0)/700), e=1-Math.pow(1-k,3), x=from+(v-from)*e; cmpR.value=x; cmp.style.setProperty('--p',x+'%'); k<1&&!cmpUsed?requestAnimationFrame(st):res(); }; requestAnimationFrame(st); }); await sleep(250); } });
+whenVisible(cmp,async()=>{ if(cmpUsed||reduce||cmp.classList.contains('solo')) return; for(const v of [50,72,28,50]){ if(cmpUsed) return; const from=+cmpR.value, t0=performance.now(); await new Promise(res=>{ const st=now=>{ const k=Math.min(1,(now-t0)/700), e=1-Math.pow(1-k,3), x=from+(v-from)*e; cmpR.value=x; cmp.style.setProperty('--p',x+'%'); k<1&&!cmpUsed?requestAnimationFrame(st):res(); }; requestAnimationFrame(st); }); await sleep(250); } });
 
 /* 03 bot: scripted chat, then a notification for the owner */
 const chat=$('#chat'), botToast=$('#botToast');
