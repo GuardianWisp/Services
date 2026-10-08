@@ -23,9 +23,13 @@ type Data = {
 };
 
 export function analytics() {
-  // The counters are queued at once but their scripts load 3s after the page has loaded, in idle time:
-  // otherwise they parse and run while the preloader and the hero scene start, and make them stutter.
-  let head = `<script>window.__lateJs=[];addEventListener('load',function(){setTimeout(function(){(window.requestIdleCallback||setTimeout)(function(){__lateJs.forEach(function(s){var k=document.createElement('script');k.async=1;k.src=s;document.head.appendChild(k);});},{timeout:2000});},3000);},{once:true});</script>`;
+  // The counters are queued at once; their scripts load once the hero's glass scene has settled (data-gl leaves
+  // 'loading'), which on a first visit is still under the preloader, before its finish animation. Pages without
+  // the scene load them 3s after the page. Otherwise they parse while the scene compiles and make it stutter.
+  let head = `<script>window.__lateJs=[];(function(){var done=0;function go(){if(done)return;done=1;__lateJs.forEach(function(s){var k=document.createElement('script');k.async=1;k.src=s;document.head.appendChild(k);});}
+function ready(h){var g=h.getAttribute('data-gl');return g&&g!=='loading';}
+document.addEventListener('DOMContentLoaded',function(){var h=document.querySelector('.hero');if(!h)return;if(ready(h))return go();new MutationObserver(function(_,o){if(ready(h)){o.disconnect();go();}}).observe(h,{attributes:true,attributeFilter:['data-gl']});});
+addEventListener('load',function(){setTimeout(go,3000);},{once:true});})();</script>`;
   let body = "";
   if (GA_MEASUREMENT_ID) {
     head += `<script>__lateJs.push("https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}");window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_MEASUREMENT_ID}');</script>`;
