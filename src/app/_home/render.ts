@@ -23,14 +23,15 @@ type Data = {
 };
 
 export function analytics() {
-  let head = "";
+  // The counters are queued at once but their scripts load 3s after the page has loaded, in idle time:
+  // otherwise they parse and run while the preloader and the hero scene start, and make them stutter.
+  let head = `<script>window.__lateJs=[];addEventListener('load',function(){setTimeout(function(){(window.requestIdleCallback||setTimeout)(function(){__lateJs.forEach(function(s){var k=document.createElement('script');k.async=1;k.src=s;document.head.appendChild(k);});},{timeout:2000});},3000);},{once:true});</script>`;
   let body = "";
   if (GA_MEASUREMENT_ID) {
-    head += `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_MEASUREMENT_ID}');</script>`;
+    head += `<script>__lateJs.push("https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}");window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_MEASUREMENT_ID}');</script>`;
   }
   if (YANDEX_METRIKA_ID) {
-    head += `<script>window.__ymId=${YANDEX_METRIKA_ID};(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js?id=${YANDEX_METRIKA_ID}","ym");ym(${YANDEX_METRIKA_ID},"init",{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>`;
+    head += `<script>window.__ymId=${YANDEX_METRIKA_ID};window.ym=window.ym||function(){(ym.a=ym.a||[]).push(arguments)};ym.l=1*new Date();__lateJs.push("https://mc.yandex.ru/metrika/tag.js?id=${YANDEX_METRIKA_ID}");ym(${YANDEX_METRIKA_ID},"init",{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>`;
     body += `<noscript><div><img src="https://mc.yandex.ru/watch/${YANDEX_METRIKA_ID}" style="position:absolute;left:-9999px" alt=""></div></noscript>`;
   }
   return { head, body };
