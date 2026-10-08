@@ -1690,7 +1690,7 @@ hero.dataset.gl='loading';
 
 let renderer;
 /* default GPU: 'high-performance' would wake the discrete one on dual-GPU laptops */
-try{ renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true}); }catch(_){ hero.dataset.gl='fallback:no-webgl'; return; }
+try{ renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true}); renderer.setClearColor(0x000000,0); }catch(_){ hero.dataset.gl='fallback:no-webgl'; return; }
 /* WebGL drawn by the CPU (no GPU, or a blocked driver: SwiftShader, llvmpipe…) can't carry the glass: every frame takes
    hundreds of ms and the page freezes. Keep the plain wordmark there. */
 { const gl=renderer.getContext(), ri=gl.getExtension('WEBGL_debug_renderer_info'), rn=ri?String(gl.getParameter(ri.UNMASKED_RENDERER_WEBGL)):'';
@@ -1700,7 +1700,7 @@ renderer.transmissionResolutionScale=.5;   /* the refraction pass at half resolu
 
 /* the page colour comes from the --bg token: some hosts (the artifact viewer) leave <body> transparent, which would read as black */
 const BG=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#F5F5F5';
-const scene=new THREE.Scene(); scene.background=new THREE.Color(BG);
+const scene=new THREE.Scene();   /* no background: the canvas is clear wherever there is no object */
 /* studio for reflections only: a dark room with a few bright softboxes gives the glass its black-and-white edges */
 const studio=new THREE.Scene(); studio.background=new THREE.Color(0x0b0b0c);
 const box=(w,h,x,y,z,c)=>{ const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:c,side:THREE.DoubleSide})); m.position.set(x,y,z); m.lookAt(0,0,0); studio.add(m); };
@@ -1715,6 +1715,9 @@ const tc=document.createElement('canvas'), tx=tc.getContext('2d'), tex=new THREE
 tex.colorSpace=THREE.SRGBColorSpace;
 const plane=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:tex,toneMapped:false}));
 scene.add(plane);
+/* the wordmark copy only feeds the glass: it is drawn into the pass the glass samples, never onto the screen, so on screen
+   the page's own crisp HTML wordmark shows through the clear canvas (at a reduced pixel ratio the copy looked blurry and pixelated) */
+plane.onBeforeRender=r=>{ plane.material.colorWrite=r.getRenderTarget()!==null; };
 /* phones: the objects sit above and below the wordmark, over empty page, so they had little to bend. Extra wordmark lines
    behind them are drawn only into the pass the glass samples (the transmission target), never onto the screen itself:
    they show up only as refracted letters inside the glass. Cut-out (alphaTest) so three counts it as opaque and puts it in that pass;
@@ -1912,7 +1915,8 @@ function step(dt){
    and as a last resort hand the hero back to the plain wordmark */
 let slow=0, ema=1/60, dead=false, crawl=0;
 function quit(why){ hero.dataset.gl='fallback:'+(why||'slow'); dead=true; vis=false; cv.classList.remove('on'); ov.classList.remove('on'); tags.forEach(t=>t.remove()); hero.style.cursor=''; }
-function govern(raw){ if(raw>1) return;   /* a pause (tab switch, sleep), not a slow frame */
+const preUp=()=>{ const p=document.getElementById('pre'); return !!p&&!p.classList.contains('gone'); };
+function govern(raw){ if(raw>1||preUp()) return;   /* a pause (tab switch, sleep), not a slow frame; nor frames slowed by the preloader's own animation */
   /* frames this slow (under ~6 fps) mean the device can't run it at all: don't wait for the gradual steps below */
   if(raw>.16){ if(++crawl>=4){ quit('crawl'); return; } } else crawl=0;
   ema+=(Math.min(raw,.5)-ema)*.1;
