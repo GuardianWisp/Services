@@ -100,10 +100,11 @@ p,h1,h2,h3{margin:0;font-weight:400}
 .mi:hover .lt>span,.mi:focus-visible .lt>span{transform:translateY(-50%)}
 .m-open .mi{animation:miIn .9s var(--ease) both}
 @keyframes miIn{from{opacity:0;transform:translateY(24px)}}
-.m-card{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.07);font-size:14px;transition:background .3s}
-.m-card:hover{background:rgba(255,255,255,.12)}
-.m-card small{grid-column:1/-1;color:rgba(255,255,255,.5);font-size:13px}
-.m-card .t{color:#fff}
+.pill.m-cta{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.07);color:#fff;font-size:14px;letter-spacing:0;text-transform:none;transition:background .3s}   /* in place of the news card: the request drawer straight from the menu, in the menu's own quiet style */
+.pill.m-cta:hover,.pill.m-cta:focus-visible{background:rgba(255,255,255,.12);color:#fff}
+.m-cta .a{transition:transform .4s var(--ease)}
+.m-cta:hover .a{transform:translateX(4px)}
+.m-cta small{grid-column:1/-1;color:rgba(255,255,255,.5);font-size:13px}
 .m-foot{display:flex;justify-content:space-between;align-items:end;gap:12px;font-size:14px}
 .m-foot a{color:#fff}
 .m-egg{font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.08em}
@@ -206,7 +207,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .rc .cmp{--p:0%}
 .rc .cmp .before{display:none}
 .rc .msg,.rc .kb{animation:none}
-.reel-cur{position:fixed;left:0;top:0;z-index:40;pointer-events:none;padding:9px 14px;border-radius:99px;background:var(--blk);color:#fff;font-size:13px;white-space:nowrap;opacity:0;transform:translate(-50%,-150%) scale(.8);transition:opacity .25s,transform .35s var(--ease)}
+.reel-cur{position:fixed;left:0;top:0;z-index:40;will-change:transform,opacity;pointer-events:none;padding:9px 14px;border-radius:99px;background:var(--blk);color:#fff;font-size:13px;white-space:nowrap;opacity:0;transform:translate(-50%,-150%) scale(.8);transition:opacity .25s,transform .35s var(--ease)}
 .reel-cur b{font-weight:400;color:var(--lime)}
 .reel-cur.on{opacity:1;transform:translate(-50%,-150%) scale(1)}
 
@@ -440,9 +441,10 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .wrow .ct{display:flex;justify-content:space-between;gap:16px;font-size:14px;color:var(--sec)}
 .wrow.demo-w .nm{color:var(--mute)}
 @media (max-width:860px){.wrow{grid-template-columns:1fr}.wrow .ct{padding-top:6px}}
-#pv{position:fixed;left:0;top:0;z-index:25;width:clamp(260px,30vw,340px);aspect-ratio:4/3;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.92);transition:opacity .35s,transform .6s var(--ease);display:grid;align-content:end;gap:2px;padding:16px;font-size:14px;color:#fff;border-radius:6px}
+#pv{position:fixed;left:0;top:0;z-index:25;will-change:transform,opacity;width:clamp(260px,30vw,340px);aspect-ratio:4/3;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.92);transition:opacity .35s,transform .6s var(--ease);display:grid;align-content:end;gap:2px;padding:16px;font-size:14px;color:#fff;border-radius:6px}
 #pv.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
 #pv small{opacity:.8}
+#pv .pv-c{display:contents}
 #pv{overflow:hidden;padding:0;display:block}
 #pv .pv-in{position:absolute;left:14px;top:14px;width:560px;transform-origin:0 0;transform:scale(var(--k,.5))}
 #pv .pv-in .device{max-width:none;height:440px;box-shadow:0 24px 48px -24px rgba(0,0,0,.45)}
@@ -734,7 +736,7 @@ html.fwait .hero{visibility:hidden}
 <aside class="menu" id="menu" aria-label="Меню" inert>
   <div class="m-top"><span>(Меню)</span><span>Красноярск · <span data-clock>—</span></span></div>
   <nav class="m-nav" aria-label="Разделы"></nav>
-  <a class="m-card" href="/cases/burenie"><span class="t">Бурение 124</span><span>→</span><small>(Новый кейс) Сайт мастера по бурению скважин в Красноярске</small></a>
+  <a class="pill m-cta" href="#contact"><span class="t">Оставить заявку</span><span class="a" aria-hidden="true">→</span><small>Короткая форма: что нужно и как с вами связаться</small></a>
   <div class="m-foot"><a href="https://t.me/tetsab" target="_blank" rel="noopener"><span class="roll"><span data-t="Telegram-канал ↗">Telegram-канал ↗</span></span></a><span class="m-egg" title="Прочитайте наоборот">TETSAB ↔ BASTET</span></div>
 </aside>
 
@@ -1086,7 +1088,7 @@ const CASES={
     was:'Только объявление на Авито — среди десятков контор и посредников.',now:'Своя страница: кто мастер, как работает, отзывы и форма заявки.',
     gives:[['Доверие','Видно, что работает сам мастер со своей установкой, а отзывы подтверждают это.'],['Меньше вопросов','Порядок работы, оплата и зона выезда расписаны заранее.'],['Простая заявка','Клиент оставляет номер, Сергей перезванивает и договаривается о выезде.']],
     extra:'form',
-    real:{desk:'/img/cases/burenie/hero.jpg',mob:'/img/cases/burenie/m_hero.jpg',
+    real:{desk:'/img/cases/burenie/hero.jpg',pv:'/img/cases/burenie/hero-pv.webp',mob:'/img/cases/burenie/m_hero.jpg',
       phones:[['Первый экран','/img/cases/burenie/m_1.jpg'],['Работы','/img/cases/burenie/m_2.jpg'],['Отзывы','/img/cases/burenie/m_3.jpg'],['Зона выезда','/img/cases/burenie/m_4.jpg'],['Заявка','/img/cases/burenie/m_5.jpg']],
       reviews:[['Анастасия','Очень ответственный исполнитель. На место прибыл в оговоренное время, даже несмотря на ухудшившиеся погодные условия. Ответил на все возникшие вопросы, всё объяснил, рассказал, дал напутствия. Человек своего дела, в котором можете быть уверены.'],['Дмитрий Сергеевич','Бурили 36 метров, ответственно и трепетно относятся к своей работе, приехали, сделали без лишних слов. Благодарю за работу, буду рекомендовать.']],
       shots:[['Уже пробурено','/img/cases/burenie/gallery.jpg'],['Куда приезжаю','/img/cases/burenie/area.jpg'],['Отзывы с Авито','/img/cases/burenie/reviews.jpg'],['Заявка','/img/cases/burenie/request.jpg']]}},
@@ -1118,7 +1120,7 @@ const CASES={
     chips:['Сайт с заказом','Меню и цены','Конструктор торта','Витрина с остатками','Общая корзина','Админка','Загрузка фото','Мобильная версия','Хостинг в России'],
     was:'Цены в директ, заказ — в переписке, витрина — в сторис.',now:'Цены и начинки видны сразу, заказ собирается в одной корзине, остатки витрины — на сайте.',
     gives:[['Меньше переписки','Цены, начинки и примерная стоимость видны до первого сообщения.'],['Витрину разбирают быстрее','Видно, что осталось, и любимый десерт можно отложить заранее.'],['Без программиста','Цены, остатки, даты витрины и фото кондитер меняет сам, прямо с телефона.']],
-    real:{desk:'/img/cases/vanil/hero.jpg',mob:'/img/cases/vanil/m_hero.jpg',
+    real:{desk:'/img/cases/vanil/hero.jpg',pv:'/img/cases/vanil/hero-pv.webp',mob:'/img/cases/vanil/m_hero.jpg',
       phones:[['Первый экран','/img/cases/vanil/m_1.jpg'],['Меню','/img/cases/vanil/m_2.jpg'],['Конструктор','/img/cases/vanil/m_3.jpg'],['Витрина','/img/cases/vanil/m_4.jpg'],['Заказ','/img/cases/vanil/m_5.jpg']],
       shots:[['Конструктор торта','/img/cases/vanil/configurator.jpg'],['Меню с ценами','/img/cases/vanil/menu.jpg'],['Витрина с остатками','/img/cases/vanil/vitrina.jpg'],['Админка: остатки −1 / +1','/img/cases/vanil/admin.jpg']]}},
   lak:{domain:'lak-studio.ru',brand:'ЛАК.',nav:'Услуги · Мастера · Запись',city:'Красноярск',
@@ -1427,10 +1429,17 @@ $('#filters').addEventListener('click',e=>{ const b=e.target.closest('button'); 
 const pv=$('#pv'); let pvOn=false, px=0, py=0, tx=0, ty=0;
 if(fine){
   /* hover card: the real site's first screen for live cases, the same mock as inside the case for demos */
-  let pvI=-1;
-  $('#wlist').addEventListener('pointerover',e=>{ const r=e.target.closest('.wrow'); if(!r) return; const i=+r.dataset.i, w=WORKS[i], c=CASES[w.slug];
-    if(i!==pvI){ pvI=i; pv.style.background=w.bg;
-      pv.innerHTML='<div class="pv-in">'+(c&&c.objs?ekbCover(c,true):c&&c.film?filmSite(c,true):c&&c.real?realShot(c,c.real.desk):c?siteMock(c):'')+'</div><div class="pv-t">'+esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.soon?'В разработке':w.done?'Кейс · визуалы':w.concept?'Концепт · сайт работает':w.url?'Кейс · сайт работает':'Демо-кейс')+'</small></div>';
+  let pvI=-1; const pvCards=[];
+  const pvCard=i=>{ if(pvCards[i]) return pvCards[i]; const w=WORKS[i], c=CASES[w.slug], d=document.createElement('div'); d.className='pv-c';
+    d.innerHTML='<div class="pv-in">'+(c&&c.objs?ekbCover(c,true):c&&c.film?filmSite(c,true):c&&c.real?realShot(c,c.real.pv||c.real.desk):c?siteMock(c):'')+'</div><div class="pv-t">'+esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.soon?'В разработке':w.done?'Кейс · визуалы':w.concept?'Концепт · сайт работает':w.url?'Кейс · сайт работает':'Демо-кейс')+'</small></div>';
+    d.querySelectorAll('img').forEach(m=>{ m.loading='eager'; if(m.decode) m.decode().catch(()=>{}); });
+    return pvCards[i]=d; };
+  /* decode every card's pictures while the list is still a screen away, so the first hover does not wait on them */
+  const pvWarm=new IntersectionObserver(es=>{ if(!es.some(e=>e.isIntersecting)) return; pvWarm.disconnect();
+    (window.requestIdleCallback||setTimeout)(()=>WORKS.forEach((_,i)=>pvCard(i))); },{rootMargin:'800px 0px'});
+  pvWarm.observe($('#wlist'));
+  $('#wlist').addEventListener('pointerover',e=>{ const r=e.target.closest('.wrow'); if(!r) return; const i=+r.dataset.i, w=WORKS[i];
+    if(i!==pvI){ pvI=i; pv.style.background=w.bg; pv.replaceChildren(pvCard(i));
       pv.style.setProperty('--k',((pv.offsetWidth-28)/560).toFixed(3)); }
     pv.classList.add('on'); pvOn=true; wake(); });
   $('#wlist').addEventListener('pointerleave',()=>{ pv.classList.remove('on'); pvOn=false; });
@@ -1490,7 +1499,7 @@ letters($('#fin'));
   const home=document.createComment('form'); let opener=null, touched=false;
   form.addEventListener('change',e=>{ if(e.isTrusted) touched=true; });
   const NEED={'d-site':['o1'],'d-visual':['o2'],'d-bot':['o3'],'d-order':['o4'],'Старт':['o1'],'Заявки':['o1','o3'],'Заказы':['o4']};
-  function open(a){ opener=a; const sec=a.closest('.demo'), pk=a.closest('.pk'), key=sec?sec.id:pk?pk.querySelector('h3').textContent:'';
+  function open(a){ if(root.classList.contains('m-open')) $('#mbtn').click(); opener=a; const sec=a.closest('.demo'), pk=a.closest('.pk'), key=sec?sec.id:pk?pk.querySelector('h3').textContent:'';
     const t=a.textContent.trim(); $('#drT').textContent=pk?'Пакет «'+key+'»':/^Обсудить|^Обработать/.test(t)?t:'Оставить заявку';
     if(!touched){ form.querySelectorAll('.opts input').forEach(i=>{ i.checked=(NEED[key]||[]).includes(i.id); }); }
     form.before(home); slot.append(form); dr.inert=false; root.classList.add('dr-open');
@@ -1670,16 +1679,16 @@ function reelTick(dt){ if(!reelOn) return;
   reelRows.forEach(r=>{ if(!r.w) return; r.x+=r.dir*((reduce?0:22*(1-reelHover*.8))*dt+vel*dt*.55); r.x=((r.x%r.w)+r.w)%r.w;
     r.el.style.transform='translate3d('+(-r.x).toFixed(1)+'px,0,0)'; }); }
 if(fine){ const cur=document.createElement('div'); cur.className='reel-cur'; document.body.appendChild(cur);
-  $('.reel').addEventListener('pointerover',e=>{ const a=e.target.closest('.rc'); if(!a) return; cur.textContent='('+a.dataset.cap+')'; cur.classList.add('on'); reelHover=1; });
+  $('.reel').addEventListener('pointerover',e=>{ const a=e.target.closest('.rc'); if(!a) return; cur.textContent='('+a.dataset.cap+')'; cur.style.translate=e.clientX+'px '+e.clientY+'px'; cur.classList.add('on'); reelHover=1; });
   $('.reel').addEventListener('pointerleave',()=>{ cur.classList.remove('on'); reelHover=0; });
-  addEventListener('pointermove',e=>{ cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; },{passive:true}); }
+  addEventListener('pointermove',e=>{ if(reelHover) cur.style.translate=e.clientX+'px '+e.clientY+'px'; },{passive:true}); }
 
 /* one frame loop for the drifting titles, the gallery and the hover preview; it sleeps when none of them is on screen */
 let last=performance.now(), raf=0;
 const busy=()=>pvOn||(!caseEl.classList.contains('open')&&(reelOn||(!reduce&&ticks.some(t=>t._on))));
 function wake(){ if(raf||!busy()) return; last=performance.now(); lastY=scrollY; raf=requestAnimationFrame(frame); }
 function frame(now){ raf=0; const dt=Math.min(.05,(now-last)/1000); last=now; tickTick(dt); reelTick(dt);
-  if(pvOn){ px+=(tx-px)*(1-Math.exp(-dt*10)); py+=(ty-py)*(1-Math.exp(-dt*10)); pv.style.left=px+'px'; pv.style.top=py+'px'; }
+  if(pvOn){ px+=(tx-px)*(1-Math.exp(-dt*16)); py+=(ty-py)*(1-Math.exp(-dt*16)); pv.style.translate=px.toFixed(1)+'px '+py.toFixed(1)+'px'; }
   if(busy()) raf=requestAnimationFrame(frame); }
 wake();
 })();
@@ -1847,7 +1856,7 @@ function layout(){
 
 /* cursor: in scene units, origin at the hero centre */
 const ptr={x:0,y:0,vx:0,vy:0,on:false};
-addEventListener('pointermove',e=>{ const r=cv.getBoundingClientRect(); const x=e.clientX-r.left-W/2, y=H/2-(e.clientY-r.top);
+addEventListener('pointermove',e=>{ if(!vis){ ptr.on=false; return; } const r=cv.getBoundingClientRect(); const x=e.clientX-r.left-W/2, y=H/2-(e.clientY-r.top);
   ptr.vx=x-ptr.x; ptr.vy=y-ptr.y; ptr.x=x; ptr.y=y; ptr.on=e.clientY>r.top&&e.clientY<r.bottom; wake(); },{passive:true});
 
 hero.addEventListener('click',e=>{ if(e.target.closest('a,button,input,label')) return; const r=cv.getBoundingClientRect();
