@@ -174,9 +174,8 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .hero>.glass.on{opacity:1}
 .hero>.glass-ov{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0;transition:opacity .9s var(--ease)}
 .hero>.glass-ov.on{opacity:1}
-@media (max-width:700px){.hero>.mark{min-height:34svh;display:flex;align-items:center}}   /* flex, not grid: a grid item would stretch and the wordmark fit would see no room to grow */
+@media (max-width:700px){.hero>.mark{min-height:50svh;display:flex;align-items:center}}   /* flex, not grid: a grid item would stretch and the wordmark fit would see no room to grow */
 .gl-tag{position:absolute;left:0;top:0;z-index:3;pointer-events:none;padding:8px 13px;border-radius:99px;background:var(--blk);color:#fff;font-size:13px;line-height:1.2;white-space:nowrap;opacity:0;transition:opacity .25s}
-.gl-tag b{font-weight:400;color:var(--lime)}
 .gl-tag.on{opacity:1}
 .gl-touch .gl-tag{padding:6px 10px;font-size:12px}
 .hero-say{padding-top:24px;align-items:end}
@@ -1679,8 +1678,8 @@ if(location.search.includes('gldebug')){ const d=document.createElement('div'), 
     d.textContent=(h&&h.dataset.gl||'module not started')+' · '+(f-n)*2+' fps'+(ios?' · iOS '+ios.replace('_','.'):'')+(errs.length?' · '+errs.slice(-2).join(' | '):''); n=f; },500); }
 </script>
 <script type="module">
-/* hero: a full-width wordmark behind two glass objects with dispersion; each object is a way into one service
-   (hover shows its name, a click scrolls there). A tracking overlay marks points on the objects and ties them together. The wordmark is redrawn inside the scene so the glass refracts it;
+/* hero: a full-width wordmark behind two glass objects with dispersion; each object is labelled with one service
+   (hover shows its name, a click spins it). A tracking overlay marks points on the objects and ties them together. The wordmark is redrawn inside the scene so the glass refracts it;
    without WebGL the plain HTML wordmark stays. */
 import * as THREE from '/vendor/three/three-r186.min.js';   /* a plain path (import maps need iOS 16.4+); one file, transpiled for Safari 15 (three uses class static blocks, Safari 16.4+) */
 (async()=>{
@@ -1716,6 +1715,14 @@ const tc=document.createElement('canvas'), tx=tc.getContext('2d'), tex=new THREE
 tex.colorSpace=THREE.SRGBColorSpace;
 const plane=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:tex,toneMapped:false}));
 scene.add(plane);
+/* phones: the objects sit above and below the wordmark, over empty page, so they had little to bend. Extra wordmark lines
+   behind them are drawn only into the pass the glass samples (the transmission target), never onto the screen itself:
+   they show up only as refracted letters inside the glass. Cut-out (alphaTest) so three counts it as opaque and puts it in that pass;
+   drawn after the page plane and without depth so it never hides it. */
+const gc=document.createElement('canvas'), gx=gc.getContext('2d'), gtex=new THREE.CanvasTexture(gc); gtex.colorSpace=THREE.SRGBColorSpace;
+const ghost=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:gtex,alphaTest:.5,depthWrite:false,toneMapped:false}));
+ghost.position.z=.5; ghost.renderOrder=1; ghost.visible=false; scene.add(ghost);
+ghost.onBeforeRender=r=>{ ghost.material.colorWrite=r.getRenderTarget()!==null; };
 
 /* models: hero/glass.bin holds the meshes back to back, int16 positions in a 2-unit box, int8 normals, uint16 indices */
 /* shipped gzipped (servers don't compress binary files on their own) and unpacked here */
@@ -1759,7 +1766,7 @@ mat.onBeforeCompile=sh=>{ sh.fragmentShader=sh.fragmentShader.replace('#include 
 const V=THREE.Vector3;
 const SERV=[['Сайты','d-site'],['Боты','d-bot']];
 const touch=matchMedia('(hover:none)').matches; if(touch) hero.classList.add('gl-touch');
-const tags=SERV.map(([n])=>{ const el=document.createElement('span'); el.className='gl-tag'; el.setAttribute('aria-hidden','true'); el.innerHTML=n+' <b>→</b>'; hero.appendChild(el); return el; });
+const tags=SERV.map(([n])=>{ const el=document.createElement('span'); el.className='gl-tag'; el.setAttribute('aria-hidden','true'); el.textContent=n; hero.appendChild(el); return el; });
 const sc=document.createElement('canvas'); sc.width=sc.height=128; const sg=sc.getContext('2d'), gr=sg.createRadialGradient(64,64,0,64,64,64);
 gr.addColorStop(0,'rgba(0,0,0,.5)'); gr.addColorStop(.45,'rgba(0,0,0,.2)'); gr.addColorStop(1,'rgba(0,0,0,0)'); sg.fillStyle=gr; sg.fillRect(0,0,128,128);
 const shadowTex=new THREE.CanvasTexture(sc);
@@ -1792,6 +1799,12 @@ function drawMark(){
     for(let i=0;i<tn.length;i++){ rg.setStart(tn,i); rg.setEnd(tn,i+1); tx.fillText(tn.data[i],(rg.getBoundingClientRect().left-r.left)*k,y); } }
   else tx.fillText(mark.textContent,x,y);
   tex.needsUpdate=true;
+  ghost.visible=W<700;
+  if(ghost.visible){ if(gc.width!==tc.width||gc.height!==tc.height){ gc.width=tc.width; gc.height=tc.height; gtex.dispose(); }
+    gx.clearRect(0,0,gc.width,gc.height); gx.fillStyle=cs.color; gx.font=tx.font; gx.textBaseline='alphabetic'; if('letterSpacing' in gx) gx.letterSpacing='0px';
+    const lh=fs*.8*k, xs=[]; if(tn&&tn.nodeType===3) for(let i=0;i<tn.length;i++){ rg.setStart(tn,i); rg.setEnd(tn,i+1); xs.push((rg.getBoundingClientRect().left-r.left)*k); }
+    for(const n of [-3,-2,-1,1,2,3]) xs.forEach((cx,i)=>gx.fillText(tn.data[i],cx,y+n*lh));
+    gtex.needsUpdate=true; }
   cy=H/2-((b.top+b.bottom)/2-r.top);
 }
 function layout(){
@@ -1799,11 +1812,12 @@ function layout(){
   if(!ratio) ratio=Math.min(devicePixelRatio||1,narrow?1.5:2);   /* a starting point; the benchmark below picks the real value */
   renderer.setPixelRatio(ratio); renderer.setSize(W,H,false);
   cam.aspect=W/H; cam.fov=30; D=(H/2)/Math.tan(THREE.MathUtils.degToRad(15)); cam.position.set(0,0,D); cam.lookAt(0,0,0); cam.far=D*4; cam.updateProjectionMatrix();
-  plane.scale.set(W,H,1); drawMark();
+  plane.scale.set(W,H,1); ghost.scale.set(W,H,1); drawMark();
   od=Math.min(2,devicePixelRatio||1); ov.width=Math.round(W*od); ov.height=Math.round(H*od); ox.setTransform(od,0,0,od,0,0);
-  const S=narrow?W*.34:Math.min(W*.23,H*.44);
+  const S=narrow?W*.47:Math.min(W*.23,H*.44);
+  /* phones: bigger objects stacked on a diagonal, one above the wordmark and one below, in the taller wordmark area */
   const spots=narrow
-    ? [[-.22*W,cy+.02*W,90,.95],[.24*W,cy-.03*W,160,1]]
+    ? [[-.17*W,cy+S*.6,90,.95],[.18*W,cy-S*.58,150,1]]
     : [[-.22*W,cy+.02*H,140,1],[.2*W,cy-.05*H,230,1.05]];
   mat.attenuationDistance=S*.9;   /* world units: the light path through the glass is measured after scaling */
   objs.forEach((b,i)=>{ const [x,y,z,s]=spots[i]; b.home.set(x,y,z); b.size=S*s; b.m.scale.setScalar(b.size/2);
@@ -1816,9 +1830,9 @@ addEventListener('pointermove',e=>{ const r=cv.getBoundingClientRect(); const x=
   ptr.vx=x-ptr.x; ptr.vy=y-ptr.y; ptr.x=x; ptr.y=y; ptr.on=e.clientY>r.top&&e.clientY<r.bottom; wake(); },{passive:true});
 
 hero.addEventListener('click',e=>{ if(e.target.closest('a,button,input,label')) return; const r=cv.getBoundingClientRect();
-  const i=hit(e.clientX-r.left-W/2,H/2-(e.clientY-r.top)); if(i<0) return; const el=document.getElementById(SERV[i][1]);
-  const b=objs[i]; b.flip={t0:performance.now(),axis:Math.random()<.5?'x':'y',done:0}; wake();
-  setTimeout(()=>el&&el.scrollIntoView({behavior:reduce?'auto':'smooth'}),reduce?0:520); });
+  /* a click only spins the object: the hero is for playing with, the page stays where it is */
+  const i=hit(e.clientX-r.left-W/2,H/2-(e.clientY-r.top)); if(i<0) return;
+  const b=objs[i]; b.flip={t0:performance.now(),axis:Math.random()<.5?'x':'y',done:0}; wake(); });
 const tmp=new V(); let t=0, last=0, raf=0, vis=false;
 /* tracking overlay (a 2D canvas over the scene): tracked vertices with boxes and live readouts, curves between
    the two objects, a few vertices tied into polygons, and lines from the cursor to the object under it.
@@ -1883,7 +1897,8 @@ function step(dt){
     const hs=i===hover?1.08:1; b.hs=(b.hs||1)+(hs-(b.hs||1))*Math.min(1,dt*8); b.m.scale.multiplyScalar(b.hs); place(b);
     if(live){ const tg=tags[i], tw=tg._w||(tg._w=tg.offsetWidth), cl=(v,a,z)=>Math.max(a,Math.min(z,v));
       /* beside the object with a mouse, under it on touch screens; never off the edge or under the header */
-      const x=touch?W/2+b.sx-tw/2:W/2+b.sx+b.r*.55, y=touch?H/2-b.sy+b.r*.8:H/2-b.sy-b.r*.8;
+      /* phones: beside the object, on its open side (the top one's right, the bottom one's left), clear of the wordmark */
+      const x=touch?(i?W/2+b.sx-b.r*.62-tw:W/2+b.sx+b.r*.62):W/2+b.sx+b.r*.55, y=touch?H/2-b.sy-14:H/2-b.sy-b.r*.8;
       tg.style.transform='translate('+cl(x,8,W-tw-8).toFixed(1)+'px,'+cl(y,76,H-48).toFixed(1)+'px)'; }
     tags[i].classList.toggle('on',live&&(touch||i===hover));
     b.w.lerp(b.base,Math.min(1,dt*.8));
