@@ -20,6 +20,7 @@ type Data = {
   renderCase: (slug: string) => string;
   renderWorks: () => string;
   renderContacts: () => string;
+  renderStudio: () => string;
   caseCnt: (slug: string) => string;
   WORKS: Work[];
   CASES: Record<string, Case>;
@@ -55,7 +56,7 @@ const data: Data = (() => {
   const code = raw.match(/<script id="tsdata">([\s\S]*?)<\/script>/)?.[1];
   if (!code) throw new Error("home.html: no <script id=\"tsdata\"> block");
   const ctx = vm.createContext({ __paths: true });
-  return vm.runInContext(`${code}\n;({renderCase,renderWorks,renderContacts,caseCnt,WORKS,CASES})`, ctx) as Data;
+  return vm.runInContext(`${code}\n;({renderCase,renderWorks,renderContacts,renderStudio,caseCnt,WORKS,CASES})`, ctx) as Data;
 })();
 
 const attr = (s: string) =>
@@ -73,7 +74,7 @@ export function homePage() {
   return homeHtml;
 }
 
-type Sheet = { url: string; title: string; description: string; image?: string; cnt: string; back: string; body: string; article: boolean };
+type Sheet = { url: string; title: string; description: string; image?: string; cnt: string; back: string; body: string; article: boolean; hidden?: boolean };
 
 export function casePage(slug: string): string | null {
   const work = data.WORKS.find((w) => w.slug === slug);
@@ -91,9 +92,21 @@ export function casePage(slug: string): string | null {
   });
 }
 
-export type PageKey = "cases" | "contacts";
+export type PageKey = "cases" | "contacts" | "studio";
 
 export function staticPage(key: PageKey): string {
+  // the studio page is not linked anywhere yet: reachable by its address only, kept out of search
+  if (key === "studio")
+    return sheetPage({
+      url: `${SITE}/studio`,
+      title: "Студия — TETSAB",
+      description: "TETSAB — студия контента и сайтов: 3D, визуал и сайты для бизнеса. Красноярск, работаем по всей России онлайн.",
+      cnt: "Студия",
+      back: "← На главную",
+      body: data.renderStudio(),
+      article: false,
+      hidden: true,
+    });
   return key === "cases"
     ? sheetPage({
         url: `${SITE}/cases`,
@@ -116,12 +129,13 @@ export function staticPage(key: PageKey): string {
 }
 
 /** The homepage with one sheet (a case or a page) already open. */
-function sheetPage({ url, title, description, image, cnt, back, body, article }: Sheet): string {
+function sheetPage({ url, title, description, image, cnt, back, body, article, hidden }: Sheet): string {
   let html = homeHtml;
   const homeTitle = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "TETSAB";
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${attr(title)}</title>`);
   html = html.replace(/(<meta name="description" content=")[^"]*"/, `$1${attr(description)}"`);
   html = html.replace(/(<link rel="canonical" href=")[^"]*"/, `$1${url}"`);
+  if (hidden) html = html.replace("</title>", '</title>\n<meta name="robots" content="noindex,nofollow">');
   if (article) html = html.replace(/(<meta property="og:type" content=")[^"]*"/, `$1article"`);
   html = html.replace(/(<meta property="og:url" content=")[^"]*"/, `$1${url}"`);
   html = html.replace(/(<meta property="og:title" content=")[^"]*"/, `$1${attr(title)}"`);

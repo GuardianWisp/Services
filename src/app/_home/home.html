@@ -737,6 +737,27 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .wk-more{padding-top:28px}
 @media (max-width:700px){.wk-grid{grid-template-columns:1fr}}
 /* contacts page */
+.st-sec{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(24px,5vw,80px);padding:clamp(64px,11vh,120px) var(--gut) 0}
+.st-sec>.lab{padding-top:10px}
+.st-nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.st-nums b{display:block;font-weight:400;font-size:clamp(3rem,7vw,6rem);line-height:.95;letter-spacing:-.06em;color:var(--blk)}
+.st-nums small{display:block;margin-top:12px;font-size:14px;line-height:1.35;color:var(--sec);max-width:22ch}
+.st-do a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 24px;align-items:baseline;padding:20px 0 18px;border-top:1px solid var(--line)}
+.st-do a:last-child{border-bottom:1px solid var(--line)}
+.st-do .nm{font-size:clamp(1.6rem,3vw,2.6rem);letter-spacing:-.04em;color:var(--blk)}
+.st-do .ar{color:var(--mute);transition:transform .5s var(--ease),color .3s}
+.st-do a:hover .ar,.st-do a:focus-visible .ar{transform:translateX(4px);color:var(--blk)}
+.st-do small{grid-column:1/-1;font-size:14px;color:var(--sec)}
+.st-how{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px) clamp(24px,4vw,56px);list-style:none;padding:0;counter-reset:st}
+.st-how li{counter-increment:st;padding-top:16px;border-top:1px solid var(--line);font-size:15px;line-height:1.45;color:var(--sec)}
+.st-how li::before{content:'0' counter(st);display:block;font-size:13px;color:var(--mute);margin-bottom:14px}
+.st-how b{display:block;font-weight:400;font-size:clamp(1.3rem,2vw,1.7rem);line-height:1.15;letter-spacing:-.03em;color:var(--blk);margin-bottom:8px}
+.st-who{display:flex;flex-wrap:wrap;gap:10px}
+.st-who a{display:inline-flex;align-items:baseline;gap:10px;padding:12px 18px;border-radius:999px;background:#fff;font-size:15px;color:var(--blk);transition:background .3s}
+.st-who a small{font-size:12px;color:var(--sec)}
+.st-who a:hover,.st-who a:focus-visible{background:var(--lime)}
+@media (max-width:860px){.st-sec{grid-template-columns:1fr;gap:20px}.st-sec>.lab{padding-top:0}.st-how{grid-template-columns:1fr}}
+@media (max-width:560px){.st-nums{grid-template-columns:1fr;gap:28px}}
 .cn-wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,90px);padding:clamp(48px,8vh,90px) var(--gut) 0}
 .cn-row{display:grid;gap:4px;padding:18px 0 16px;border-top:1px solid var(--line);font-size:clamp(1.4rem,2.4vw,2.1rem);letter-spacing:-.03em;color:var(--blk)}
 .cn-row:last-child{border-bottom:1px solid var(--line)}
@@ -757,6 +778,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .stage.gl img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .stage.gl.fit{max-width:900px;justify-self:center;width:100%}   /* a tall shot keeps its own proportions */
 .stage.gl .cap{color:rgba(255,255,255,.85);text-shadow:0 1px 6px rgba(0,0,0,.35)}
+.cs-gal.gal-light .stage.gl .cap{color:var(--sec);text-shadow:none}   /* light renders: dark captions */
 @media (max-width:700px){.gal-row{grid-template-columns:1fr}}
 /* the box gets an explicit width (fits the screen height too) and the video is pinned inside it: with max-height on an
    aspect-ratio box some browsers kept the video at full width, so it ran out of the box and was cut by the cover */
@@ -1144,6 +1166,7 @@ const ART={
 const DISH=[['Шаурма классическая','Курица, овощи, чесночный соус',290,'linear-gradient(150deg,#f3d2a5,#c47a34)'],['Шаурма сырная','Двойной сыр, халапеньо',330,'linear-gradient(150deg,#f6e2a0,#d19a2a)'],['Фалафель-ролл','Без мяса, хумус',270,'linear-gradient(150deg,#dfe6b5,#8c9a3e)'],['Морс домашний','Клюква, 0,4 л',120,'linear-gradient(150deg,#f0b8c0,#b8324a)']];
 const WORKS=[
   {slug:'aag',n:'AAG',k:'Застройщик',w:'3D-секвенция для главного экрана',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f7f5f2,#b9b1a6)'},
+  {slug:'bio',n:'Art Life',k:'Биотехнологии',w:'Серия 3D-визуалов',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#eef3f3,#9fc9c6)'},
   {slug:'ist',n:'ИСТ',k:'Промышленное оборудование',w:'3D-секвенция и каталог',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f4f6fb,#8f9bbb)'},
   {slug:'foton',n:'Фотоника',k:'Электронные компоненты',w:'3D-визуалы',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f0f0f0,#9d9d9d)'},
   {slug:'tverd',n:'Твердь',k:'Цементный завод',w:'Ключевой визуал',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#4a4a4a,#121212)'},
@@ -1196,6 +1219,14 @@ const CASES={
     was:'Идея бренда — словами, без образа, который её показывает.',now:'Один ясный образ — нити и катушки — в ролике, знаке и статичных визуалах.',
     gives:[['Идея видна сразу','Метафора нити понятна без подписей и пояснений.'],['Один стиль везде','Ролик, знак и кадры из него собраны в одном материале и свете.'],['Статика и движение','Кадры из анимации работают как отдельные визуалы для соцсетей и презентаций.']],
     seq:{dir:'/img/cases/niti/',src:'threads.mp4',poster:'t0.webp',still:'t5.webp',wide:true,shots:[['Катушка','t2'],['Сеть','t5'],['Связи','t8'],['Узор','t11']],extra:[['Знак','logo.mp4','l0.webp']]}},
+  bio:{city:'Удалённо',cover:'#e6e6e6',
+    lead:'Серия 3D-визуалов для биотех-компании Art Life: живые культуры — пробиотики, метабиотики, грибы и ферментированные продукты — показаны как образцы в стеклянных кубах с лабораторными этикетками. Проект делали в студии Chipsa, от нас — вся 3D-часть.',
+    task:'Микроорганизмы не сфотографируешь: их не видно глазу, а в пробирке все культуры выглядят одинаково. Нужно было показать четыре направления так, чтобы их можно было различить и запомнить, — для первого экрана сайта и серии для соцсетей.',
+    solution:'Каждое направление получило свою форму и цвет: бирюзовые колонии пробиотиков и метабиотиков, белый ветвистый мицелий грибов, оранжевая пористая масса ферментированных продуктов. Образцы стоят в стеклянных кубах с матовыми гранями, на стекле — этикетка как в лаборатории: код образца, описание, QR и штрихкод. Для первого экрана сайта — светлое поле бактерий во весь кадр.',
+    chips:['3D-визуализация','Процедурные формы','Стекло и матовые грани','Этикетки образцов','Первый экран сайта','Серия для соцсетей'],
+    was:'Продукт, который не видно и нечем показать.',now:'Узнаваемая серия: у каждой культуры свой цвет и форма.',
+    gives:[['Невидимое стало предметом','Микроорганизмы выглядят как вещи, которые хочется рассмотреть.'],['Направления не путаются','Цвет и форма сразу говорят, что внутри куба.'],['Один стиль на всё','Сайт, соцсети и презентации собраны из одной серии.']],
+    gal:{light:true,dir:'/img/cases/bio/',cover:'cover.webp',still:'still.webp',rows:[[['Пробиотики','s1','1/1'],['Метабиотики','s2','1/1'],['Грибы','s3','1/1'],['Ферментированные продукты','s4','1/1']],[['Серия кубов','g1','1/1'],['Образец FG4','g2','1/1']],[['Четыре образца','g3','1/1'],['Крупный план','g4','1/1']],[['На подиумах','g5','1/1'],['В невесомости','g6','1/1']],[['Образец DE11','g7','1/1'],['Этикетка сквозь стекло','g8','1/1']]]}},
   moskva:{city:'Удалённо',cover:'#e9e4dc',
     lead:'3D-визуализация приложения «Моя Москва» для студии kozhin.dev: экраны приложения в живых сценах — на телефоне, планшете и компьютере рядом с учебником.',
     task:'Студия kozhin.dev спроектировала приложение к школьному курсу «Моя Москва». Для сайта и презентаций нужны были визуалы, где приложение выглядит как настоящий продукт, а не как набор скриншотов.',
@@ -1310,7 +1341,7 @@ function seqScreens(c){ const d=c.seq.dir;
 /* a gallery case: one wide render as the cover, the rest in pairs */
 function galCover(c,still){ const g=c.gal; return '<img class="gal-cv'+(still?' pv':'')+'" src="'+g.dir+(still?g.still:g.cover)+'" alt="" decoding="async">'; }
 function galScreens(c){ const g=c.gal;
-  return '<section class="cs-sec"><span class="lab lab-b">(03) Сцены</span><div class="cs-gal">'+g.rows.map((r,k)=>'<div class="gal-row'+(r.length===1?' one':k===g.rows.length-1?' tall':'')+'">'+
+  return '<section class="cs-sec"><span class="lab lab-b">(03) Сцены</span><div class="cs-gal'+(g.light?' gal-light':'')+'">'+g.rows.map((r,k)=>'<div class="gal-row'+(r.length===1?' one':k===g.rows.length-1?' tall':'')+'">'+
     r.map(([cap,f,ar])=>'<div class="stage gl'+(ar?' fit':'')+'"'+(ar?' style="aspect-ratio:'+ar+'"':'')+'><span class="cap">('+esc(cap)+')</span><img src="'+g.dir+f+'.webp" alt="" loading="lazy" decoding="async"></div>').join('')+'</div>').join('')+'</div></section>'; }
 function renderCase(slug){
   const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], nx=WORKS[(i+1)%WORKS.length], demo=(!w.url&&!w.done)||w.concept;
@@ -1353,6 +1384,16 @@ function renderContacts(){
     '<div class="cn-side"><div class="place"><div>Красноярск<small>(56.01° N, 92.87° E · <span data-clock>—</span>)</small></div><div>По всей России<small>(онлайн)</small></div></div>'+
     '<div class="cta"><a class="pill" href="#contact">Оставить заявку</a><a class="pill ghost" href="https://t.me/tetsab" target="_blank" rel="noopener">Наш Telegram ↗</a></div></div></div>'+
     '<a class="cs-next" href="'+pageHref('cases')+'"><span class="lab">(Посмотреть)</span><span class="nm">Работы →</span></a>'; }
+function renderStudio(){ const ready=WORKS.filter(w=>!w.soon);
+  const DO=[['3D и визуал','Секвенции для сайтов, 3D-модели продукции вместо фото, key visual'],['Сайты','Сайты, куда приходят заявки: услуги, цены и примеры работ на одном экране'],['Боты и онлайн-заказы','Запись клиентов и заказы прямо в Telegram']];
+  const HOW=[['Напрямую с тем, кто делает','Без менеджеров и испорченного телефона: вопросы решаются в одной переписке.'],['Цена до старта','Называем стоимость и сроки сразу, до предоплаты. Без доплат в конце.'],['Результат по этапам','Показываем работу по ходу, а не в последний день. Правки вносим сразу.'],['От кондитерской до завода','Делаем и для частных мастеров, и для застройщиков и производств.']];
+  return '<header class="cs-hero"><span class="lab lab-b">(О студии)</span><h2 id="caseT">Студия</h2><p class="big-say cs-sub">TETSAB — студия контента и сайтов. Делаем 3D, визуал и сайты, чтобы бизнес выглядел так же хорошо, как работает. <span>Красноярск · работаем по всей России онлайн.</span></p></header>'+
+    '<section class="st-sec"><span class="lab">(В цифрах)</span><div class="st-nums"><div><b>2020</b><small>год, с которого занимаемся 3D и дизайном</small></div><div><b>'+ready.length+'</b><small>работ в портфолио, каждую можно открыть</small></div><div><b>20</b><small>3D-моделей для каталога одного завода</small></div></div></section>'+
+    '<section class="st-sec"><span class="lab">(Что делаем)</span><div class="st-do">'+DO.map(([n,d])=>'<a href="'+pageHref('cases')+'"><span class="nm">'+n+'</span><span class="ar" aria-hidden="true">→</span><small>'+d+'</small></a>').join('')+'</div></section>'+
+    '<section class="st-sec"><span class="lab">(Как работаем)</span><ol class="st-how">'+HOW.map(([b,d])=>'<li><b>'+b+'</b>'+d+'</li>').join('')+'</ol></section>'+
+    '<section class="st-sec"><span class="lab">(Над чем работали)</span><div class="st-who">'+ready.map(w=>'<a href="'+caseHref(w.slug)+'">'+esc(w.n)+'<small>'+esc(w.k)+'</small></a>').join('')+'</div></section>'+
+    '<section class="cs-cta"><p class="big-say">Расскажите о задаче — подскажем, с чего начать и сколько это стоит.</p><div class="cta"><a class="pill" href="#contact">Обсудить проект</a></div></section>'+
+    '<a class="cs-next" href="'+pageHref('cases')+'"><span class="lab">(Посмотреть)</span><span class="nm">Работы →</span></a>'; }
 const caseCnt=slug=>{ const i=WORKS.findIndex(w=>w.slug===slug); return 'Кейс '+String(i+1).padStart(2,'0')+' / '+String(WORKS.length).padStart(2,'0'); };
 </script>
 <script>
@@ -1361,7 +1402,7 @@ const caseCnt=slug=>{ const i=WORKS.findIndex(w=>w.slug===slug); return 'Кей�
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const PATHS=!!globalThis.__paths, caseSlug=h=>(String(h).match(/^(?:#case\/|\/cases\/)([\w-]+)/)||[])[1],
-  pageKey=h=>(String(h).match(/^(?:#p\/|\/)(cases|contacts)\/?$/)||[])[1];
+  pageKey=h=>(String(h).match(/^(?:#p\/|\/)(cases|contacts|studio)\/?$/)||[])[1];
 const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const pressGroup=(g,btn)=>$$('button',g).forEach(b=>b.setAttribute('aria-pressed',b===btn));
@@ -1562,7 +1603,7 @@ const caseEl=$('#case'), caseBody=$('#caseBody'), baseTitle=document.documentEle
 function fillSheet(html,cnt,back){
   caseBody.innerHTML=html; caseEl.scrollTop=0; caseVids.disconnect(); if(!reduce) caseBody.querySelectorAll('video:not([data-src])').forEach(v=>{ v.muted=true; caseVids.observe(v); });
   $('#caseCnt').textContent=cnt; $('#caseBack').textContent=back; }
-const PAGES={cases:['Работы',()=>renderWorks(),'Все работы'],contacts:['Контакты',()=>renderContacts(),'Контакты']};
+const PAGES={cases:['Работы',()=>renderWorks(),'Все работы'],contacts:['Контакты',()=>renderContacts(),'Контакты'],studio:['Студия',()=>renderStudio(),'Студия']};
 let sheetPage=null;
 function openPage(k){ const P=PAGES[k]; if(!P) return false;
   fillSheet(P[1](),P[2],'← На главную'); sheetPage=k; $$('.mi').forEach(m=>m.classList.toggle('cur',m.dataset.page===k));
