@@ -717,7 +717,8 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .cs-objs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .cs-cover{position:relative}
 .gal-cv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.cs-cover.gal{min-height:0;aspect-ratio:16/9;padding:0}   /* the render keeps its own frame, on a phone too */
+.cs-cover.gal{min-height:0;aspect-ratio:16/9;padding:0}
+.cs-cover.seq{min-height:0}   /* the cover wraps the sequence box, no empty band around it */   /* the render keeps its own frame, on a phone too */
 #pv .pv-in .gal-cv{position:static;height:440px;border-radius:14px}
 .cs-gal{display:grid;gap:10px}
 .gal-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -727,15 +728,18 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .stage.gl img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .stage.gl .cap{color:rgba(255,255,255,.85);text-shadow:0 1px 6px rgba(0,0,0,.35)}
 @media (max-width:700px){.gal-row{grid-template-columns:1fr}}
-.seq-cv{width:100%;max-width:760px;aspect-ratio:1;max-height:min(680px,66vh);display:grid;place-items:center}
-.seq-cv video,.seq-cv img{width:100%;height:100%;object-fit:contain}
-#pv .pv-in .seq-cv{height:440px;max-height:none;max-width:none;aspect-ratio:auto;background:#fff;border-radius:14px;padding:24px}
+/* the box gets an explicit width (fits the screen height too) and the video is pinned inside it: with max-height on an
+   aspect-ratio box some browsers kept the video at full width, so it ran out of the box and was cut by the cover */
+.seq-cv{position:relative;width:min(760px,100%,66vh);aspect-ratio:1}
+.seq-cv video,.seq-cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+#pv .pv-in .seq-cv{width:auto;height:440px;aspect-ratio:auto;background:#fff;border-radius:14px}
+#pv .pv-in .seq-cv img{inset:24px;width:calc(100% - 48px);height:calc(100% - 48px)}
 .cs-seq{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stage.sq{background:#fff;min-height:0;aspect-ratio:1;padding:0}
 .stage.sq img{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain}
-.seq-cv.wide{max-width:1400px;max-height:none;aspect-ratio:16/9;border-radius:14px;overflow:hidden}
+.seq-cv.wide{width:min(1400px,100%,118vh);aspect-ratio:16/9;border-radius:14px;overflow:hidden}
 .seq-cv.wide video,.seq-cv.wide img{object-fit:cover}
-#pv .pv-in .seq-cv.wide{padding:0}
+#pv .pv-in .seq-cv.wide img{inset:0;width:100%;height:100%}
 .stage.sq.wide{aspect-ratio:16/9}
 .stage.sq.wide img,.stage.sq.wide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cs-sec>.stage.sq.wide{max-width:none}
@@ -1307,7 +1311,7 @@ function renderCase(slug){
   const two=n=>String(n).padStart(2,'0');
   return '<header class="cs-hero"><span class="lab lab-b">('+(w.soon?'Кейс в разработке':w.concept?'Концепт':demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(w.concept?'<p class="cs-demo">Это концепт: бренд придуман, а сайт настоящий — его можно открыть и собрать заказ.</p>':w.soon?'<p class="cs-demo cs-soon"><b>В разработке</b>Кейс ещё в работе: показываем идею и первые экраны, финальная версия появится позже.</p>':demo?'<p class="cs-demo">Это демо: пример того, как мы сделали бы сайт для такого бизнеса.</p>':'')+
     '<div class="cs-meta"><div><small>Ниша</small>'+esc(w.k)+'</div><div><small>Что сделали</small>'+esc(w.w)+'</div><div><small>Город</small>'+esc(c.city)+'</div><div><small>Статус</small>'+esc(w.s)+'</div></div></header>'+
-    '<div class="cs-cover run'+(c.gal?' gal':'')+'" style="background:'+c.cover+'">'+(c.objs?ekbCover(c):c.gal?galCover(c):c.seq?seqCover(c):c.film?filmSite(c):c.real?realShot(c,c.real.desk):siteMock(c))+'</div>'+
+    '<div class="cs-cover run'+(c.gal?' gal':c.seq?' seq':'')+'" style="background:'+c.cover+'">'+(c.objs?ekbCover(c):c.gal?galCover(c):c.seq?seqCover(c):c.film?filmSite(c):c.real?realShot(c,c.real.desk):siteMock(c))+'</div>'+
     '<section class="cs-sec half"><span class="lab">(01) Задача</span><p class="r cs-txt">'+esc(c.task)+'</p></section>'+
     '<section class="cs-sec half"><span class="lab">(02) Решение</span><div class="r"><p class="cs-txt">'+esc(c.solution)+'</p><ul class="chips">'+c.chips.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></section>'+
     (c.objs?objScreens(c):c.gal?galScreens(c):c.seq?seqScreens(c):c.film?filmScreens(c):c.real?realScreens(c):    '<section class="cs-sec"><span class="lab lab-b">(03) Экраны</span><div class="cs-shots"><div class="stage run"><span class="cap">(Телефон)</span>'+siteMock(c,true)+'</div><div class="stage">'+(c.extra==='visual'?'':'<span class="cap">('+({bot:'Бот',order:'Заказ',calc:'Калькулятор',form:'Заявка'}[c.extra])+')</span>')+caseExtra(c)+'</div>'+
