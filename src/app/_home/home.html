@@ -715,6 +715,38 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 #pv .pv-in .ekb-row img{aspect-ratio:auto;height:170px}
 #pv .pv-in .ekb-row figcaption{display:none}
 .cs-objs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cs-cover{position:relative}
+.gal-cv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cs-cover.gal{min-height:0;aspect-ratio:16/9;padding:0}   /* the render keeps its own frame, on a phone too */
+#pv .pv-in .gal-cv{position:static;height:440px;border-radius:14px}
+.cs-gal{display:grid;gap:10px}
+.gal-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stage.gl{min-height:0;aspect-ratio:16/9;padding:0}
+.gal-row.one{grid-template-columns:1fr}
+.gal-row.tall .stage.gl{aspect-ratio:4/3}
+.stage.gl img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage.gl .cap{color:rgba(255,255,255,.85);text-shadow:0 1px 6px rgba(0,0,0,.35)}
+@media (max-width:700px){.gal-row{grid-template-columns:1fr}}
+.seq-cv{width:100%;max-width:760px;aspect-ratio:1;max-height:min(680px,66vh);display:grid;place-items:center}
+.seq-cv video,.seq-cv img{width:100%;height:100%;object-fit:contain}
+#pv .pv-in .seq-cv{height:440px;max-height:none;max-width:none;aspect-ratio:auto;background:#fff;border-radius:14px;padding:24px}
+.cs-seq{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stage.sq{background:#fff;min-height:0;aspect-ratio:1;padding:0}
+.stage.sq img{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain}
+.seq-cv.wide{max-width:1400px;max-height:none;aspect-ratio:16/9;border-radius:14px;overflow:hidden}
+.seq-cv.wide video,.seq-cv.wide img{object-fit:cover}
+#pv .pv-in .seq-cv.wide{padding:0}
+.stage.sq.wide{aspect-ratio:16/9}
+.stage.sq.wide img,.stage.sq.wide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cs-sec>.stage.sq.wide{max-width:none}
+.cs-cat{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-flow:dense;gap:10px}
+.cs-cat .w{grid-column:span 2}
+.cs-cat .w img{aspect-ratio:2/1}
+@media (max-width:1000px){.cs-cat{grid-template-columns:repeat(4,1fr)}}
+.cs-cat figure{margin:0;display:grid;gap:10px;padding:16px 16px 14px;border-radius:16px;background:#fff}
+.cs-cat img{width:100%;aspect-ratio:1;object-fit:contain}
+.cs-cat figcaption{font-size:13px;color:var(--sec)}
+@media (max-width:700px){.cs-seq{grid-template-columns:1fr}.cs-cat{grid-template-columns:1fr 1fr}}
 .stage.ob{background:#e9e9e9;min-height:0;aspect-ratio:4/3;padding:0}
 .stage.ob video{position:absolute;left:12%;right:12%;top:14%;bottom:8%;width:76%;height:78%;object-fit:contain}
 @media (max-width:700px){.ekb-row{grid-template-columns:1fr 1fr;row-gap:24px}.cs-objs{grid-template-columns:1fr}}
@@ -1081,6 +1113,10 @@ const WORKS=[
   {slug:'vanil',n:'Ателье Ваниль',k:'Кондитерская',w:'Сайт с заказом и админкой',s:'Концепт',t:['site','order'],url:'https://vanil.tetsab.ru',concept:true,bg:'linear-gradient(160deg,#f3dcdc,#7a1f2e)'},
   {slug:'tverd',n:'Твердь',k:'Цементный завод',w:'Ключевой визуал',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#4a4a4a,#121212)'},
   {slug:'foton',n:'Фотоника',k:'Электронные компоненты',w:'3D-визуалы',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f0f0f0,#9d9d9d)'},
+  {slug:'ist',n:'ИСТ',k:'Промышленное оборудование',w:'3D-секвенция и каталог',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f4f6fb,#8f9bbb)'},
+  {slug:'aag',n:'AAG',k:'Застройщик',w:'3D-секвенция для главного экрана',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f7f5f2,#b9b1a6)'},
+  {slug:'niti',n:'Нити Судьбы',k:'Айдентика',w:'Key visual и анимация знака',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#ece8e2,#bfae8c)'},
+  {slug:'moskva',n:'Моя Москва',k:'Образовательное приложение',w:'3D-визуализация приложения',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f3efe6,#c9b28f)'},
   {slug:'lak',n:'Лак',k:'Маникюрная студия',w:'Сайт + бот записи',s:'В разработке',soon:true,t:['site','bot'],bg:'linear-gradient(160deg,#ddd0ee,#7e5fb8)'},
   {slug:'ugli',n:'Угли',k:'Шаурма и шашлык',w:'Меню и заказ',s:'В разработке',soon:true,t:['order'],bg:'linear-gradient(160deg,#f6cfa4,#c4561c)'},
   {slug:'rovno',n:'Ровно',k:'Ремонт квартир',w:'Лендинг с расчётом',s:'В разработке',soon:true,t:['site'],bg:'linear-gradient(160deg,#dcd7ca,#9b7a2c)'},
@@ -1112,6 +1148,39 @@ const CASES={
     gives:[['Запоминается','Такой первый экран не спутать с сайтами других поставщиков.'],['Понятно без слов','Сразу видно, для каких объектов подходит цемент.'],['Один визуал на всё','Кадры из ролика работают на сайте, в презентациях и на стенде.']],
     film:{src:'/img/cases/tverd/dark-1920.mp4',srcS:'/img/cases/tverd/dark-720p.mp4',srcV:'/img/cases/tverd/dark-v2.mp4',poster:'/img/cases/tverd/bridge.jpg',
       shots:[['Мост','/img/cases/tverd/bridge.jpg'],['Завод','/img/cases/tverd/plant.jpg'],['Плотина','/img/cases/tverd/dam.jpg'],['Стадион','/img/cases/tverd/stadium.jpg']]}},
+  aag:{city:'Удалённо',cover:'#ffffff',
+    lead:'3D-секвенция для главного экрана сайта петербургского застройщика: дом собирается на глазах — от простых объёмов до готового здания с фасадом и деревьями.',
+    task:'Застройщик строит клубные дома и жилые комплексы с авторской архитектурой. На главном экране нужно было показать не очередной рендер фасада, а сам подход: как проект продумывается от идеи до готового дома.',
+    solution:'Сделали в 3D секвенцию, где здание растёт на глазах: из простых объёмов появляются каркас и этажи, в разрезе видны инженерия и сваи, затем фасад, свет в окнах и озеленение. В конце дом снова распадается на объёмы, поэтому ролик идёт по кругу без склейки.',
+    chips:['3D-моделирование','Анимация 20 секунд','Бесшовный цикл','Разрез с инженерией','Фасад и озеленение','Для главного экрана'],
+    was:'Обычный рендер фасада, как у многих застройщиков.',now:'Главный экран, где дом собирается на глазах — от идеи до готового здания.',
+    gives:[['Запоминающийся первый экран','Дом растёт на глазах — это цепляет сильнее статичной картинки.'],['Виден подход','Проект показан целиком: каркас, инженерия, фасад, благоустройство.'],['Работает по кругу','Цикл без склейки подходит для сайта, презентаций и экранов в офисе продаж.']],
+    seq:{dir:'/img/cases/aag/',src:'seq.mp4',poster:'t0.webp',still:'t14.webp',shots:[['Этажи','t6'],['Инженерия','t8'],['Свет в окнах','t12'],['Готовый дом','t14']]}},
+  niti:{city:'Удалённо',cover:'#dedad5',
+    lead:'Key visual и анимированный знак вокруг метафоры нити: латунные катушки разматываются по светлой бумаге и сплетают сеть, а знак собран из переплетённых линий.',
+    task:'Бренду нужен был ключевой визуал, который объясняет идею без слов: всё связано, каждая нить ведёт к следующей. Картинка должна выглядеть спокойно и дорого и работать как в статике, так и в движении.',
+    solution:'Построили образ на одной метафоре. Латунные катушки катятся по светлой бумаге, оставляют за собой тонкие нити, и те переплетаются в общий узор. Знак собран из таких же пересекающихся линий и живёт в мягком свете с тенями. Всё в одном материале и палитре, поэтому кадры из ролика работают и как отдельные визуалы.',
+    chips:['3D-моделирование','Key visual','Анимация 12 секунд','Анимация знака','Латунь и бумага','Единый свет и палитра'],
+    was:'Идея бренда — словами, без образа, который её показывает.',now:'Один ясный образ — нити и катушки — в ролике, знаке и статичных визуалах.',
+    gives:[['Идея видна сразу','Метафора нити понятна без подписей и пояснений.'],['Один стиль везде','Ролик, знак и кадры из него собраны в одном материале и свете.'],['Статика и движение','Кадры из анимации работают как отдельные визуалы для соцсетей и презентаций.']],
+    seq:{dir:'/img/cases/niti/',src:'threads.mp4',poster:'t0.webp',still:'t5.webp',wide:true,shots:[['Катушка','t2'],['Сеть','t5'],['Связи','t8'],['Узор','t11']],extra:[['Знак','logo.mp4','l0.webp']]}},
+  moskva:{city:'Удалённо',cover:'#e9e4dc',
+    lead:'3D-визуализация приложения «Моя Москва» для студии kozhin.dev: экраны приложения в живых сценах — на телефоне, планшете и компьютере рядом с учебником.',
+    task:'Студия kozhin.dev спроектировала приложение к школьному курсу «Моя Москва». Для сайта и презентаций нужны были визуалы, где приложение выглядит как настоящий продукт, а не как набор скриншотов.',
+    solution:'Собрали в 3D сцены с устройствами: телефоны на деревянных рейках, планшет на столе рядом с учебником, монитор и ноутбуки в студийном свете. Экраны приложения встроены в устройства, а свет и материалы подобраны под тёплую палитру иллюстраций курса.',
+    chips:['3D-визуализация','Мокапы устройств','Телефон, планшет, компьютер','Сцены с учебником','Студийный свет','Для сайта и презентаций'],
+    was:'Скриншоты экранов без контекста.',now:'Серия сцен, где приложение выглядит готовым продуктом.',
+    gives:[['Продукт выглядит настоящим','Экраны в реальных устройствах и обстановке, а не на белом фоне.'],['Видна связь с курсом','Учебник рядом с планшетом показывает, что приложение — часть программы.'],['Готовый набор','Сцены для сайта, презентаций и соцсетей в одном стиле.']],
+    gal:{dir:'/img/cases/moskva/',cover:'cover.webp',still:'still.webp',rows:[[['Планшет на столе','g1'],['Планшет, телефон и учебник','g2']],[['Монитор','g3'],['Монитор и телефон','g4']],[['Ноутбуки','g5']],[['Телефон','g6'],['Телефоны','g7']]]}},
+  ist:{city:'Удалённо',cover:'#ffffff',
+    lead:'3D-визуализация для сайта завода промышленного оборудования: секвенция на главном экране и рендеры для всего каталога.',
+    task:'Завод делает реакторы, фильтры, дробилки и другое оборудование для химии, металлургии и золотодобычи. Фотографий в одном стиле нет: оборудование большое, снимать его в цеху долго, и выглядит оно по-разному. А на сайте нужно сразу показать, что компания производит, доставляет и запускает оборудование.',
+    solution:'Сделали в 3D флагманский реактор РТУ-800 и собрали из рендеров секвенцию для главного экрана: при прокрутке реактор поворачивается, уменьшается под этапы производства, уезжает в контейнере и встаёт на площадку. Для каталога отрисовали всю продукцию в одном свете и материалах.',
+    chips:['3D-моделирование','Секвенция ~780 кадров','Анимация под прокрутку','20 позиций каталога','Единый свет и материалы','Прозрачный фон'],
+    was:'Нет фотографий в одном стиле: оборудование большое, снимать его в цеху сложно.',now:'Главный экран с живым реактором и каталог, где всё оборудование в одном стиле.',
+    gives:[['Сильный первый экран','Реактор поворачивается при прокрутке — сразу видно, что делает завод.'],['Каталог в одном стиле','20 позиций в едином свете и ракурсе, без разнобоя фотографий.'],['Визуал надолго','Готовые модели можно отрендерить в новых ракурсах для презентаций и выставок.']],
+    seq:{dir:'/img/cases/ist/',src:'seq.mp4',poster:'s00112.webp',still:'s00150.webp',shots:[['Реактор РТУ-800','s00150'],['Этапы производства','s00450'],['Доставка','s00600'],['Пусконаладка','s00778']]},
+    cat:[['02','Спиральные классификаторы',1],['04','Пробоотборники'],['05','Дробильное оборудование',1],['06','Шнеки'],['07','Мерники'],['08','Фильтры'],['09','Холодильники',1],['10','Турилы'],['11','Столы'],['12','Грузоподъёмные устройства'],['13','Ванны'],['14','Арматура'],['15','Ловушки вакуумные'],['16','Выпарные установки'],['17','Насосы'],['18','Нутч-фильтры'],['19','Автоклавы'],['20','Кюбели',1],['21','Скрубберы'],['22','Монтежю']]},
   foton:{city:'Удалённо',cover:'#e9e9e9',
     lead:'3D-визуалы для сайта производителя электронных компонентов: у каждого направления свой компонент, который плавно поворачивается.',
     task:'У компании четыре направления: фотоника, оптоэлектроника, силовая электроника и СВЧ. На сайт приходят инженеры, и им нужно сразу понять, что именно здесь производят. Стоковые картинки микросхем одинаковые у всех и про продукцию ничего не говорят.',
@@ -1219,19 +1288,33 @@ function ekbCover(c,still){
 function objScreens(c){
   return '<section class="cs-sec"><span class="lab lab-b">(03) Визуалы</span><div class="cs-objs">'+
     c.objs.map(o=>'<div class="stage ob"><span class="cap">('+esc(o[0])+' · '+esc(o[1])+')</span>'+objVid(o[2])+'</div>').join('')+'</div></section>'; }
+/* hero sequences (IST, AAG): the sequence as a looping video on white, its key frames, and catalogue renders when there are any */
+function seqCover(c,still){ const q=c.seq, d=q.dir;
+  return '<div class="seq-cv'+(q.wide?' wide':'')+'" aria-hidden="true">'+(still?'<img src="'+d+q.still+'" alt="" decoding="async">':'<video src="'+d+q.src+'" poster="'+d+q.poster+'" muted loop playsinline preload="auto"></video>')+'</div>'; }
+function seqScreens(c){ const d=c.seq.dir;
+  return '<section class="cs-sec"><span class="lab lab-b">(03) Кадры секвенции</span><div class="cs-seq">'+
+    c.seq.shots.map(([cap,f])=>'<div class="stage sq'+(c.seq.wide?' wide':'')+'"><span class="cap">('+esc(cap)+')</span><img src="'+d+f+'.webp" alt="" loading="lazy" decoding="async"></div>').join('')+'</div></section>'+
+    (c.seq.extra?c.seq.extra.map(([cap,v,pst])=>'<section class="cs-sec"><span class="lab lab-b">('+esc(cap)+')</span><div class="stage sq wide"><video src="'+d+v+'" poster="'+d+pst+'" muted loop playsinline preload="none"></video></div></section>').join(''):'')+
+    (c.cat?'<section class="cs-sec"><span class="lab lab-b">(Каталог · '+c.cat.length+' позиций)</span><div class="cs-cat">'+
+    c.cat.map(([f,t,w])=>'<figure'+(w?' class="w"':'')+'><img src="'+d+'cat/'+f+'.webp" alt="'+esc(t)+'" loading="lazy" decoding="async"><figcaption>'+esc(t)+'</figcaption></figure>').join('')+'</div></section>':''); }
+/* a gallery case: one wide render as the cover, the rest in pairs */
+function galCover(c,still){ const g=c.gal; return '<img class="gal-cv'+(still?' pv':'')+'" src="'+g.dir+(still?g.still:g.cover)+'" alt="" decoding="async">'; }
+function galScreens(c){ const g=c.gal;
+  return '<section class="cs-sec"><span class="lab lab-b">(03) Сцены</span><div class="cs-gal">'+g.rows.map((r,k)=>'<div class="gal-row'+(r.length===1?' one':k===g.rows.length-1?' tall':'')+'">'+
+    r.map(([cap,f])=>'<div class="stage gl"><span class="cap">('+esc(cap)+')</span><img src="'+g.dir+f+'.webp" alt="" loading="lazy" decoding="async"></div>').join('')+'</div>').join('')+'</div></section>'; }
 function renderCase(slug){
   const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], nx=WORKS[(i+1)%WORKS.length], demo=(!w.url&&!w.done)||w.concept;
   const two=n=>String(n).padStart(2,'0');
   return '<header class="cs-hero"><span class="lab lab-b">('+(w.soon?'Кейс в разработке':w.concept?'Концепт':demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(w.concept?'<p class="cs-demo">Это концепт: бренд придуман, а сайт настоящий — его можно открыть и собрать заказ.</p>':w.soon?'<p class="cs-demo cs-soon"><b>В разработке</b>Кейс ещё в работе: показываем идею и первые экраны, финальная версия появится позже.</p>':demo?'<p class="cs-demo">Это демо: пример того, как мы сделали бы сайт для такого бизнеса.</p>':'')+
     '<div class="cs-meta"><div><small>Ниша</small>'+esc(w.k)+'</div><div><small>Что сделали</small>'+esc(w.w)+'</div><div><small>Город</small>'+esc(c.city)+'</div><div><small>Статус</small>'+esc(w.s)+'</div></div></header>'+
-    '<div class="cs-cover run" style="background:'+c.cover+'">'+(c.objs?ekbCover(c):c.film?filmSite(c):c.real?realShot(c,c.real.desk):siteMock(c))+'</div>'+
+    '<div class="cs-cover run'+(c.gal?' gal':'')+'" style="background:'+c.cover+'">'+(c.objs?ekbCover(c):c.gal?galCover(c):c.seq?seqCover(c):c.film?filmSite(c):c.real?realShot(c,c.real.desk):siteMock(c))+'</div>'+
     '<section class="cs-sec half"><span class="lab">(01) Задача</span><p class="r cs-txt">'+esc(c.task)+'</p></section>'+
     '<section class="cs-sec half"><span class="lab">(02) Решение</span><div class="r"><p class="cs-txt">'+esc(c.solution)+'</p><ul class="chips">'+c.chips.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></section>'+
-    (c.objs?objScreens(c):c.film?filmScreens(c):c.real?realScreens(c):    '<section class="cs-sec"><span class="lab lab-b">(03) Экраны</span><div class="cs-shots"><div class="stage run"><span class="cap">(Телефон)</span>'+siteMock(c,true)+'</div><div class="stage">'+(c.extra==='visual'?'':'<span class="cap">('+({bot:'Бот',order:'Заказ',calc:'Калькулятор',form:'Заявка'}[c.extra])+')</span>')+caseExtra(c)+'</div>'+
+    (c.objs?objScreens(c):c.gal?galScreens(c):c.seq?seqScreens(c):c.film?filmScreens(c):c.real?realScreens(c):    '<section class="cs-sec"><span class="lab lab-b">(03) Экраны</span><div class="cs-shots"><div class="stage run"><span class="cap">(Телефон)</span>'+siteMock(c,true)+'</div><div class="stage">'+(c.extra==='visual'?'':'<span class="cap">('+({bot:'Бот',order:'Заказ',calc:'Калькулятор',form:'Заявка'}[c.extra])+')</span>')+caseExtra(c)+'</div>'+
       (c.quote?'<div class="stage"><span class="cap">(Отзыв)</span><figure class="quote"><blockquote>«'+esc(c.quote.t)+'»</blockquote><figcaption>— '+esc(c.quote.a)+'</figcaption></figure></div>':'')+'</div></section>')+
     '<section class="cs-sec half"><span class="lab">(04) Было → стало</span><div class="r ba2 cs-ba"><p><b>(Было)</b>'+esc(c.was)+'</p><p><b>(Стало)</b>'+esc(c.now)+'</p></div></section>'+
     '<section class="cs-sec"><span class="lab lab-b">(05) Что это даёт</span><ol class="steps">'+c.gives.map((g,k)=>'<li><i>'+two(k+1)+'</i><div><b>'+esc(g[0])+'</b><span>'+esc(g[1])+'</span></div></li>').join('')+'</ol></section>'+
-    '<section class="cs-cta"><p class="big-say">'+(demo?'Хотите такой же для своего бизнеса?':c.objs||c.film?'Нужен похожий визуал?':'Нужен похожий сайт?')+'</p><div class="cta"><a class="pill" href="#contact">Обсудить проект</a>'+(w.url?'<a class="pill ghost" href="'+w.url+'" target="_blank" rel="noopener">Открыть сайт ↗</a>':'')+'</div></section>'+
+    '<section class="cs-cta"><p class="big-say">'+(demo?'Хотите такой же для своего бизнеса?':c.objs||c.gal||c.seq||c.film?'Нужен похожий визуал?':'Нужен похожий сайт?')+'</p><div class="cta"><a class="pill" href="#contact">Обсудить проект</a>'+(w.url?'<a class="pill ghost" href="'+w.url+'" target="_blank" rel="noopener">Открыть сайт ↗</a>':'')+'</div></section>'+
     '<a class="cs-next" href="'+caseHref(nx.slug)+'"><span class="lab">(Следующий кейс)</span><span class="nm">'+esc(nx.n)+' →</span></a>';
 }
 const caseCnt=slug=>{ const i=WORKS.findIndex(w=>w.slug===slug); return 'Кейс '+String(i+1).padStart(2,'0')+' / '+String(WORKS.length).padStart(2,'0'); };
@@ -1418,7 +1501,7 @@ if(fine){
   /* hover card: the real site's first screen for live cases, the same mock as inside the case for demos */
   let pvI=-1; const pvCards=[];
   const pvCard=i=>{ if(pvCards[i]) return pvCards[i]; const w=WORKS[i], c=CASES[w.slug], d=document.createElement('div'); d.className='pv-c';
-    d.innerHTML='<div class="pv-in">'+(c&&c.objs?ekbCover(c,true):c&&c.film?filmSite(c,true):c&&c.real?realShot(c,c.real.pv||c.real.desk):c?siteMock(c):'')+'</div><div class="pv-t">'+esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.soon?'В разработке':w.done?'Кейс · визуалы':w.concept?'Концепт · сайт работает':w.url?'Кейс · сайт работает':'Демо-кейс')+'</small></div>';
+    d.innerHTML='<div class="pv-in">'+(c&&c.objs?ekbCover(c,true):c&&c.gal?galCover(c,true):c&&c.seq?seqCover(c,true):c&&c.film?filmSite(c,true):c&&c.real?realShot(c,c.real.pv||c.real.desk):c?siteMock(c):'')+'</div><div class="pv-t">'+esc(w.n)+'<small>'+esc(w.w)+'</small><small>'+(w.soon?'В разработке':w.done?'Кейс · визуалы':w.concept?'Концепт · сайт работает':w.url?'Кейс · сайт работает':'Демо-кейс')+'</small></div>';
     d.querySelectorAll('img').forEach(m=>{ m.loading='eager'; if(m.decode) m.decode().catch(()=>{}); });
     return pvCards[i]=d; };
   /* decode every card's pictures while the list is still a screen away, so the first hover does not wait on them */
