@@ -83,13 +83,13 @@ p,h1,h2,h3{margin:0;font-weight:400}
 .m-open .mbtn i:nth-child(2){top:21.5px;transform:rotate(-45deg)}
 .scrim{position:fixed;inset:0;z-index:40;background:rgba(40,40,40,.28);opacity:0;visibility:hidden;pointer-events:none;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);transition:opacity .35s ease,visibility 0s .35s}
 .m-open .scrim{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .6s var(--ease),visibility 0s}
-.menu{box-sizing:border-box;position:fixed;z-index:42;top:calc(12px + env(safe-area-inset-top,0px));right:calc(var(--gut) - 10px);width:min(440px,calc(100vw - 20px));max-height:calc(100svh - 24px);overflow:hidden auto;overscroll-behavior:contain;background:rgba(22,22,22,.94);color:#fff;border-radius:18px;padding:clamp(14px,2.6vh,22px) 26px clamp(16px,2.8vh,24px);display:flex;flex-direction:column;gap:clamp(12px,3.2vh,28px);clip-path:inset(0 0 100% 30% round 18px);visibility:hidden;opacity:0;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);transition:clip-path .4s cubic-bezier(.7,0,.84,0),opacity .3s ease .1s,visibility 0s .4s} /* closing: quick and clean */
+.menu{box-sizing:border-box;position:fixed;z-index:42;top:calc(12px + env(safe-area-inset-top,0px));right:calc(var(--gut) - 10px);width:min(440px,calc(100vw - 20px));max-height:calc(100svh - 24px);overflow:hidden auto;overscroll-behavior:contain;background:rgba(22,22,22,.94);color:#fff;border-radius:18px;padding:22px 26px 24px;display:flex;flex-direction:column;gap:28px;clip-path:inset(0 0 100% 30% round 18px);visibility:hidden;opacity:0;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);transition:clip-path .4s cubic-bezier(.7,0,.84,0),opacity .3s ease .1s,visibility 0s .4s} /* closing: quick and clean */
 .m-open .menu{clip-path:inset(0 0 0 0 round 18px);visibility:visible;opacity:1;transition:clip-path .8s var(--ease),opacity 0s,visibility 0s}
 .m-top{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:rgba(255,255,255,.55);padding-right:44px;min-height:22px;align-items:center}
 .m-nav{display:flex;flex-direction:column}
-.mi{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:baseline;gap:10px;padding:clamp(4px,.9vh,8px) 0 clamp(5px,1.1vh,10px);border-bottom:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.36);transition:color .35s}
+.mi{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:baseline;gap:10px;padding:8px 0 10px;border-bottom:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.36);transition:color .35s}
 .mi-n{font-size:12px;color:rgba(255,255,255,.4)}
-.mi-t{font-size:clamp(1.6rem,min(max(2.3rem,5.2vw),calc((100svh - 330px) / 6.4)),3.4rem);line-height:1;letter-spacing:-.045em;white-space:nowrap;min-width:0}   /* the menu never scrolls sideways (a classic scrollbar or wider Safari metrics used to push the rows out), and the items and gaps shrink with the window height so the whole menu fits a short window */
+.mi-t{font-size:clamp(2.3rem,5.2vw,3.4rem);line-height:1;letter-spacing:-.045em;white-space:nowrap;min-width:0}   /* the menu never scrolls sideways: a classic scrollbar (mouse attached) or wider Safari metrics used to push the rows out */
 .mi-a{font-size:22px;transition:transform .5s var(--ease)}
 .mi.cur,.mi:hover,.mi:focus-visible{color:#fff}
 .mi.cur .mi-a{transform:rotate(45deg)}
@@ -715,6 +715,35 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 #pv .pv-in .ekb-row img{aspect-ratio:auto;height:170px}
 #pv .pv-in .ekb-row figcaption{display:none}
 .cs-objs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* works page */
+.cs-sub span{color:var(--mute)}
+.wk-wrap{padding:0 var(--gut)}
+.wk-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,48px) 10px;margin-top:28px}
+.wk[hidden]{display:none}
+.wk{display:grid;gap:6px;color:var(--blk)}
+.wk-m{position:relative;display:block;aspect-ratio:4/3;border-radius:16px;overflow:hidden;margin-bottom:10px}
+.wk-m img,.wk-m video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease),opacity .4s}
+.wk-m .ct{inset:8%;width:84%;height:84%;object-fit:contain}
+.wk-m .sh{inset:10%;width:80%;height:80%;object-fit:contain;filter:drop-shadow(0 18px 30px rgba(0,0,0,.18))}
+.wk-m video{opacity:0}
+.wk.play .wk-m video{opacity:1}
+.wk:hover .wk-m img:not(.ct):not(.sh),.wk:focus-visible .wk-m img:not(.ct):not(.sh){transform:scale(1.03)}
+.wk-n{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:clamp(1.6rem,2.6vw,2.4rem);line-height:1.05;letter-spacing:-.04em}
+.wk-n i{font-style:normal;font-size:.6em;color:var(--mute);transition:transform .5s var(--ease),color .3s}
+.wk:hover .wk-n i,.wk:focus-visible .wk-n i{transform:translateX(4px);color:var(--blk)}
+.wk-d{font-size:14px;color:var(--sec)}
+.wk-soon{margin-top:clamp(64px,10vh,110px)}
+.wk-soon .works{padding-top:16px}
+.wk-more{padding-top:28px}
+@media (max-width:700px){.wk-grid{grid-template-columns:1fr}}
+/* contacts page */
+.cn-wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,90px);padding:clamp(48px,8vh,90px) var(--gut) 0}
+.cn-row{display:grid;gap:4px;padding:18px 0 16px;border-top:1px solid var(--line);font-size:clamp(1.4rem,2.4vw,2.1rem);letter-spacing:-.03em;color:var(--blk)}
+.cn-row:last-child{border-bottom:1px solid var(--line)}
+.cn-row small{font-size:13px;letter-spacing:0;color:var(--sec)}
+.cn-side{display:grid;align-content:start;gap:40px}
+.cn-side .place{padding-top:0;gap:clamp(24px,5vw,64px)}
+@media (max-width:860px){.cn-wrap{grid-template-columns:1fr}}
 .cs-cover{position:relative}
 .gal-cv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cs-cover.gal{min-height:0;aspect-ratio:16/9;padding:0}
@@ -1123,9 +1152,6 @@ const WORKS=[
   {slug:'moskva',n:'Моя Москва',k:'Образовательное приложение',w:'3D-визуализация приложения',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f3efe6,#c9b28f)'},
   {slug:'lak',n:'Лак',k:'Маникюрная студия',w:'Сайт + бот записи',s:'В разработке',soon:true,t:['site','bot'],bg:'linear-gradient(160deg,#ddd0ee,#7e5fb8)'},
   {slug:'ugli',n:'Угли',k:'Шаурма и шашлык',w:'Меню и заказ',s:'В разработке',soon:true,t:['order'],bg:'linear-gradient(160deg,#f6cfa4,#c4561c)'},
-  {slug:'rovno',n:'Ровно',k:'Ремонт квартир',w:'Лендинг с расчётом',s:'В разработке',soon:true,t:['site'],bg:'linear-gradient(160deg,#dcd7ca,#9b7a2c)'},
-  {slug:'drevo',n:'Древо',k:'Мебель на заказ',w:'Лендинг + визуал',s:'В разработке',soon:true,t:['site','visual'],bg:'linear-gradient(160deg,#dccab4,#7a5234)'},
-  {slug:'tiho',n:'Тихо',k:'Кабинет психолога',w:'Визитка + MAX-бот',s:'В разработке',soon:true,t:['site','bot'],bg:'linear-gradient(160deg,#d3e0d6,#4f7a5e)'}
 ];
 const CASES={
   burenie:{domain:'burenie124.ru',brand:'БУРЕНИЕ 124',nav:'Работы · Отзывы · Заявка',city:'Красноярск',
@@ -1226,36 +1252,6 @@ const CASES={
     was:'Заказы в переписке, путаница с адресами и составом.',now:'Клиент собирает заказ сам, кафе получает его целиком.',
     gives:[['Без ошибок','Состав, соусы и адрес — в одном сообщении.'],['Быстрее в час пик','Не нужно принимать заказ голосом.'],['Больше в чеке','Добавки и напитки видны прямо в меню.']],
     extra:'order'},
-  rovno:{domain:'rovno-remont.ru',brand:'РОВНО',nav:'Работы · Цены · Расчёт',city:'Красноярск',
-    pal:{sa:'#efe9dc',sb:'#cdbb8f',ink:'#3a3120',soft:'#f5f1e8',t1:'linear-gradient(160deg,#e6e0d2,#b3a47e)',t2:'linear-gradient(160deg,#dcdcd6,#9a9a90)',t3:'linear-gradient(160deg,#ece4d6,#c2a57a)'},cover:'linear-gradient(160deg,#e6e0d0,#9b7a2c)',
-    head:'Ремонт квартир под ключ',sub:'Смета за один день · фиксированная цена',btn:'Рассчитать стоимость',gT:'До и после',pT:'Цены за м²',rows:[['Косметический','от 4 500 ₽'],['Капитальный','от 9 000 ₽'],['Санузел под ключ','от 180 000 ₽']],formT:'Получить смету',
-    lead:'Лендинг бригады с калькулятором: клиент сам видит примерную стоимость.',
-    task:'Клиенты боятся звонить: не понимают, сколько будет стоить ремонт, и уходят к тем, у кого цены видны сразу.',
-    solution:'Лендинг с фото «до и после», ценами за квадратный метр и калькулятором: площадь и тип ремонта — и сразу примерная сумма с кнопкой «Получить смету».',
-    chips:['Лендинг','Калькулятор','Фото до и после','Цены','Форма заявки'],
-    was:'«Сколько стоит?» — «Надо смотреть» — и клиент уходит.',now:'Клиент видит примерную сумму и сам оставляет заявку на смету.',
-    gives:[['Понятная цена','Примерная сумма до первого звонка.'],['Меньше пустых звонков','Пишут те, кого цена уже устроила.'],['Видно результат','Фото «до и после» по реальным объектам.']],
-    extra:'calc'},
-  drevo:{domain:'drevo-mebel.ru',brand:'ДРЕВО',nav:'Каталог · Материалы · Заказ',city:'Красноярск',
-    pal:{sa:'#eee3d4',sb:'#c9a67c',ink:'#3d2816',soft:'#f5efe6',t1:'linear-gradient(160deg,#e3d3bd,#9c7148)',t2:'linear-gradient(160deg,#dfe3d8,#8fa38b)',t3:'linear-gradient(160deg,#ece0cf,#b88a5a)'},cover:'linear-gradient(160deg,#e6d8c4,#7a5234)',
-    head:'Мебель из массива на заказ',sub:'Столы, кресла, стеллажи — по вашим размерам',btn:'Обсудить проект',gT:'Каталог',pT:'Сроки',rows:[['Проект и замер','1–3 дня'],['Изготовление','от 3 недель'],['Доставка и сборка','входит']],formT:'Опишите, что нужно',
-    lead:'Лендинг столярной мастерской и фото изделий для сайта и Авито.',
-    task:'Мебель сделана отлично, но на фото из мастерской — стружка, плохой свет и случайный фон. На Авито объявления теряются среди фабричной мебели.',
-    solution:'Изделия сняли на чистом фоне в едином стиле, сделали лендинг с каталогом, сроками и формой заявки. Эти же фото пошли в объявления на Авито.',
-    chips:['Лендинг','Каталог','Обработка фото','Чистый фон','Визуал для Авито'],
-    was:'Фото из мастерской: стружка, тени, случайный фон.',now:'Чистые фото в одном стиле для сайта и объявлений.',
-    gives:[['Аккуратный вид','Все фото в одном стиле, без случайного фона.'],['Заметнее на Авито','Чистый кадр выделяется в ленте.'],['Понятный заказ','Сроки и шаги видны до звонка.']],
-    extra:'visual',art:'chair'},
-  tiho:{domain:'tiho-psy.ru',brand:'ТИХО',nav:'Обо мне · Формат · Запись',city:'Красноярск / онлайн',
-    pal:{sa:'#e7efe8',sb:'#a9c4b0',ink:'#23392b',soft:'#f0f5f1',t1:'linear-gradient(160deg,#dbe7de,#7d9e86)',t2:'linear-gradient(160deg,#e8e6de,#b1ab96)',t3:'linear-gradient(160deg,#e2e8ee,#98a9b8)'},cover:'linear-gradient(160deg,#dce8df,#4f7a5e)',
-    head:'Психолог. Спокойно и бережно',sub:'Очно в Красноярске и онлайн',btn:'Записаться',gT:'С чем работаю',pT:'Стоимость',rows:[['Консультация, 50 мин','3 500 ₽'],['Онлайн','3 000 ₽'],['Парная сессия','5 000 ₽']],formT:'Или напишите в MAX',
-    lead:'Сайт-визитка психолога и MAX-бот для записи без звонков.',
-    task:'Людям тяжело сделать первый шаг: позвонить незнакомому специалисту и объяснить, что случилось. Многие откладывают запись.',
-    solution:'Простая визитка: кто специалист, с чем работает, форматы и стоимость. Запись — через MAX-бота: формат, удобное время, без звонков и лишних вопросов.',
-    chips:['Сайт-визитка','MAX-бот','Запись','Форматы','Стоимость'],
-    was:'Чтобы записаться, нужно звонить и объяснять всё с порога.',now:'Понятная страница и запись через бота, без звонка.',
-    gives:[['Проще записаться','Не нужно звонить и объяснять всё незнакомому человеку.'],['Всё заранее','Форматы и стоимость видны сразу.'],['Спокойный тон','Сайт написан так же бережно, как проходит сама работа.']],
-    extra:'bot',bot:{i:'Т',name:'Тихо · MAX-бот',chat:[['b','Здравствуйте. Какой формат вам удобнее?'],['k',['Очно','Онлайн'],1],['m','Онлайн'],['b','Ближайшее время: вт 19:00 · чт 18:00'],['m','Вторник, 19:00'],['b','Записала. За день пришлю напоминание и ссылку.']]}}
 };
 const palVars=p=>Object.entries(p||{}).map(([k,v])=>'--'+k+':'+v).join(';');
 function siteMock(c,ph){ return '<div class="device'+(ph?' ph':'')+'" style="'+palVars(c.pal)+'" aria-hidden="true"><div class="bar"><i></i><i></i><i></i><span>'+esc(c.domain)+'</span></div><div class="view"><div class="site"><div class="sn"><b>'+esc(c.brand)+'</b><span>'+esc(c.nav)+'</span></div><div class="sh"><h4>'+esc(c.head)+'</h4><p>'+esc(c.sub)+'</p><span class="sb">'+esc(c.btn)+'</span></div><div class="st">'+esc(c.gT)+'</div><div class="sg"><i></i><i></i><i></i></div><div class="st">'+esc(c.pT)+'</div><div class="sp">'+c.rows.map(r=>'<div><span>'+esc(r[0])+'</span><span>'+esc(r[1])+'</span></div>').join('')+'</div><div class="sf"><span>'+esc(c.formT)+'</span><i></i><i></i><b>Отправить</b></div></div></div></div>'; }
@@ -1321,6 +1317,32 @@ function renderCase(slug){
     '<section class="cs-cta"><p class="big-say">'+(demo?'Хотите такой же для своего бизнеса?':c.objs||c.gal||c.seq||c.film?'Нужен похожий визуал?':'Нужен похожий сайт?')+'</p><div class="cta"><a class="pill" href="#contact">Обсудить проект</a>'+(w.url?'<a class="pill ghost" href="'+w.url+'" target="_blank" rel="noopener">Открыть сайт ↗</a>':'')+'</div></section>'+
     '<a class="cs-next" href="'+caseHref(nx.slug)+'"><span class="lab">(Следующий кейс)</span><span class="nm">'+esc(nx.n)+' →</span></a>';
 }
+/* the works index and the contacts page open in the same sheet as a case; on tetsab.ru they are /cases and /contacts */
+const pageHref=k=>(globalThis.__paths?'/':'#p/')+k;
+const CONTACTS=[['Telegram','@wispsoul','https://t.me/wispsoul'],['Телефон','+7 953 598-14-37','tel:+79535981437'],['Почта','wisplink@icloud.com','mailto:wisplink@icloud.com'],['Telegram-канал','t.me/tetsab','https://t.me/tetsab']];
+/* a card picture for each finished case, taken from the case itself */
+function workThumb(c){
+  if(c.seq) return '<img class="'+(c.seq.wide?'':'ct')+'" src="'+c.seq.dir+c.seq.still+'" alt="" loading="lazy" decoding="async"><video data-src="'+c.seq.dir+c.seq.src+'" muted loop playsinline preload="none" class="'+(c.seq.wide?'':'ct')+'"></video>';
+  if(c.gal) return '<img src="'+c.gal.dir+c.gal.still+'" alt="" loading="lazy" decoding="async">';
+  if(c.objs) return '<img class="ct" src="'+EKB+c.objs[0][2]+'.webp" alt="" loading="lazy" decoding="async">';
+  if(c.film) return '<img src="'+c.film.poster+'" alt="" loading="lazy" decoding="async">';
+  if(c.real) return '<img class="sh" src="'+(c.real.pv||c.real.desk)+'" alt="" loading="lazy" decoding="async">';
+  return ''; }
+function renderWorks(){ const ready=WORKS.filter(w=>!w.soon), soon=WORKS.filter(w=>w.soon);
+  const T=[['all','Все'],['visual','Визуал'],['site','Сайты'],['bot','Боты'],['order','Заказы']].filter(([t])=>t==='all'||ready.some(w=>w.t.includes(t)));
+  return '<header class="cs-hero"><span class="lab lab-b">(Работы · '+ready.length+')</span><h2 id="caseT">Работы</h2><p class="big-say cs-sub">3D, визуал и сайты для бизнеса — от заводов и застройщиков до кондитерских. <span>Каждую работу можно открыть.</span></p></header>'+
+    '<div class="wk-wrap"><div class="filters wk-f" role="group" aria-label="Фильтр работ">'+T.map(([t,l],i)=>'<button type="button" aria-pressed="'+(i===0)+'" data-t="'+t+'">'+l+'</button>').join('')+'</div>'+
+    '<div class="wk-grid">'+ready.map(w=>{ const c=CASES[w.slug];
+      return '<a class="wk" href="'+caseHref(w.slug)+'" data-t="'+w.t.join(' ')+'"><span class="wk-m" style="background:'+c.cover+'">'+workThumb(c)+'</span><span class="wk-n">'+esc(w.n)+'<i aria-hidden="true">→</i></span><span class="wk-d">'+esc(w.k)+' · '+esc(w.w)+'</span></a>'; }).join('')+'</div>'+
+    (soon.length?'<div class="wk-soon"><span class="lab lab-b">(В разработке)</span><div class="works">'+soon.map(w=>'<a class="wrow demo-w" href="'+caseHref(w.slug)+'"><span class="nm">'+esc(w.n)+'</span><span class="ct"><span>'+esc(w.k)+' · '+esc(w.w)+'</span><span>('+esc(w.s)+')</span></span></a>').join('')+'</div></div>':'')+'</div>'+
+    '<section class="cs-cta"><p class="big-say">Нужно так же для вашего бизнеса?</p><div class="cta"><a class="pill" href="#contact">Оставить заявку</a></div></section>'+
+    '<a class="cs-next" href="'+pageHref('contacts')+'"><span class="lab">(Дальше)</span><span class="nm">Контакты →</span></a>'; }
+function renderContacts(){
+  return '<header class="cs-hero"><span class="lab lab-b">(Контакты)</span><h2 id="caseT">Контакты</h2><p class="big-say cs-sub">Напишите, чем занимаетесь, — подскажем, что подойдёт и сколько это стоит. <span>Из Красноярска, онлайн по всей России.</span></p></header>'+
+    '<div class="cn-wrap"><div class="cn-list">'+CONTACTS.map(([l,v,h])=>'<div class="cn-row"><small>('+esc(l)+')</small>'+(/^https?:/.test(h)?'<a href="'+h+'" target="_blank" rel="noopener">'+esc(v)+' ↗</a>':h?'<a href="'+h+'">'+esc(v)+'</a>':'<span>'+esc(v)+'</span>')+'</div>').join('')+'</div>'+
+    '<div class="cn-side"><div class="place"><div>Красноярск<small>(56.01° N, 92.87° E · <span data-clock>—</span>)</small></div><div>По всей России<small>(онлайн)</small></div></div>'+
+    '<div class="cta"><a class="pill" href="#contact">Оставить заявку</a><a class="pill ghost" href="https://t.me/tetsab" target="_blank" rel="noopener">Наш Telegram ↗</a></div></div></div>'+
+    '<a class="cs-next" href="'+pageHref('cases')+'"><span class="lab">(Посмотреть)</span><span class="nm">Работы →</span></a>'; }
 const caseCnt=slug=>{ const i=WORKS.findIndex(w=>w.slug===slug); return 'Кейс '+String(i+1).padStart(2,'0')+' / '+String(WORKS.length).padStart(2,'0'); };
 </script>
 <script>
@@ -1328,7 +1350,8 @@ const caseCnt=slug=>{ const i=WORKS.findIndex(w=>w.slug===slug); return 'Кей�
 'use strict';
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const PATHS=!!globalThis.__paths, caseSlug=h=>(String(h).match(/^(?:#case\/|\/cases\/)([\w-]+)/)||[])[1];
+const PATHS=!!globalThis.__paths, caseSlug=h=>(String(h).match(/^(?:#case\/|\/cases\/)([\w-]+)/)||[])[1],
+  pageKey=h=>(String(h).match(/^(?:#p\/|\/)(cases|contacts)\/?$/)||[])[1];
 const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const pressGroup=(g,btn)=>$$('button',g).forEach(b=>b.setAttribute('aria-pressed',b===btn));
@@ -1338,20 +1361,19 @@ const lock=on=>document.documentElement.classList.toggle('lock',on);
 
 /* menu */
 const root=document.documentElement, menu=$('#menu'), mbtn=$('#mbtn');
-const NAV=[['top','Главная'],['services','Услуги'],['works','Работы'],['prices','Цены'],['process','Процесс'],['contact','Контакт']];
-$('.m-nav').innerHTML=NAV.map((n,i)=>'<a class="mi" href="#'+n[0]+'" data-sec="'+n[0]+'" style="animation-delay:'+(.12+i*.05).toFixed(2)+'s"><span class="mi-n">0'+(i+1)+'</span><span class="mi-t">'+[...n[1]].map((c,j)=>'<span class="lt"><span data-c="'+esc(c)+'" style="transition-delay:'+(j*.022).toFixed(3)+'s">'+esc(c)+'</span></span>').join('')+'</span><span class="mi-a" aria-hidden="true">→</span></a>').join('');
+/* two pages, not anchors: the page itself is for scrolling */
+const NAV=[['cases','Работы'],['contacts','Контакты']];
+$('.m-nav').innerHTML=NAV.map((n,i)=>'<a class="mi" href="'+pageHref(n[0])+'" data-page="'+n[0]+'" style="animation-delay:'+(.12+i*.05).toFixed(2)+'s"><span class="mi-n">0'+(i+1)+'</span><span class="mi-t">'+[...n[1]].map((c,j)=>'<span class="lt"><span data-c="'+esc(c)+'" style="transition-delay:'+(j*.022).toFixed(3)+'s">'+esc(c)+'</span></span>').join('')+'</span><span class="mi-a" aria-hidden="true">→</span></a>').join('');
 function setMenu(open){ root.classList.toggle('m-open',open); mbtn.setAttribute('aria-expanded',open); mbtn.setAttribute('aria-label',open?'Закрыть меню':'Открыть меню');
   if(open){ menu.removeAttribute('inert'); lock(true); setTimeout(()=>{ const c=$('.mi.cur')||$('.mi'); c&&c.focus({preventScroll:true}); },60); }
   else { menu.setAttribute('inert',''); lock(false); } }
 mbtn.addEventListener('click',()=>setMenu(!root.classList.contains('m-open')));
 $('#scrim').addEventListener('click',()=>setMenu(false));
 addEventListener('keydown',e=>{ if(e.key!=='Escape') return; if(root.classList.contains('m-open')){ setMenu(false); mbtn.focus(); } else if(caseEl.classList.contains('open')) toList(true); });
-const secMap=[[$('.hero'),'top'],...NAV.slice(1).map(n=>[$('#'+n[0]),n[0]])].filter(x=>x[0]);
-const secIO=new IntersectionObserver(es=>es.forEach(e=>{ if(!e.isIntersecting) return; const id=secMap.find(x=>x[0]===e.target)[1]; $$('.mi').forEach(m=>m.classList.toggle('cur',m.dataset.sec===id)); }),{rootMargin:'-45% 0px -50% 0px'});
-secMap.forEach(x=>secIO.observe(x[0]));
-document.addEventListener('click',e=>{ const a=e.target.closest('a[href^="#"],a[href^="/cases/"]'); if(!a||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey) return; const h=a.getAttribute('href');
-  if(caseSlug(h)){ if(a.closest('.wrow')) caseFrom=a; if(root.classList.contains('m-open')) setMenu(false);
-    const open=caseEl.classList.contains('open');
+document.addEventListener('click',e=>{ const a=e.target.closest('a[href^="#"],a[href^="/cases"],a[href="/contacts"]'); if(!a||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey) return; const h=a.getAttribute('href');
+  if(caseSlug(h)||pageKey(h)){ if(a.closest('.wrow,.wk')) caseFrom=a; if(root.classList.contains('m-open')) setMenu(false);
+    /* a case opened from the works page is a new step, so «back» returns to the works page; other sheet-to-sheet moves replace */
+    const open=caseEl.classList.contains('open')&&!(sheetPage&&caseSlug(h));
     /* same page, no reload: the sheet slides over the site while the address changes */
     if(PATHS){ e.preventDefault(); if(open) history.replaceState(history.state,'',h); else history.pushState({tsCase:1},'',h); route(); }
     else if(open){ e.preventDefault(); history.replaceState(null,'',h); route(); }
@@ -1494,11 +1516,14 @@ $('#cartGo').addEventListener('click',()=>{ const s=cart(); orderNo++; $('#shopT
 q[0]=1; q[3]=1; cart();
 
 /* works + filter */
-$('#wlist').innerHTML=WORKS.map((w,i)=>{
+$('#wlist').innerHTML=WORKS.map((w,i)=>{ if(w.soon) return '';
   const nm='<span class="roll"><span data-t="'+esc(w.n)+' →">'+esc(w.n)+'</span></span>';
   const inner='<span class="nm">'+nm+'</span><span class="ct"><span>'+esc(w.k)+' · '+esc(w.w)+'</span><span>('+w.s+')</span></span>';
   return '<a class="wrow'+(w.url||w.done?'':' demo-w')+'" href="'+caseHref(w.slug)+'" data-i="'+i+'">'+inner+'</a>';
 }).join('');
+$('#wlist').insertAdjacentHTML('afterend','<div class="wk-more"><a class="pill ghost" href="'+pageHref('cases')+'">Все работы →</a></div>');
+/* a filter with nothing finished behind it stays hidden here; the works page still shows the work in progress */
+$$('#filters button').forEach(b=>{ const t=b.dataset.t; if(t!=='all'&&!WORKS.some(w=>!w.soon&&w.t.includes(t))) b.hidden=true; });
 $('#filters').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; pressGroup(b.parentElement,b); const t=b.dataset.t; $$('.wrow').forEach(r=>r.hidden=!(t==='all'||WORKS[+r.dataset.i].t.includes(t))); });
 const pv=$('#pv'); let pvOn=false, px=0, py=0, tx=0, ty=0;
 if(fine){
@@ -1524,23 +1549,42 @@ if(fine){
 /* case videos play (and start loading) only while on screen */
 const caseVids=new IntersectionObserver(es=>es.forEach(e=>{ const v=e.target; if(e.isIntersecting&&$('#case').classList.contains('open')) v.play().catch(()=>{}); else v.pause(); }),{root:$('#case'),threshold:.15});
 const caseEl=$('#case'), caseBody=$('#caseBody'), baseTitle=document.documentElement.dataset.title||document.title; /* a case page opened directly keeps the homepage title here */ let caseFrom=null;
+function fillSheet(html,cnt,back){
+  caseBody.innerHTML=html; caseEl.scrollTop=0; caseVids.disconnect(); if(!reduce) caseBody.querySelectorAll('video:not([data-src])').forEach(v=>{ v.muted=true; caseVids.observe(v); });
+  $('#caseCnt').textContent=cnt; $('#caseBack').textContent=back; }
+const PAGES={cases:['Работы',()=>renderWorks(),'Все работы'],contacts:['Контакты',()=>renderContacts(),'Контакты']};
+let sheetPage=null;
+function openPage(k){ const P=PAGES[k]; if(!P) return false;
+  fillSheet(P[1](),P[2],'← На главную'); sheetPage=k; $$('.mi').forEach(m=>m.classList.toggle('cur',m.dataset.page===k));
+  pv.classList.remove('on'); pvOn=false;
+  if(!caseEl.classList.contains('open')){ caseEl.classList.add('open'); caseEl.removeAttribute('inert'); lock(true); }
+  document.title=P[0]+' — TETSAB'; clock(); setTimeout(()=>$('#caseBack').focus({preventScroll:true}),60); return true; }
 function openCase(slug){
   if(!CASES[slug]||!WORKS.some(w=>w.slug===slug)) return false;
-  caseBody.innerHTML=renderCase(slug); caseEl.scrollTop=0; caseVids.disconnect(); if(!reduce) caseBody.querySelectorAll('video').forEach(v=>{ v.muted=true; caseVids.observe(v); }); $('#caseCnt').textContent=caseCnt(slug);
+  fillSheet(renderCase(slug),caseCnt(slug),'← Все работы'); sheetPage=null; $$('.mi').forEach(m=>m.classList.remove('cur'));
   pv.classList.remove('on'); pvOn=false;
   if(!caseEl.classList.contains('open')){ caseEl.classList.add('open'); caseEl.removeAttribute('inert'); lock(true); }
   document.title=WORKS.find(w=>w.slug===slug).n+' — кейс TETSAB';
   setTimeout(()=>$('#caseBack').focus({preventScroll:true}),60);
   return true;
 }
-function closeCase(){ if(!caseEl.classList.contains('open')) return; caseEl.classList.remove('open'); caseBody.querySelectorAll('video').forEach(v=>v.pause()); setTimeout(wake,0); caseEl.setAttribute('inert',''); lock(false); document.title=baseTitle; if(caseFrom){ caseFrom.focus({preventScroll:true}); caseFrom=null; } }
+function closeCase(){ if(!caseEl.classList.contains('open')) return; caseEl.classList.remove('open'); sheetPage=null; $$('.mi').forEach(m=>m.classList.remove('cur')); caseBody.querySelectorAll('video').forEach(v=>v.pause()); setTimeout(wake,0); caseEl.setAttribute('inert',''); lock(false); document.title=baseTitle; if(caseFrom){ caseFrom.focus({preventScroll:true}); caseFrom=null; } }
 /* back = the browser's back when we opened the case ourselves, so the history stays clean */
 function toList(back){ if(back&&PATHS&&history.state&&history.state.tsCase){ history.back(); return; }
   try{ history.replaceState(null,'',(PATHS?'/':location.pathname)+location.search); }catch(_){} closeCase(); }
-function route(){ let m=location.hash.match(/^#case\/([\w-]+)/);
-  if(PATHS){ if(m) try{ history.replaceState(null,'','/cases/'+m[1]); }catch(_){} else m=location.pathname.match(/^\/cases\/([\w-]+)/); }
-  if(m&&openCase(m[1])) return; closeCase(); }
-$('#caseBack').addEventListener('click',()=>toList(true));
+function route(){ let m=location.hash.match(/^#case\/([\w-]+)/), k=pageKey(location.hash);
+  if(PATHS){ if(m) try{ history.replaceState(null,'','/cases/'+m[1]); }catch(_){} else if(k) try{ history.replaceState(null,'','/'+k); }catch(_){}
+    else { m=location.pathname.match(/^\/cases\/([\w-]+)/); k=pageKey(location.pathname); } }
+  if(k&&openPage(k)) return; if(m&&openCase(m[1])) return; closeCase(); }
+/* back: from a page to the homepage; from a case to wherever it was opened from, or to the works page */
+$('#caseBack').addEventListener('click',()=>{ if(sheetPage||(PATHS&&history.state&&history.state.tsCase)){ toList(true); return; }
+  try{ history.replaceState(null,'',pageHref('cases')); }catch(_){} openPage('cases'); });
+/* works page: filters, and the sequences play while the pointer is on their card */
+caseBody.addEventListener('click',e=>{ const b=e.target.closest('.wk-f button'); if(!b) return; pressGroup(b.parentElement,b); const t=b.dataset.t;
+  $$('.wk',caseBody).forEach(c=>c.hidden=!(t==='all'||c.dataset.t.split(' ').includes(t))); });
+if(fine&&!reduce){ caseBody.addEventListener('pointerover',e=>{ const c=e.target.closest('.wk'); const v=c&&c.querySelector('video[data-src]'); if(!v) return;
+    if(!v.src){ v.muted=true; v.src=v.dataset.src; } v.play().then(()=>c.classList.add('play'),()=>{}); });
+  caseBody.addEventListener('pointerout',e=>{ const c=e.target.closest('.wk'); if(!c||c.contains(e.relatedTarget)) return; const v=c.querySelector('video[data-src]'); if(v){ v.pause(); c.classList.remove('play'); } }); }
 addEventListener(PATHS?'popstate':'hashchange',route);
 route();
 

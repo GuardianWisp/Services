@@ -7,7 +7,8 @@ import vm from "node:vm";
 // open: the page's own case renderer (the <script id="tsdata"> block, which
 // has no DOM code) runs here so the case is in the HTML for search engines
 // and link previews. After load the page takes over and switches between
-// cases and the homepage without reloading.
+// cases and the homepage without reloading. The works index (/cases) and the
+// contacts page (/contacts) open in the same sheet and are built the same way.
 
 const SITE = "https://tetsab.ru";
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -17,6 +18,8 @@ type Work = { slug: string; n: string; k: string; url?: string };
 type Case = { lead: string; real?: { desk: string } };
 type Data = {
   renderCase: (slug: string) => string;
+  renderWorks: () => string;
+  renderContacts: () => string;
   caseCnt: (slug: string) => string;
   WORKS: Work[];
   CASES: Record<string, Case>;
@@ -52,7 +55,7 @@ const data: Data = (() => {
   const code = raw.match(/<script id="tsdata">([\s\S]*?)<\/script>/)?.[1];
   if (!code) throw new Error("home.html: no <script id=\"tsdata\"> block");
   const ctx = vm.createContext({ __paths: true });
-  return vm.runInContext(`${code}\n;({renderCase,caseCnt,WORKS,CASES})`, ctx) as Data;
+  return vm.runInContext(`${code}\n;({renderCase,renderWorks,renderContacts,caseCnt,WORKS,CASES})`, ctx) as Data;
 })();
 
 const attr = (s: string) =>
@@ -70,28 +73,64 @@ export function homePage() {
   return homeHtml;
 }
 
+type Sheet = { url: string; title: string; description: string; image?: string; cnt: string; back: string; body: string; article: boolean };
+
 export function casePage(slug: string): string | null {
   const work = data.WORKS.find((w) => w.slug === slug);
   const c = data.CASES[slug];
   if (!work || !c) return null;
+  return sheetPage({
+    url: `${SITE}/cases/${slug}`,
+    title: `${work.n} — кейс TETSAB`,
+    description: c.lead,
+    image: c.real ? `${SITE}${c.real.desk}` : undefined,
+    cnt: data.caseCnt(slug),
+    back: "← Все работы",
+    body: data.renderCase(slug),
+    article: true,
+  });
+}
 
-  const url = `${SITE}/cases/${slug}`;
-  const title = `${work.n} — кейс TETSAB`;
-  const description = c.lead;
-  const image = c.real ? `${SITE}${c.real.desk}` : `${SITE}/og.jpg`;
+export type PageKey = "cases" | "contacts";
 
+export function staticPage(key: PageKey): string {
+  return key === "cases"
+    ? sheetPage({
+        url: `${SITE}/cases`,
+        title: "Работы — TETSAB",
+        description: "3D, визуал и сайты для бизнеса: секвенции и ключевые визуалы для заводов и застройщиков, сайты для мастеров и кондитерских.",
+        cnt: "Все работы",
+        back: "← На главную",
+        body: data.renderWorks(),
+        article: false,
+      })
+    : sheetPage({
+        url: `${SITE}/contacts`,
+        title: "Контакты — TETSAB",
+        description: "Напишите, чем занимаетесь, — подскажем, что подойдёт и сколько это стоит. Красноярск и онлайн по всей России.",
+        cnt: "Контакты",
+        back: "← На главную",
+        body: data.renderContacts(),
+        article: false,
+      });
+}
+
+/** The homepage with one sheet (a case or a page) already open. */
+function sheetPage({ url, title, description, image, cnt, back, body, article }: Sheet): string {
   let html = homeHtml;
   const homeTitle = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "TETSAB";
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${attr(title)}</title>`);
   html = html.replace(/(<meta name="description" content=")[^"]*"/, `$1${attr(description)}"`);
   html = html.replace(/(<link rel="canonical" href=")[^"]*"/, `$1${url}"`);
-  html = html.replace(/(<meta property="og:type" content=")[^"]*"/, `$1article"`);
+  if (article) html = html.replace(/(<meta property="og:type" content=")[^"]*"/, `$1article"`);
   html = html.replace(/(<meta property="og:url" content=")[^"]*"/, `$1${url}"`);
   html = html.replace(/(<meta property="og:title" content=")[^"]*"/, `$1${attr(title)}"`);
   html = html.replace(/(<meta property="og:description" content=")[^"]*"/, `$1${attr(description)}"`);
-  html = html.replace(/(<meta property="og:image" content=")[^"]*"/, `$1${image}"`);
-  // the size tags describe the site-wide card, not a case screenshot
-  if (c.real) html = html.replace(/<meta property="og:image:(width|height)" content="\d+">\n/g, "");
+  if (image) {
+    html = html.replace(/(<meta property="og:image" content=")[^"]*"/, `$1${image}"`);
+    // the size tags describe the site-wide card, not a case screenshot
+    html = html.replace(/<meta property="og:image:(width|height)" content="\d+">\n/g, "");
+  }
 
   // open sheet, page locked behind it, no preloader
   html = swap(html, '<html lang="ru">', `<html lang="ru" class="lock" data-title="${homeTitle}">`);
@@ -101,8 +140,9 @@ export function casePage(slug: string): string | null {
     '<div class="case" id="case" role="dialog" aria-modal="true" aria-labelledby="caseT" inert>',
     '<div class="case open" id="case" role="dialog" aria-modal="true" aria-labelledby="caseT">',
   );
-  html = swap(html, '<span class="cnt" id="caseCnt"></span>', `<span class="cnt" id="caseCnt">${data.caseCnt(slug)}</span>`);
-  html = swap(html, '<div id="caseBody"></div>', `<div id="caseBody">${data.renderCase(slug)}</div>`);
+  html = swap(html, '<span class="cnt" id="caseCnt"></span>', `<span class="cnt" id="caseCnt">${cnt}</span>`);
+  html = swap(html, 'id="caseBack">← Все работы</button>', `id="caseBack">${back}</button>`);
+  html = swap(html, '<div id="caseBody"></div>', `<div id="caseBody">${body}</div>`);
   return html;
 }
 
