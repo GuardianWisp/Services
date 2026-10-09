@@ -755,6 +755,7 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .gal-row.one{grid-template-columns:1fr}
 .gal-row.tall .stage.gl{aspect-ratio:4/3}
 .stage.gl img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage.gl.fit{max-width:900px;justify-self:center;width:100%}   /* a tall shot keeps its own proportions */
 .stage.gl .cap{color:rgba(255,255,255,.85);text-shadow:0 1px 6px rgba(0,0,0,.35)}
 @media (max-width:700px){.gal-row{grid-template-columns:1fr}}
 /* the box gets an explicit width (fits the screen height too) and the video is pinned inside it: with max-height on an
@@ -1146,6 +1147,7 @@ const WORKS=[
   {slug:'ist',n:'ИСТ',k:'Промышленное оборудование',w:'3D-секвенция и каталог',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f4f6fb,#8f9bbb)'},
   {slug:'foton',n:'Фотоника',k:'Электронные компоненты',w:'3D-визуалы',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f0f0f0,#9d9d9d)'},
   {slug:'tverd',n:'Твердь',k:'Цементный завод',w:'Ключевой визуал',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#4a4a4a,#121212)'},
+  {slug:'bpr',n:'BPR 6',k:'Событие для дизайнеров',w:'Сайт с 3D-фигурами',s:'Сайт работает',done:true,url:'https://bpr.tetsab.ru',t:['site','visual'],bg:'linear-gradient(160deg,#1d1d1d,#1f6b35)'},
   {slug:'niti',n:'Нити Судьбы',k:'Айдентика',w:'Key visual и анимация знака',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#ece8e2,#bfae8c)'},
   {slug:'moskva',n:'Моя Москва',k:'Образовательное приложение',w:'3D-визуализация приложения',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f3efe6,#c9b28f)'},
   {slug:'vanil',n:'Ателье Ваниль',k:'Кондитерская',w:'Сайт с заказом и админкой',s:'Концепт',t:['site','order'],url:'https://vanil.tetsab.ru',concept:true,bg:'linear-gradient(160deg,#f3dcdc,#7a1f2e)'},
@@ -1202,6 +1204,14 @@ const CASES={
     was:'Скриншоты экранов без контекста.',now:'Серия сцен, где приложение выглядит готовым продуктом.',
     gives:[['Продукт выглядит настоящим','Экраны в реальных устройствах и обстановке, а не на белом фоне.'],['Видна связь с курсом','Учебник рядом с планшетом показывает, что приложение — часть программы.'],['Готовый набор','Сцены для сайта, презентаций и соцсетей в одном стиле.']],
     gal:{dir:'/img/cases/moskva/',cover:'cover.webp',still:'still.webp',rows:[[['Планшет на столе','g1'],['Планшет, телефон и учебник','g2']],[['Монитор','g3'],['Монитор и телефон','g4']],[['Ноутбуки','g5']],[['Телефон','g6'],['Телефоны','g7']]]}},
+  bpr:{city:'Красноярск',cover:'#111111',
+    lead:'Сайт портфолио-ревью для дизайнеров: экраны листаются вбок, крупная типографика и простые 3D-фигуры, которые медленно вращаются и откликаются на курсор.',
+    task:'Behance Portfolio Review — встреча, где дизайнеры показывают портфолио, а эксперты дают разбор. Сайт должен коротко рассказать о событии, спикерах, экспертах и программе и сам выглядеть как работа из хорошего портфолио.',
+    solution:'Дизайн собран на тёмной сетке с салатовыми акцентами, экраны листаются вбок, как лента работ. Плоские многогранники из макета стали настоящими 3D-фигурами: матовые тёмные тела с салатовой подсветкой граней, у каждой своё вращение и параллакс. На телефоне экраны идут вертикально, а фигуры становятся меньше.',
+    chips:['Дизайн сайта','Горизонтальная лента','3D на WebGL','Параллакс','Адаптив','Программа и спикеры'],
+    was:'Макет в Figma с плоскими векторными фигурами.',now:'Живой сайт: фигуры объёмные и двигаются вместе с прокруткой и курсором.',
+    gives:[['Запоминается','Лента вбок и 3D выделяют событие среди обычных лендингов.'],['Всё под рукой','Дата, программа и спикеры — за пару прокруток.'],['Работает везде','На телефоне экраны идут вертикально, фигуры уменьшаются.']],
+    gal:{dir:'/img/cases/bpr/',cover:'hero.webp',still:'still.webp',rows:[[['О BPR','about'],['Спикеры','speakers']],[['Эксперты','experts'],['Программа','program']],[['Телефон','mob','1600/1722']]]}},
   ist:{city:'Удалённо',cover:'#ffffff',
     lead:'3D-визуализация для сайта завода промышленного оборудования: секвенция на главном экране и рендеры для всего каталога.',
     task:'Завод делает реакторы, фильтры, дробилки и другое оборудование для химии, металлургии и золотодобычи. Фотографий в одном стиле нет: оборудование большое, снимать его в цеху долго, и выглядит оно по-разному. А на сайте нужно сразу показать, что компания производит, доставляет и запускает оборудование.',
@@ -1301,7 +1311,7 @@ function seqScreens(c){ const d=c.seq.dir;
 function galCover(c,still){ const g=c.gal; return '<img class="gal-cv'+(still?' pv':'')+'" src="'+g.dir+(still?g.still:g.cover)+'" alt="" decoding="async">'; }
 function galScreens(c){ const g=c.gal;
   return '<section class="cs-sec"><span class="lab lab-b">(03) Сцены</span><div class="cs-gal">'+g.rows.map((r,k)=>'<div class="gal-row'+(r.length===1?' one':k===g.rows.length-1?' tall':'')+'">'+
-    r.map(([cap,f])=>'<div class="stage gl"><span class="cap">('+esc(cap)+')</span><img src="'+g.dir+f+'.webp" alt="" loading="lazy" decoding="async"></div>').join('')+'</div>').join('')+'</div></section>'; }
+    r.map(([cap,f,ar])=>'<div class="stage gl'+(ar?' fit':'')+'"'+(ar?' style="aspect-ratio:'+ar+'"':'')+'><span class="cap">('+esc(cap)+')</span><img src="'+g.dir+f+'.webp" alt="" loading="lazy" decoding="async"></div>').join('')+'</div>').join('')+'</div></section>'; }
 function renderCase(slug){
   const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], nx=WORKS[(i+1)%WORKS.length], demo=(!w.url&&!w.done)||w.concept;
   const two=n=>String(n).padStart(2,'0');
