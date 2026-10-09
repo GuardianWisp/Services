@@ -83,13 +83,13 @@ p,h1,h2,h3{margin:0;font-weight:400}
 .m-open .mbtn i:nth-child(2){top:21.5px;transform:rotate(-45deg)}
 .scrim{position:fixed;inset:0;z-index:40;background:rgba(40,40,40,.28);opacity:0;visibility:hidden;pointer-events:none;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);transition:opacity .35s ease,visibility 0s .35s}
 .m-open .scrim{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .6s var(--ease),visibility 0s}
-.menu{box-sizing:border-box;position:fixed;z-index:42;top:calc(12px + env(safe-area-inset-top,0px));right:calc(var(--gut) - 10px);width:min(440px,calc(100vw - 20px));max-height:calc(100svh - 24px);overflow:auto;overscroll-behavior:contain;background:rgba(22,22,22,.94);color:#fff;border-radius:18px;padding:22px 26px 24px;display:flex;flex-direction:column;gap:28px;clip-path:inset(0 0 100% 30% round 18px);visibility:hidden;opacity:0;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);transition:clip-path .4s cubic-bezier(.7,0,.84,0),opacity .3s ease .1s,visibility 0s .4s} /* closing: quick and clean */
+.menu{box-sizing:border-box;position:fixed;z-index:42;top:calc(12px + env(safe-area-inset-top,0px));right:calc(var(--gut) - 10px);width:min(440px,calc(100vw - 20px));max-height:calc(100svh - 24px);overflow:hidden auto;overscroll-behavior:contain;background:rgba(22,22,22,.94);color:#fff;border-radius:18px;padding:22px 26px 24px;display:flex;flex-direction:column;gap:28px;clip-path:inset(0 0 100% 30% round 18px);visibility:hidden;opacity:0;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);transition:clip-path .4s cubic-bezier(.7,0,.84,0),opacity .3s ease .1s,visibility 0s .4s} /* closing: quick and clean */
 .m-open .menu{clip-path:inset(0 0 0 0 round 18px);visibility:visible;opacity:1;transition:clip-path .8s var(--ease),opacity 0s,visibility 0s}
 .m-top{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:rgba(255,255,255,.55);padding-right:44px;min-height:22px;align-items:center}
 .m-nav{display:flex;flex-direction:column}
-.mi{display:grid;grid-template-columns:28px 1fr auto;align-items:baseline;gap:10px;padding:8px 0 10px;border-bottom:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.36);transition:color .35s}
+.mi{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:baseline;gap:10px;padding:8px 0 10px;border-bottom:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.36);transition:color .35s}
 .mi-n{font-size:12px;color:rgba(255,255,255,.4)}
-.mi-t{font-size:clamp(2.3rem,5.2vw,3.4rem);line-height:1;letter-spacing:-.045em;white-space:nowrap}
+.mi-t{font-size:clamp(2.3rem,5.2vw,3.4rem);line-height:1;letter-spacing:-.045em;white-space:nowrap;min-width:0}   /* the menu never scrolls sideways: a classic scrollbar (mouse attached) or wider Safari metrics used to push the rows out */
 .mi-a{font-size:22px;transition:transform .5s var(--ease)}
 .mi.cur,.mi:hover,.mi:focus-visible{color:#fff}
 .mi.cur .mi-a{transform:rotate(45deg)}
