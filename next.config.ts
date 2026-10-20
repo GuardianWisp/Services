@@ -6,11 +6,16 @@ import type { NextConfig } from "next";
 const cache = (value: string) => [{ key: "Cache-Control", value }];
 
 const nextConfig: NextConfig = {
+  // OS·STUDIO: a standalone single-file tool, served at /os. Unlisted and noindex.
+  rewrites() {
+    return [{ source: "/os", destination: "/os-studio.html" }];
+  },
   headers() {
     return [
       { source: "/fonts/:path*", headers: cache("public, max-age=31536000, immutable") },
       { source: "/vendor/:path*", headers: cache("public, max-age=2592000") },
       { source: "/:dir(hero|reel|img)/:path*", headers: cache("public, max-age=86400, stale-while-revalidate=604800") },
+      { source: "/:p(os|os-studio.html)", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
     ];
   },
 };
