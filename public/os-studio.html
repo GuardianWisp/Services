@@ -286,9 +286,9 @@ body.dock-off #dock{display:none}
 .dock-grip{width:16px;height:30px;display:grid;place-items:center;flex-shrink:0;cursor:grab;touch-action:none;color:var(--ui-mute);font-size:14px;line-height:1;user-select:none}
 .dock-grip:active,#dockOpen:active{cursor:grabbing}
 #dockOpen{display:none;cursor:grab;touch-action:none}
-#dock.mini{padding:0;overflow:visible}
+#dock.mini{display:block;width:40px;height:40px;padding:0;overflow:hidden}
 #dock.mini > :not(#dockOpen){display:none}
-#dock.mini #dockOpen{display:grid;place-items:center;width:38px;height:38px;padding:0;border:0;background:transparent;border-radius:inherit}
+#dock.mini #dockOpen{display:grid;place-items:center;width:100%;height:100%;padding:0;border:0;background:transparent;border-radius:0}
 #dock.mini #dockOpen:hover{background:var(--ui-soft)}
 #dockOpen svg{width:16px;height:16px;display:block}
 
