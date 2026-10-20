@@ -244,9 +244,9 @@ html,body{margin:0;padding:0;height:100%;overflow:hidden;background:var(--ui-fra
 body{display:flex;flex-direction:column;height:100dvh;--bar-h:44px}
 body.nobar{--bar-h:0px}
 body.nobar #bar{display:none}
-#barTab{position:fixed;left:50%;top:0;transform:translate(-50%,-100%);width:56px;height:20px;border:1px solid var(--ui-line);border-top:0;background:var(--ui-bg);color:var(--ui-ink);cursor:pointer;z-index:60;font-size:11px;transition:transform .2s,opacity .2s;border-radius:0 0 var(--ui-rad) var(--ui-rad);opacity:.35}
+#barTab{position:fixed;right:0;top:40px;transform:translateX(100%);width:22px;height:46px;padding:0;border:1px solid var(--ui-line);border-right:0;background:var(--ui-bg);color:var(--ui-ink);cursor:pointer;z-index:60;font-size:11px;transition:transform .2s,opacity .2s;border-radius:var(--ui-rad) 0 0 var(--ui-rad);opacity:.45}
 #barTab:hover{opacity:1}
-body.nobar #barTab{transform:translate(-50%,0)}
+body.nobar #barTab{transform:none}
 body.recording #barTab{visibility:hidden}
 button{font:inherit;color:inherit}
 [contenteditable="true"]{user-select:text;-webkit-user-select:text;cursor:text;outline:none}
@@ -338,6 +338,8 @@ body.recording #dock,body.recording #dockTab,body.recording #drawer,body.recordi
 .sbar.top{top:0}
 .sbar.bottom{bottom:0;border-bottom-width:0;border-top-width:var(--bw)}
 .sb-mid{flex:1;text-align:center;letter-spacing:3px;overflow:hidden;text-overflow:ellipsis}
+.sbar.top .sb-mid{position:absolute;left:50%;transform:translateX(-50%);max-width:46%;flex:none}
+.sbar.top .sb-r{margin-left:auto}
 .sb-r{font-variant-numeric:tabular-nums}
 .sb-logo{width:9px;height:9px;background:var(--signal);display:inline-block;flex-shrink:0;border-radius:calc(var(--radius)*.3)}
 .sb-menu{letter-spacing:1px;word-spacing:6px}
