@@ -278,12 +278,17 @@ button{font:inherit;color:inherit}
 #frameLabel{position:absolute;font-size:10px;letter-spacing:2px;color:var(--ui-mute);display:none;white-space:nowrap;transform:translateY(-18px)}
 #viewport.framed #frameLabel{display:block}
 
-#dock{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:6px;background:var(--ui-bg);border:1px solid var(--ui-line);box-shadow:var(--ui-shadow);max-width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:none;z-index:60;border-radius:calc(var(--ui-rad) + 4px);transition:transform .2s,opacity .2s}
+#dock{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:6px;background:var(--ui-bg);border:1px solid var(--ui-line);box-shadow:var(--ui-shadow);max-width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:none;z-index:60;border-radius:calc(var(--ui-rad) + 4px)}
 #dock::-webkit-scrollbar{display:none}
-#dock.hidden{transform:translate(-50%,140%);opacity:0;pointer-events:none}
+#dock.free{bottom:auto;transform:none}
+body.dock-off #dock{display:none}
 #dock .ub{height:30px;font-size:10px}
-#dockTab{position:fixed;left:50%;bottom:0;transform:translate(-50%,100%);width:56px;height:22px;border:1px solid var(--ui-line);border-bottom:0;background:var(--ui-bg);cursor:pointer;z-index:60;font-size:12px;transition:transform .2s;border-radius:var(--ui-rad) var(--ui-rad) 0 0}
-#dockTab.show{transform:translate(-50%,0)}
+.dock-grip{width:16px;height:30px;display:grid;place-items:center;flex-shrink:0;cursor:grab;touch-action:none;color:var(--ui-mute);font-size:14px;line-height:1;user-select:none}
+.dock-grip:active,#dockOpen:active{cursor:grabbing}
+#dockOpen{display:none;width:32px;padding:0;justify-content:center;font-size:15px;cursor:grab;touch-action:none}
+#dock.mini{padding:4px}
+#dock.mini > :not(#dockOpen){display:none}
+#dock.mini #dockOpen{display:inline-flex}
 
 #drawer{position:fixed;top:var(--bar-h);right:0;bottom:0;width:310px;max-width:100vw;background:var(--ui-bg);border-left:1px solid var(--ui-line);z-index:70;transform:translateX(100%);transition:transform .22s ease;overflow-y:auto;font-size:11px;padding:14px 14px 40px}
 #drawer.open{transform:none;box-shadow:-10px 0 30px rgba(0,0,0,.15)}
@@ -319,7 +324,7 @@ input[type=color]{width:26px;height:24px;padding:0;border:1px solid var(--ui-lin
 #toast{position:fixed;left:50%;top:56px;transform:translate(-50%,-10px);background:var(--ui-ink);color:var(--ui-bg);padding:8px 14px;font-size:11px;letter-spacing:1px;opacity:0;pointer-events:none;transition:.2s;z-index:9999;border-radius:var(--ui-rad);max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
 
-body.recording #dock,body.recording #dockTab,body.recording #drawer,body.recording .rz,body.recording .ftools{visibility:hidden}
+body.recording #dock,body.recording #drawer,body.recording .rz,body.recording .ftools{visibility:hidden}
 
 /* ============================================================
    STAGE / DESKTOP
@@ -717,6 +722,7 @@ html[data-skin="aqua"] .tb-btn[data-tb="max"]{order:-1;background:radial-gradien
 </main>
 
 <nav id="dock">
+  <span class="dock-grip" title="Перетащить панель">⠿</span>
   <button class="ub" data-add="media">+ MEDIA</button>
   <button class="ub" data-add="player">+ PLAYER</button>
   <button class="ub" data-add="text">+ TEXT</button>
@@ -728,9 +734,9 @@ html[data-skin="aqua"] .tb-btn[data-tb="max"]{order:-1;background:radial-gradien
   <button class="ub" data-add="library">+ LIBRARY</button>
   <button class="ub" data-add="folder">+ FOLDER</button>
   <span class="vsep"></span>
-  <button class="ub" id="dockHide" title="Спрятать панель">✕</button>
+  <button class="ub" id="dockHide" title="Свернуть в квадратик">–</button>
+  <button class="ub" id="dockOpen" title="Развернуть панель (можно перетаскивать)">⊞</button>
 </nav>
-<button id="dockTab" title="Показать панель">⌃</button>
 
 <aside id="drawer">
   <div class="dr-h"><b style="letter-spacing:2px">СТИЛЬ</b><button class="ub" id="drClose">✕</button></div>
@@ -764,6 +770,7 @@ html[data-skin="aqua"] .tb-btn[data-tb="max"]{order:-1;background:radial-gradien
       <kbd>⌘V</kbd><span>вставить картинку из буфера</span>
       <kbd>⌘E</kbd><span>экспорт PNG</span>
       <kbd>H</kbd><span>спрятать / показать интерфейс</span>
+      <kbd>⠿</kbd><span>тащить панель (2× клик — вернуть вниз)</span>
     </div>
   </div>
 </aside>
@@ -901,6 +908,7 @@ function save(){
 }
 
 /* --- history --- */
+let dockOff = false;  /* whole dock hidden (fullscreen / H) — not saved */
 const hist = { past: [], future: [] };
 let lastSnap = '';
 const snapshot = () => JSON.stringify({ wins: S.wins, icons: S.icons, texts: S.texts }, strip);
@@ -1005,7 +1013,7 @@ function layoutStage(){
     Object.assign(stage.style, { width: vw + 'px', height: vh + 'px', left: '0px', top: '0px', transform: 'none' });
     viewport.classList.remove('framed');
   } else {
-    const padX = 20, padTop = 34, dockSpace = S.dock ? 70 : 24;
+    const padX = 20, padTop = 34, dockSpace = (S.dock && !S.dockPos && !dockOff) ? 70 : 24;
     const aw = vw - padX * 2, ah = vh - padTop - dockSpace;
     scale = Math.max(0.1, Math.min(aw / r.w, ah / r.h));
     const left = (vw - r.w * scale) / 2, top = padTop + (ah - r.h * scale) / 2;
@@ -1529,7 +1537,7 @@ function openStageCtx(cx, cy){
     { label: '+ VU', fn: add('vu') }, { label: '+ EQ', fn: add('eq') }, { label: '+ LIBRARY', fn: add('library') }, { label: '+ ПАПКА', fn: add('folder') },
     '-',
     { label: 'Обои: своё фото…', fn: () => $('#wallPick').click() },
-    { label: S.dock ? 'Спрятать панель' : 'Показать панель', fn: () => setDock(!S.dock) },
+    { label: S.dock ? 'Свернуть панель' : 'Развернуть панель', fn: () => S.dock ? minimizeDock() : openDock() },
     { label: 'Стиль и настройки', fn: openDrawer },
   ]);
 }
@@ -1601,7 +1609,7 @@ window.addEventListener('keydown', e => {
   if (mod && k === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
   if (mod && k === 'y') { e.preventDefault(); redo(); return; }
   if (mod && k === 'e') { e.preventDefault(); exportPNG(); return; }
-  if (!mod && !e.altKey && k === 'h') { e.preventDefault(); setUI(!(S.bar || S.dock)); return; }
+  if (!mod && !e.altKey && k === 'h') { e.preventDefault(); setUI(!(S.bar || !dockOff)); return; }
   const w = activeId && getW(activeId);
   if (!w) return;
   if (mod && k === 'd') { e.preventDefault(); dupWin(w); return; }
@@ -1792,10 +1800,48 @@ function setBar(on){
   layoutStage(); save();
 }
 let preFs = null;
-function setUI(on){ setBar(on); setDock(on); }
-function setDock(on){
-  S.dock = on; $('#dock').classList.toggle('hidden', !on); $('#dockTab').classList.toggle('show', !on);
-  layoutStage(); save();
+function setUI(on){ setBar(on); dockOff = !on; document.body.classList.toggle('dock-off', dockOff); layoutStage(); }
+
+/* dock: drag by the grip, collapse into a square right where it was, reopen from the square */
+const dock = $('#dock');
+function placeDock(){
+  dock.classList.toggle('mini', !S.dock);
+  const pos = S.dock ? S.dockPos : S.miniPos;
+  dock.classList.toggle('free', !!pos);
+  if (!pos) { dock.style.left = dock.style.top = ''; return; }
+  dock.style.left = pos.x + 'px'; dock.style.top = pos.y + 'px';
+  const r = dock.getBoundingClientRect();
+  dock.style.left = clamp(pos.x, 4, Math.max(4, innerWidth - r.width - 4)) + 'px';
+  dock.style.top = clamp(pos.y, 4, Math.max(4, innerHeight - r.height - 4)) + 'px';
+}
+function minimizeDock(){
+  const b = $('#dockHide').getBoundingClientRect();
+  S.miniFrom = S.dockPos || null; S.miniMoved = false;
+  S.miniPos = { x: Math.round(b.left - 4), y: Math.round(b.top - 4) };
+  S.dock = false; placeDock(); layoutStage(); save();
+}
+function openDock(){
+  const sq = dock.getBoundingClientRect();
+  S.dock = true;
+  if (!S.miniMoved) S.dockPos = S.miniFrom || null;
+  else {
+    dock.classList.remove('mini'); dock.classList.add('free');
+    const r = dock.getBoundingClientRect();
+    S.dockPos = { x: Math.round(sq.right - r.width), y: Math.round(sq.bottom - r.height) };
+  }
+  placeDock(); layoutStage(); save();
+}
+function dragDock(e, onClick){
+  if (e.button !== 0) return;
+  e.preventDefault();
+  const r = dock.getBoundingClientRect(), sx = e.clientX, sy = e.clientY; let moved = false;
+  track(ev => {
+    if (!moved && Math.hypot(ev.clientX - sx, ev.clientY - sy) < 4) return;
+    moved = true;
+    const p = { x: Math.round(r.left + ev.clientX - sx), y: Math.round(r.top + ev.clientY - sy) };
+    if (S.dock) S.dockPos = p; else { S.miniPos = p; S.miniMoved = true; }
+    placeDock();
+  }, () => { if (moved) { layoutStage(); save(); } else if (onClick) onClick(); });
 }
 
 /* drawer */
@@ -1851,15 +1897,19 @@ $('#dock').addEventListener('click', e => {
   if (t === 'folder') return newFolder(24 + Math.random() * 30, 120 + Math.random() * (stageH() - 260));
   addAtCenter(t);
 });
-$('#dockHide').addEventListener('click', () => setDock(false));
+$('#dockHide').addEventListener('click', minimizeDock);
+$('.dock-grip').addEventListener('pointerdown', e => dragDock(e));
+$('.dock-grip').addEventListener('dblclick', () => { S.dockPos = null; placeDock(); layoutStage(); save(); });
+$('#dockOpen').addEventListener('pointerdown', e => dragDock(e, openDock));
+$('#dockOpen').addEventListener('click', e => { if (e.detail === 0) openDock(); });
+window.addEventListener('resize', placeDock);
 $('#bHideBar').addEventListener('click', () => setBar(false));
 $('#barTab').addEventListener('click', () => setBar(true));
-$('#dockTab').addEventListener('click', () => setDock(true));
 new ResizeObserver(() => layoutStage()).observe(viewport);
 document.addEventListener('fullscreenchange', () => {
   /* fullscreen = clean canvas: hide toolbar + dock, bring them back on exit */
-  if (document.fullscreenElement) { preFs = { bar: S.bar, dock: S.dock }; setUI(false); }
-  else if (preFs) { setBar(preFs.bar); setDock(preFs.dock); preFs = null; }
+  if (document.fullscreenElement) { preFs = { bar: S.bar }; setUI(false); }
+  else if (preFs) { setUI(true); setBar(preFs.bar); preFs = null; }
   setTimeout(layoutStage, 50);
 });
 
@@ -1896,7 +1946,7 @@ function seed(){
 (async function boot(){
   buildDrawer();
   applySkin(); applyTexts(); applyToggles();
-  $('#dock').classList.toggle('hidden', !S.dock); $('#dockTab').classList.toggle('show', !S.dock);
+  placeDock();
   document.body.classList.toggle('nobar', !S.bar);
   if (!viewport.clientWidth || !viewport.clientHeight) {
     await new Promise(res => { const ro = new ResizeObserver(() => { if (viewport.clientWidth && viewport.clientHeight) { ro.disconnect(); res(); } }); ro.observe(viewport); });
