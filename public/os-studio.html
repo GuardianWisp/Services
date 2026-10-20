@@ -148,24 +148,6 @@ html[data-skin="aqua"]{
   --sbar-bg:rgba(255,255,255,.82); --sbar-ink:#111;
 }
 
-/* ---------- STITCH (textile patches over a circuit board) ---------- */
-html[data-skin="stitch"]{
-  --weave:repeating-linear-gradient(0deg,rgba(255,255,255,.045) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(0,0,0,.2) 0 1px,transparent 1px 3px);
-  --desk:#1E2733; --panel:#3A393C; --ink:#E8E2D6; --line:#E8E2D6; --mute:#9C978C; --track:#232226;
-  --signal:#F0B429; --signal-ink:#1E1E1E; --grid:#2A3442; --shadow:0 10px 22px rgba(0,0,0,.55); --radius:3px;
-  --f-title:'Inter',Helvetica,sans-serif; --f-body:'IBM Plex Mono',monospace;
-  --checker-a:#4A494D; --checker-b:#3A393C; --tb-bg:transparent; --tb-h:28px; --tb-fs:12px;
-  --wallpaper:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><g fill='none' stroke-width='1'><path d='M0 40H90V120H160V60H260' stroke='%2346c8e6' opacity='.45'/><path d='M40 0V70H120V200H260' stroke='%2346c8e6' opacity='.3'/><path d='M200 0V100H230V260' stroke='%23e05bd0' opacity='.35'/><path d='M0 210H70V160H110' stroke='%2346c8e6' opacity='.4'/><path d='M150 260V230H250' stroke='%2346c8e6' opacity='.3'/><rect x='86' y='116' width='8' height='8' stroke='%2346c8e6' opacity='.6'/><rect x='156' y='56' width='8' height='8' stroke='%2346c8e6' opacity='.6'/><circle cx='110' cy='160' r='3' stroke='%2346c8e6' opacity='.6'/><rect x='196' y='96' width='8' height='14' stroke='%23e05bd0' opacity='.5'/><rect x='116' y='196' width='14' height='8' stroke='%2346c8e6' opacity='.5'/></g></svg>") 0 0/260px 260px,radial-gradient(70% 38% at 72% 88%,rgba(205,60,45,.4),transparent 70%),var(--weave),#1E2733;
-  --btn-bg:#CFCAC0; --btn-ink:#1E1E1E; --btn-bd:0; --btn-rad:999px; --btn-shadow:0 1px 2px rgba(0,0,0,.4);
-  --orb-bg:#E8E2D6; --orb-ink:#1E1E1E;
-  --fill:#3D7FD9; --knob-rad:999px;
-  --lcd-bg:#1F6FB5; --lcd-ink:#E8F1FF; --f-lcd:'IBM Plex Mono',monospace;
-  --vu-bg:#1F6FB5; --vu-col:#E8F1FF;
-  --log-bg:#1F6FB5; --log-ink:#E8F1FF;
-  --icon-ink:#E8E2D6; --icon-shadow:0 1px 2px rgba(0,0,0,.8); --folder-fill:#CFC8BB; --folder-line:#7D776C;
-  --sbar-bg:rgba(12,16,22,.88); --sbar-ink:#3CE07A;
-  --ui-bg:#17191E; --ui-ink:#E8E2D6; --ui-line:#3A3D45; --ui-soft:#23262D; --ui-frame:#0D0F13; --ui-mute:#8D8A83; --ui-shadow:0 10px 30px rgba(0,0,0,.6); --ui-rad:3px;
-}
 /* ---------- 1-BIT (dither) ---------- */
 html[data-skin="dither"]{
   --dith:repeating-conic-gradient(#F2F2F2 0 25%,#141414 0 50%) 0 0/2px 2px;
@@ -250,6 +232,8 @@ body.nobar #barTab{transform:none}
 body.recording #barTab{visibility:hidden}
 button{font:inherit;color:inherit}
 [contenteditable="true"]{user-select:text;-webkit-user-select:text;cursor:text;outline:none}
+:is(button,.tg,.skin-chip,.sw,input[type=color]):focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.pill:focus-within{outline:2px solid var(--signal);outline-offset:2px}
 
 #bar{height:44px;flex-shrink:0;display:flex;align-items:center;gap:6px;padding:0 10px;background:var(--ui-bg);border-bottom:1px solid var(--ui-line);overflow-x:auto;scrollbar-width:none;font-size:11px;position:relative;z-index:50}
 #bar::-webkit-scrollbar{display:none}
@@ -296,11 +280,11 @@ body.dock-off #dock{display:none}
 #drawer.open{transform:none;box-shadow:-10px 0 30px rgba(0,0,0,.15)}
 .dr-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .dr-sec{padding:12px 0;border-bottom:1px dashed color-mix(in srgb,var(--ui-line) 35%,transparent)}
-.dr-lab{font-size:9px;letter-spacing:2px;color:var(--ui-mute);margin-bottom:8px;text-transform:uppercase}
+.dr-lab{font-size:10px;letter-spacing:2px;color:var(--ui-mute);margin-bottom:8px;text-transform:uppercase}
 .row{display:flex;flex-wrap:wrap;gap:4px}
 .row .ub{height:26px;font-size:10px;padding:0 8px}
 .skins{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
-.skin-chip{border:1px solid var(--ui-line);background:var(--ui-bg);padding:4px;cursor:pointer;text-align:left;font-size:9px;letter-spacing:1px;border-radius:var(--ui-rad)}
+.skin-chip{border:1px solid var(--ui-line);background:var(--ui-bg);padding:4px;cursor:pointer;text-align:left;font-size:10px;letter-spacing:1px;border-radius:var(--ui-rad)}
 .skin-chip i{display:block;height:34px;margin-bottom:4px;border-radius:calc(var(--ui-rad)*.6);border:1px solid rgba(0,0,0,.15)}
 .skin-chip.on{outline:2px solid var(--signal);outline-offset:1px}
 .sw{width:22px;height:22px;border:1px solid var(--ui-line);cursor:pointer;padding:0;border-radius:calc(var(--ui-rad)*.5)}
@@ -319,7 +303,7 @@ input[type=color]{width:26px;height:24px;padding:0;border:1px solid var(--ui-lin
 .ctx button{display:block;width:100%;text-align:left;border:0;background:none;padding:7px 10px;cursor:pointer;letter-spacing:.5px;border-radius:calc(var(--ui-rad)*.6)}
 .ctx button:hover{background:var(--signal);color:var(--signal-ink)}
 .ctx .sep{height:1px;background:var(--ui-line);opacity:.3;margin:4px 0}
-.ctx .cap{font-size:9px;letter-spacing:2px;color:var(--ui-mute);padding:6px 10px 2px}
+.ctx .cap{font-size:10px;letter-spacing:2px;color:var(--ui-mute);padding:6px 10px 2px}
 
 #busy{position:fixed;left:0;right:0;top:var(--bar-h);bottom:0;z-index:8000;background:var(--ui-frame);display:none;align-items:center;justify-content:center;font-size:11px;letter-spacing:3px;color:var(--ui-mute)}
 #busy.on{display:flex}
@@ -409,11 +393,12 @@ html[data-skin="modern"] .tb-btn,html[data-skin="modern-dark"] .tb-btn{border-ra
 .strip{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:240px}
 .th{width:34px;height:34px;padding:0;border:var(--bw) solid var(--line);overflow:hidden;position:relative;cursor:pointer;background:var(--panel);border-radius:calc(var(--radius)*.4)}
 .th img,.th video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-.hint{font-size:9px;opacity:.85}
+.th-ph{width:100%;height:100%;display:grid;place-items:center;font-size:12px;color:var(--mute);pointer-events:none}
+.hint{font-size:10px;opacity:.85}
 .pill{display:inline-flex;align-items:center;justify-content:center;gap:4px;height:24px;padding:0 10px;font:600 10px/1 var(--f-body);letter-spacing:1px;background:var(--btn-bg);color:var(--btn-ink);border:var(--btn-bd);border-radius:var(--btn-rad);box-shadow:var(--btn-shadow);cursor:pointer;white-space:nowrap}
 .pill:hover{filter:brightness(.97)}
 .pill.on{background:var(--signal);color:var(--signal-ink);border-color:var(--signal)}
-.pill.sm{height:18px;padding:0 7px;font-size:8px}
+.pill.sm{height:20px;padding:0 8px;font-size:10px}
 
 /* ---------- compare ---------- */
 .cmp{cursor:ew-resize;touch-action:none}
@@ -435,13 +420,13 @@ html[data-skin="modern"] .tb-btn,html[data-skin="modern-dark"] .tb-btn{border-ra
 .d-lab{display:flex;justify-content:space-between;gap:8px;font-size:10px;letter-spacing:1px}
 .d-track{height:12px;background:var(--track);border:var(--bw) solid var(--line);cursor:ew-resize;position:relative;touch-action:none;border-radius:calc(var(--radius)*.5);overflow:hidden}
 .d-fill{position:absolute;left:0;top:0;bottom:0;background:var(--fill)}
-.d-x{position:absolute;right:-8px;top:-6px;width:16px;height:16px;font-size:9px;display:none}
+.d-x{position:absolute;right:-8px;top:-6px;width:16px;height:16px;font-size:10px;display:none}
 .d-row:hover .d-x{display:grid}
 .d-add{align-self:flex-start}
 
 /* ---------- vu ---------- */
 .vu{display:flex;align-items:flex-end;gap:3px;height:100%;padding:12px;background:var(--vu-bg)}
-.vu i{flex:1;background:var(--vu-col);height:10%;display:block;transition:height .12s;border-radius:calc(var(--radius)*.15)}
+.vu i{flex:1;background:var(--vu-col);height:100%;display:block;transform:scaleY(.1);transform-origin:50% 100%;transition:transform .12s;border-radius:calc(var(--radius)*.15)}
 .vu i.pk{background:var(--signal)}
 
 /* ---------- eq ---------- */
@@ -452,7 +437,7 @@ html[data-skin="modern"] .tb-btn,html[data-skin="modern-dark"] .tb-btn{border-ra
 .eq-band:first-child{margin-right:10px}
 .eq-slot{flex:1;width:6px;position:relative;background:var(--track);border:var(--bw) solid var(--line);border-radius:3px}
 .eq-knob{position:absolute;left:50%;width:18px;height:9px;transform:translate(-50%,50%);background:var(--btn-bg);border:var(--btn-bd);border-radius:var(--knob-rad);box-shadow:var(--btn-shadow)}
-.eq-band span{font-size:8px;color:var(--mute);white-space:nowrap}
+.eq-band span{font-size:10px;color:var(--mute);white-space:nowrap}
 .eq.off .eq-knob{opacity:.45}
 
 /* ---------- library ---------- */
@@ -460,9 +445,9 @@ html[data-skin="modern"] .tb-btn,html[data-skin="modern-dark"] .tb-btn{border-ra
 .lib-it{display:flex;flex-direction:column;gap:4px;cursor:grab}
 .lib-th{aspect-ratio:1;border:var(--bw) solid var(--line);position:relative;overflow:hidden;border-radius:calc(var(--radius)*.4)}
 .lib-th img,.lib-th video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-.lib-th .mini{position:absolute;top:3px;right:3px;width:18px;height:18px;font-size:9px;opacity:0}
+.lib-th .mini{position:absolute;top:3px;right:3px;width:18px;height:18px;font-size:10px;opacity:0}
 .lib-it:hover .mini{opacity:1}
-.lib-n{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--mute)}
+.lib-n{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--mute)}
 .lib-empty{grid-column:1/-1;text-align:center;font-size:10px;color:var(--mute);padding:20px 0;line-height:1.7}
 .lib-add{grid-column:1/-1;justify-self:start}
 
@@ -470,13 +455,13 @@ html[data-skin="modern"] .tb-btn,html[data-skin="modern-dark"] .tb-btn{border-ra
 .pl{display:flex;flex-direction:column;height:100%;gap:8px;padding:8px}
 .pl-screen{flex:1;min-height:50px;border:var(--bw) solid var(--line);border-radius:calc(var(--radius)*.6)}
 .pl-viz{position:absolute;inset:0;display:flex;align-items:flex-end;gap:2px;padding:14px;background:var(--lcd-bg)}
-.pl-viz i{flex:1;background:var(--lcd-ink);opacity:.8;height:6%;display:block;transition:height .12s}
+.pl-viz i{flex:1;background:var(--lcd-ink);opacity:.8;height:100%;display:block;transform:scaleY(.06);transform-origin:50% 100%;transition:transform .12s}
 .pl-load{position:absolute;top:8px;right:8px;z-index:2}
 .pl-lcd{background:var(--lcd-bg);color:var(--lcd-ink);font-family:var(--f-lcd);padding:7px 10px;border-radius:calc(var(--radius)*.5);display:grid;grid-template-columns:auto auto 1fr;gap:3px 10px;align-items:center;box-shadow:var(--lcd-shadow);flex-shrink:0}
 .pl-state{font-size:calc(var(--lcd-fs) * .9);opacity:.9}
 .pl-time{font-size:var(--lcd-time-fs);line-height:1;font-variant-numeric:tabular-nums;font-weight:700}
 .pl-spec{display:flex;align-items:flex-end;gap:2px;height:22px;justify-self:end;width:100%;max-width:110px}
-.pl-spec i{flex:1;background:currentColor;opacity:.85;height:8%;display:block;transition:height .1s}
+.pl-spec i{flex:1;background:currentColor;opacity:.85;height:100%;display:block;transform:scaleY(.08);transform-origin:50% 100%;transition:transform .1s}
 .pl-track{grid-column:1/-1;font-size:var(--lcd-fs);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.5px;min-height:1.2em}
 .pl-seek,.pl-vol{height:8px;position:relative;background:var(--track);border:var(--bw) solid var(--line);border-radius:calc(var(--radius)*.4);cursor:pointer;touch-action:none;flex-shrink:0}
 .pl-seek .pl-fill,.pl-vfill{position:absolute;left:0;top:0;bottom:0;background:var(--fill);border-radius:inherit}
@@ -600,21 +585,6 @@ html[data-skin="aqua"] .stk-in.look-1{border-radius:12px}
 /* DARK-ish brutal: active window icon */
 html[data-skin="dark"] .tb-btn:hover{color:#fff}
 
-/* STITCH */
-html[data-skin="stitch"] .win{background:var(--weave),#3A393C;border:0;padding:0 5px 5px;box-shadow:0 0 0 1px rgba(232,226,214,.85),0 0 0 3px rgba(232,226,214,.22),0 0 6px 3px rgba(232,226,214,.12),var(--shadow);outline:1px dashed rgba(232,226,214,.38);outline-offset:-3px}
-html[data-skin="stitch"] .titlebar{border:0;color:#CFCAC0}
-html[data-skin="stitch"] .tb-title{font-weight:400;color:#CFCAC0}
-html[data-skin="stitch"] .tb-icon{width:11px;height:11px;border-radius:50%;border:0;background:#F0B429}
-html[data-skin="stitch"] .tb-btn{border-radius:50%;border:0;background:#5E5D62;color:#1E1E1E;font-weight:700}
-html[data-skin="stitch"] .win-body{background:var(--weave),#2F2E31;border-radius:2px}
-html[data-skin="stitch"] .frame::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:var(--weave);mix-blend-mode:overlay;opacity:.9}
-html[data-skin="stitch"] #stage img,html[data-skin="stitch"] #stage video{filter:saturate(.85) contrast(.95)}
-html[data-skin="stitch"] .stk-in.look-1{background:var(--weave),#EDE6D6;color:#2B2F45;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;border:0;box-shadow:0 0 0 1px rgba(237,230,214,.9),0 0 0 3px rgba(237,230,214,.25),0 10px 22px rgba(0,0,0,.5);outline:1px dashed rgba(43,47,69,.3);outline-offset:-5px}
-html[data-skin="stitch"] .pl-seek,html[data-skin="stitch"] .pl-vol,html[data-skin="stitch"] .d-track{border:0;border-radius:999px;height:6px;background:#232226}
-html[data-skin="stitch"] .sbar{font-family:'VT323','IBM Plex Mono',monospace;font-size:15px;border-color:#2A3442}
-html[data-skin="stitch"] .sb-logo{background:#3CE07A}
-html[data-skin="stitch"] .badge{background:rgba(12,16,22,.9);color:#3CE07A;border-color:#2A3442;font-family:'VT323',monospace;font-size:17px;line-height:1.15;box-shadow:none}
-
 /* 1-BIT */
 html[data-skin="dither"] .titlebar{gap:5px}
 html[data-skin="dither"] .tb-title{flex:0 1 auto;margin-right:auto;height:16px;background:#141414;padding:0 6px;letter-spacing:1px}
@@ -696,10 +666,11 @@ html[data-skin="aqua"] .tb-btn[data-tb="max"]{order:-1;background:radial-gradien
   <button class="ub" id="bUndo" title="Отменить (⌘Z)">↶</button>
   <button class="ub" id="bRedo" title="Повторить (⇧⌘Z)">↷</button>
   <span class="vsep"></span>
+  <button class="ub" id="bFile" title="Сохранить / открыть проект, экспорт">FILE ▾</button>
   <button class="ub dark" id="bPng" title="Сохранить кадр в PNG (⌘E)">PNG ↓</button>
   <button class="ub" id="bRec" title="Записать видео с экрана"><i class="dot"></i>REC</button>
   <button class="ub" id="bFull" title="Полный экран">⤢</button>
-  <button class="ub" id="bSet" title="Стиль и настройки">⚙ СТИЛЬ</button>
+  <button class="ub" id="bSet" title="Стиль и настройки">⚙ STYLE</button>
   <button class="ub" id="bHideBar" title="Спрятать верхнюю панель (H — спрятать весь интерфейс)">⌃</button>
 </header>
 <button id="barTab" title="Показать панель">⌄</button>
@@ -741,20 +712,25 @@ html[data-skin="aqua"] .tb-btn[data-tb="max"]{order:-1;background:radial-gradien
 </nav>
 
 <aside id="drawer">
-  <div class="dr-h"><b style="letter-spacing:2px">СТИЛЬ</b><button class="ub" id="drClose">✕</button></div>
+  <div class="dr-h"><b style="letter-spacing:2px">STYLE</b><button class="ub" id="drClose">✕</button></div>
   <div class="dr-sec"><div class="dr-lab">Скин</div><div class="skins" id="skinGrid"></div></div>
   <div class="dr-sec"><div class="dr-lab">Акцент</div><div class="row" id="accRow"></div></div>
   <div class="dr-sec"><div class="dr-lab">Обои</div><div class="row" id="bgRow"></div></div>
   <div class="dr-sec"><div class="dr-lab">Курсор</div><div class="row" id="curRow"></div></div>
   <div class="dr-sec">
     <div class="dr-lab">Рабочий стол</div>
-    <div class="tg" data-tg="bars"><span>Статус-бары</span><b></b></div>
-    <div class="tg" data-tg="badge"><span>Бейдж</span><b></b></div>
-    <div class="tg" data-tg="snap"><span>Привязка к сетке</span><b></b></div>
+    <div class="tg" data-tg="bars" tabindex="0" role="switch"><span>Статус-бары</span><b></b></div>
+    <div class="tg" data-tg="badge" tabindex="0" role="switch"><span>Бейдж</span><b></b></div>
+    <div class="tg" data-tg="snap" tabindex="0" role="switch"><span>Привязка к сетке</span><b></b></div>
     <div style="font-size:10px;color:var(--ui-mute);margin-top:6px;line-height:1.5">Тексты на столе (бар, бейдж, «start», версия) редактируются двойным кликом прямо на них.</div>
   </div>
   <div class="dr-sec">
-    <div class="dr-lab">Сессия</div>
+    <div class="dr-lab">Проект</div>
+    <div class="row">
+      <button class="ub" id="bSaveProj">Сохранить файлом</button>
+      <button class="ub" id="bOpenProj">Открыть…</button>
+    </div>
+    <div id="storeInfo" style="font-size:10px;color:var(--ui-mute);margin:8px 0 10px;line-height:1.5"></div>
     <div class="row">
       <button class="ub" id="bReseed">Новая раскладка</button>
       <button class="ub" id="bWipe">Стереть всё</button>
@@ -771,6 +747,7 @@ html[data-skin="aqua"] .tb-btn[data-tb="max"]{order:-1;background:radial-gradien
       <kbd>← → ↑ ↓</kbd><span>сдвиг (⇧ — на 10)</span>
       <kbd>⌘V</kbd><span>вставить картинку из буфера</span>
       <kbd>⌘E</kbd><span>экспорт PNG</span>
+      <kbd>⌘S ⌘O</kbd><span>сохранить / открыть проект файлом</span>
       <kbd>H</kbd><span>спрятать / показать интерфейс</span>
       <kbd>⠿</kbd><span>тащить панель (2× клик — вернуть вниз)</span>
     </div>
@@ -778,9 +755,10 @@ html[data-skin="aqua"] .tb-btn[data-tb="max"]{order:-1;background:radial-gradien
 </aside>
 
 <div class="ctx" id="ctx"></div>
-<div id="busy">РЕНДЕР…</div>
+<div id="busy">RENDERING…</div>
 <div id="toast"></div>
 <input type="file" id="wallPick" accept="image/*" hidden>
+<input type="file" id="projPick" accept=".osstudio" hidden>
 
 <script>
 (() => {
@@ -841,7 +819,6 @@ const SKINS = [
   { id: 'amp',         name: 'AMP ’02',     prev: 'linear-gradient(180deg,#34416E 0 22%,#2D4CC2 22% 70%,#C2C8D4 70%)' },
   { id: 'luna',        name: 'LUNA ’04',    prev: 'radial-gradient(150% 70% at 22% 120%,#77C64A 0 45%,transparent 46%),linear-gradient(180deg,#2C68D3,#B5D6FF)' },
   { id: 'classic',     name: 'CLASSIC ’98', prev: 'linear-gradient(90deg,#000080,#1084D0) 0 0/100% 28% no-repeat,linear-gradient(#C0C0C0,#C0C0C0) 50% 70%/70% 40% no-repeat,#008080' },
-  { id: 'stitch',      name: 'STITCH',      prev: 'linear-gradient(#3A393C,#3A393C) 50% 40%/64% 34% no-repeat,linear-gradient(#1F6FB5,#1F6FB5) 80% 85%/34% 34% no-repeat,radial-gradient(70% 40% at 70% 90%,rgba(205,60,45,.6),transparent 70%),#1E2733' },
   { id: 'dither',      name: '1-BIT',       prev: 'repeating-linear-gradient(-45deg,#F2F2F2 0 5px,#141414 5px 10px) 0 100%/100% 26% no-repeat,radial-gradient(circle,#777 .9px,transparent 1.1px) 0 0/3px 3px,#1C1C1C' },
   { id: 'dream',       name: 'DREAM',       prev: 'linear-gradient(#FAD0EA,#FAD0EA) 50% 30%/60% 12% no-repeat,linear-gradient(#F3E9FF,#F3E9FF) 50% 70%/60% 40% no-repeat,linear-gradient(180deg,#F7C9E6,#C7B8F2)' },
   { id: 'jelly',       name: 'JELLY',       prev: 'linear-gradient(#A6AEEE,#A6AEEE) 50% 30%/60% 14% no-repeat,linear-gradient(#F3F4FF,#F3F4FF) 50% 72%/60% 40% no-repeat,repeating-conic-gradient(#CBCBF6 0 25%,#B8B8EE 0 50%) 0 0/16px 16px' },
@@ -900,11 +877,13 @@ try {
     const o = JSON.parse(raw);
     if (!o.v || o.v < 2) { o.badge = false; o.bar = true; o.v = 2; }
     S = { ...defaults(), ...o, texts: { ...defaults().texts, ...(o.texts || {}) } };
+    if (!SKINS.some(x => x.id === S.skin)) S.skin = 'paper';
   }
 } catch (e) {}
 
-let saveT;
+let saveT, saveBlocked = false;
 function save(){
+  if (saveBlocked) return;
   clearTimeout(saveT);
   saveT = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(S, strip)); } catch (e) {} }, 250);
 }
@@ -965,9 +944,9 @@ function addFiles(files){
     const rec = { id: uid(), name: f.name || ('pasted-' + stamp() + '.png'), type: f.type.startsWith('video') ? 'video' : 'image', blob: f, t: Date.now() + i };
     DB.put(rec);
     const it = { ...rec, url: URL.createObjectURL(f) };
-    lib.set(it.id, it); out.push(it);
+    lib.set(it.id, it); out.push(it); queueThumb(it);
   });
-  if (out.length) libChanged();
+  if (out.length) { libChanged(); askPersist(); }
   else if (files && files.length) toast('Нужны картинки или видео');
   return out;
 }
@@ -980,7 +959,7 @@ function deleteMedia(id){
     if (hit) renderBody(w);
   });
   if (S.wall === id) { S.wall = null; if (S.bg === 'image') S.bg = 'skin'; applyBg(); }
-  setTimeout(() => URL.revokeObjectURL(it.url), 500);
+  setTimeout(() => { URL.revokeObjectURL(it.url); if (it.thumbUrl) URL.revokeObjectURL(it.thumbUrl); }, 500);
   libChanged(); commit();
 }
 function libChanged(){
@@ -993,13 +972,54 @@ function libChanged(){
 }
 function mediaTag(it, o = {}){
   if (!it) return '';
-  if (it.type === 'video') {
-    return o.thumb
-      ? `<video src="${it.url}#t=0.1" muted playsinline preload="metadata"></video>`
-      : `<video src="${it.url}" muted loop playsinline ${o.paused ? '' : 'autoplay'}></video>`;
+  if (o.thumb) {
+    /* thumbnails are small JPEGs made once per file: no video decoders, no full-size image decodes */
+    if (it.thumbUrl) return `<img src="${it.thumbUrl}" alt="" draggable="false">`;
+    return it.type === 'image' ? `<img src="${it.url}" alt="" draggable="false" loading="lazy">` : `<span class="th-ph">▶</span>`;
   }
+  if (it.type === 'video') return `<video src="${it.url}" muted loop playsinline ${o.paused ? '' : 'autoplay'}></video>`;
   return `<img src="${it.url}" alt="" draggable="false">`;
 }
+
+const THUMB = 240;
+const dbRec = it => ({ id: it.id, name: it.name, type: it.type, blob: it.blob, t: it.t, thumb: it.thumb || null });
+async function makeThumb(it){
+  let src, w, h, done = () => {};
+  try {
+    if (it.type === 'image') {
+      src = await createImageBitmap(it.blob); w = src.width; h = src.height; done = () => src.close && src.close();
+    } else {
+      const v = document.createElement('video'); v.muted = true; v.playsInline = true; v.preload = 'auto'; v.src = it.url;
+      await new Promise((res, rej) => { v.onloadeddata = res; v.onerror = rej; setTimeout(rej, 8000); });
+      const t = Math.min(0.5, (v.duration || 1) / 2);
+      if (t > 0) { v.currentTime = t; await new Promise(r => { v.onseeked = r; setTimeout(r, 3000); }); }
+      src = v; w = v.videoWidth; h = v.videoHeight; done = () => { v.removeAttribute('src'); v.load(); };
+    }
+    if (!w || !h) return null;
+    const k = Math.min(1, THUMB / Math.max(w, h)), c = document.createElement('canvas');
+    c.width = Math.max(1, Math.round(w * k)); c.height = Math.max(1, Math.round(h * k));
+    c.getContext('2d').drawImage(src, 0, 0, c.width, c.height);
+    return await new Promise(r => c.toBlob(r, 'image/jpeg', .82));
+  } catch (e) { return null; } finally { done(); }
+}
+let thumbQ = Promise.resolve(), thumbT;
+function queueThumb(it){
+  thumbQ = thumbQ.then(async () => {
+    if (!lib.has(it.id) || it.thumbUrl) return;
+    const b = await makeThumb(it);
+    if (!b || !lib.has(it.id)) return;
+    it.thumb = b; it.thumbUrl = URL.createObjectURL(b);
+    DB.put(dbRec(it));
+    clearTimeout(thumbT); thumbT = setTimeout(libChanged, 200);
+  });
+}
+let persistAsked = false;
+function askPersist(){
+  if (persistAsked) return; persistAsked = true;
+  /* without this the browser may evict uploaded files when the disk gets tight */
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+}
+const fmtMB = b => b >= 1e9 ? (b / 1e9).toFixed(1) + ' ГБ' : (b / 1e6).toFixed(b < 1e7 ? 1 : 0) + ' МБ';
 
 /* ============================================================
    STAGE LAYOUT (free / framed ratios)
@@ -1161,7 +1181,7 @@ function toggleMin(w){
 function emptyHTML(label){
   const items = [...lib.values()].slice(-8).reverse();
   return `<div class="empty"><div class="empty-t">[ ${esc(label)} ]</div>
-    <label class="pill">ЗАГРУЗИТЬ<input type="file" accept="image/*,video/*" hidden></label>
+    <label class="pill">UPLOAD<input type="file" accept="image/*,video/*" hidden></label>
     ${items.length ? `<div class="strip">${items.map(it => `<button class="th" data-mid="${it.id}" title="${esc(it.name)}">${mediaTag(it, { thumb: true })}</button>`).join('')}</div>` : ''}
     <div class="hint">или перетащи файл сюда</div></div>`;
 }
@@ -1208,7 +1228,7 @@ R.player = (b, w) => {
   const d = w.data, it = lib.get(d.mid);
   const pb = (k, cls = '') => `<button class="pl-b ${cls}" data-pl="${k}">${ICON[k]}</button>`;
   b.innerHTML = `<div class="pl${d.playing ? ' playing' : ''}">
-    <div class="pl-screen frame checker">${it ? mediaTag(it, { paused: !d.playing }) : `<div class="pl-viz">${'<i></i>'.repeat(28)}</div><label class="pill pl-load no-export">+ ФАЙЛ<input type="file" accept="image/*,video/*" hidden></label>`}</div>
+    <div class="pl-screen frame checker">${it ? mediaTag(it, { paused: !d.playing }) : `<div class="pl-viz">${'<i></i>'.repeat(28)}</div><label class="pill pl-load no-export">+ FILE<input type="file" accept="image/*,video/*" hidden></label>`}</div>
     <div class="pl-lcd"><span class="pl-state">${d.playing ? '▶' : '❚❚'}</span><span class="pl-time">0:00</span><div class="pl-spec">${'<i></i>'.repeat(14)}</div><div class="pl-track" contenteditable="true" spellcheck="false">${esc(d.track)}</div></div>
     <div class="pl-seek"><div class="pl-fill"></div><div class="pl-knob"></div></div>
     <div class="pl-ctrls">${pb('prev')}${pb('play', 'play')}${pb('stop')}${pb('next')}
@@ -1288,7 +1308,7 @@ R.compare = (b, w) => {
     onTools(v, { swap: () => setData(w, { a: d.b, b: d.a }), edit: () => { w._edit = true; renderBody(w); } });
   } else {
     const side = (k, it) => `<div class="frame checker" data-k="${k}">${it ? mediaTag(it) + tools([['clr' + k, '✕', 'Убрать']]) : emptyHTML(k.toUpperCase())}</div>`;
-    b.innerHTML = `<div class="cmp-pick">${side('a', A)}${side('b', B)}</div>${A && B ? '<button class="pill on cmp-done">ГОТОВО</button>' : ''}`;
+    b.innerHTML = `<div class="cmp-pick">${side('a', A)}${side('b', B)}</div>${A && B ? '<button class="pill on cmp-done">DONE</button>' : ''}`;
     $$('[data-k]', b).forEach(f => {
       const k = f.dataset.k;
       slot(f, mid => setData(w, { [k]: mid }));
@@ -1309,7 +1329,7 @@ R.data = (b, w) => {
       <div class="d-lab"><span contenteditable="true" spellcheck="false">${esc(r[0])}</span><span class="d-v">${r[1]}%</span></div>
       <div class="d-track"><div class="d-fill" style="width:${r[1]}%"></div></div>
       <button class="mini d-x no-export" title="Удалить строку">✕</button></div>`).join('')}
-    <button class="pill sm d-add no-export">+ СТРОКА</button></div>`;
+    <button class="pill sm d-add no-export">+ ROW</button></div>`;
   $$('.d-row', b).forEach(row => {
     const i = +row.dataset.i, tr = $('.d-track', row);
     editableText($('[contenteditable]', row), el => { rows[i][0] = el.textContent; });
@@ -1353,8 +1373,8 @@ R.library = (b, w) => {
   b.innerHTML = `<div class="lib">${items.length ? items.map(it => `<div class="lib-it" draggable="true" data-mid="${it.id}" title="Перетащи в окно · 2× клик — открыть">
       <div class="lib-th checker">${mediaTag(it, { thumb: true })}<button class="mini no-export" data-del title="Удалить из библиотеки">✕</button></div>
       <div class="lib-n">${esc(it.name)}</div></div>`).join('')
-    : `<div class="lib-empty">[ ПУСТО ]<br>перетащи сюда фото или видео</div>`}
-    <label class="pill lib-add no-export">+ ДОБАВИТЬ<input type="file" accept="image/*,video/*" multiple hidden></label></div>`;
+    : `<div class="lib-empty">[ EMPTY ]<br>перетащи сюда фото или видео</div>`}
+    <label class="pill lib-add no-export">+ ADD<input type="file" accept="image/*,video/*" multiple hidden></label></div>`;
   const root = b.firstElementChild;
   $$('.lib-it', root).forEach(c => {
     const mid = c.dataset.mid;
@@ -1503,6 +1523,8 @@ viewport.addEventListener('drop', e => {
   const p = toStage(e.clientX, e.clientY);
   const mid = e.dataTransfer.getData('text/x-mid');
   if (mid && lib.has(mid)) return openViewer(mid, p.x - 170, p.y - 20);
+  const proj = Array.from(e.dataTransfer.files).find(f => /\.osstudio$/i.test(f.name));
+  if (proj) return openProject(proj);
   addFiles(e.dataTransfer.files).forEach((it, i) => openViewer(it.id, p.x - 170 + i * 26, p.y - 20 + i * 26));
 });
 document.addEventListener('dragend', () => { dragDepth = 0; stage.classList.remove('drop-hint'); });
@@ -1535,8 +1557,8 @@ function openStageCtx(cx, cy){
   openCtx(cx, cy, [
     'Новое окно',
     { label: '+ MEDIA', fn: add('media') }, { label: '+ PLAYER', fn: add('player') }, { label: '+ TEXT', fn: add('text') },
-    { label: '+ СРАВНЕНИЕ A|B', fn: add('compare') }, { label: '+ LOG', fn: add('log') }, { label: '+ DATA', fn: add('data') },
-    { label: '+ VU', fn: add('vu') }, { label: '+ EQ', fn: add('eq') }, { label: '+ LIBRARY', fn: add('library') }, { label: '+ ПАПКА', fn: add('folder') },
+    { label: '+ A|B', fn: add('compare') }, { label: '+ LOG', fn: add('log') }, { label: '+ DATA', fn: add('data') },
+    { label: '+ VU', fn: add('vu') }, { label: '+ EQ', fn: add('eq') }, { label: '+ LIBRARY', fn: add('library') }, { label: '+ FOLDER', fn: add('folder') },
     '-',
     { label: 'Обои: своё фото…', fn: () => $('#wallPick').click() },
     { label: S.dock ? 'Свернуть панель' : 'Развернуть панель', fn: () => S.dock ? minimizeDock() : openDock() },
@@ -1606,8 +1628,10 @@ function newFolder(x, y){
 window.addEventListener('keydown', e => {
   const mod = e.metaKey || e.ctrlKey;
   if (e.key === 'Escape') { closeCtx(); closeDrawer(); if (isEditing()) document.activeElement.blur(); return; }
-  if (isEditing()) return;
   const k = e.key.toLowerCase();
+  if (mod && k === 's') { e.preventDefault(); saveProject(); return; }
+  if (mod && k === 'o') { e.preventDefault(); pickProject(); return; }
+  if (isEditing()) return;
   if (mod && k === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
   if (mod && k === 'y') { e.preventDefault(); redo(); return; }
   if (mod && k === 'e') { e.preventDefault(); exportPNG(); return; }
@@ -1626,6 +1650,21 @@ window.addEventListener('keydown', e => {
 });
 
 /* ============================================================
+   VIDEO VISIBILITY — pause what is off-screen, clipped by the frame or in a minimized window
+   ============================================================ */
+const shouldPlay = v => { const pl = v.closest('.pl'); return pl ? pl.classList.contains('playing') : true; };
+const vio = new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target;
+  if (e.isIntersecting) { if (shouldPlay(v) && v.paused) v.play().catch(() => {}); }
+  else if (!v.paused) v.pause();
+}));
+const vidsIn = n => n.nodeType !== 1 ? [] : n.tagName === 'VIDEO' ? [n] : Array.from(n.querySelectorAll('video'));
+new MutationObserver(ms => ms.forEach(m => {
+  m.addedNodes.forEach(n => vidsIn(n).forEach(v => vio.observe(v)));
+  m.removedNodes.forEach(n => vidsIn(n).forEach(v => vio.unobserve(v)));
+})).observe(stage, { childList: true, subtree: true });
+
+/* ============================================================
    LIVE TICK: clock, VU, players
    ============================================================ */
 function tickClock(){ const d = new Date(); $('#sbClock').textContent = `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`; }
@@ -1634,7 +1673,7 @@ let lastTick = performance.now();
 setInterval(() => {
   const now = performance.now(), dt = (now - lastTick) / 1000; lastTick = now;
   if (document.hidden) return;
-  $$('.vu i', stage).forEach(i => { const pk = Math.random() < .1; i.style.height = (pk ? 70 + Math.random() * 30 : 4 + Math.random() * 55) + '%'; i.classList.toggle('pk', pk); });
+  $$('.vu i', stage).forEach(i => { const pk = Math.random() < .1; i.style.transform = `scaleY(${(pk ? 70 + Math.random() * 30 : 4 + Math.random() * 55) / 100})`; i.classList.toggle('pk', pk); });
   S.wins.forEach(w => {
     if (w.type === 'eq' && w.data.on && w.data.auto) {
       const el = winEls.get(w.id); if (!el) return;
@@ -1654,7 +1693,7 @@ setInterval(() => {
     const f = $('.pl-seek .pl-fill', el); if (f) f.style.width = p + '%';
     const kn = $('.pl-seek .pl-knob', el); if (kn) kn.style.left = p + '%';
     const on = w.data.playing;
-    $$('.pl-spec i, .pl-viz i', el).forEach(i => { i.style.height = (on ? 6 + Math.random() * 94 : 6) + '%'; });
+    $$('.pl-spec i, .pl-viz i', el).forEach(i => { i.style.transform = `scaleY(${(on ? 6 + Math.random() * 94 : 6) / 100})`; });
   });
 }, 110);
 
@@ -1688,9 +1727,10 @@ async function snapVideos(){
   return () => added.forEach(([v, img]) => { img.remove(); v.classList.remove('no-export'); });
 }
 let exporting = false;
+const fontCSS = {};  /* embedded @font-face CSS per skin — fetched once, reused by every export */
 async function exportPNG(){
   if (exporting) return; exporting = true;
-  const btn = $('#bPng'); btn.textContent = 'РЕНДЕР…';
+  const btn = $('#bPng'); btn.textContent = 'RENDER…'; $('#busy').textContent = 'RENDERING…';
   let restore = () => {};
   try {
     await loadH2I();
@@ -1699,9 +1739,11 @@ async function exportPNG(){
     restore = await snapVideos();
     const r = RATIOS[S.ratio];
     const W = stageW(), H = stageH();
+    if (fontCSS[S.skin] === undefined) { try { fontCSS[S.skin] = await htmlToImage.getFontEmbedCSS(stage); } catch (e) { fontCSS[S.skin] = null; } }
     const opts = {
       width: W, height: H, pixelRatio: r ? r.ex / r.w : Math.max(2, devicePixelRatio || 1),
       filter: n => !(n.classList && n.classList.contains('no-export')),
+      ...(fontCSS[S.skin] ? { fontEmbedCSS: fontCSS[S.skin] } : {}),
     };
     /* html-to-image ignores position overrides on the root, so unscale the real stage for a moment (hidden under a cover) */
     $('#busy').classList.add('on');
@@ -1756,6 +1798,71 @@ async function toggleRec(){
 }
 
 /* ============================================================
+   PROJECT FILE (.osstudio) — layout, settings and every media file in one file
+   layout: "OSSTPRJ1" | uint32 LE header length | header JSON | media blobs back to back
+   ============================================================ */
+const MAGIC = 'OSSTPRJ1';
+async function saveProject(){
+  const items = [...lib.values()];
+  const header = {
+    v: 1, app: 'os-studio', saved: new Date().toISOString(),
+    state: JSON.parse(JSON.stringify(S, strip)),
+    media: items.map(it => ({ id: it.id, name: it.name, type: it.type, t: it.t, mime: it.blob.type, size: it.blob.size })),
+  };
+  const hb = new TextEncoder().encode(JSON.stringify(header));
+  const pre = new Uint8Array(12); pre.set(new TextEncoder().encode(MAGIC)); new DataView(pre.buffer).setUint32(8, hb.length, true);
+  const blob = new Blob([pre, hb, ...items.map(it => it.blob)], { type: 'application/octet-stream' });
+  const url = URL.createObjectURL(blob);
+  download(url, `os-studio-${stamp()}.osstudio`);
+  setTimeout(() => URL.revokeObjectURL(url), 15000);
+  toast(`Проект сохранён · ${items.length} файлов · ${fmtMB(blob.size)}`, 3000);
+}
+async function openProject(file){
+  let header, len;
+  try {
+    const head = new Uint8Array(await file.slice(0, 12).arrayBuffer());
+    if (new TextDecoder().decode(head.slice(0, 8)) !== MAGIC) throw 0;
+    len = new DataView(head.buffer).getUint32(8, true);
+    header = JSON.parse(await file.slice(12, 12 + len).text());
+    if (!header || !header.state || !Array.isArray(header.media)) throw 0;
+  } catch (e) { return toast('Это не файл проекта OS·STUDIO'); }
+  if (!confirm(`Открыть проект (${header.media.length} файлов)? Текущий стол и библиотека будут заменены — если нужно, сначала сохрани их.`)) return;
+  saveBlocked = true; clearTimeout(saveT);
+  $('#busy').textContent = 'OPENING…'; $('#busy').classList.add('on');
+  try {
+    await DB.clear();
+    let off = 12 + len;
+    for (const m of header.media) {
+      const blob = file.slice(off, off + m.size, m.mime); off += m.size;
+      await DB.put({ id: m.id, name: m.name, type: m.type, blob, t: m.t, thumb: null });
+    }
+    localStorage.setItem(KEY, JSON.stringify({ ...header.state, v: 2 }));
+    location.reload();
+  } catch (e) {
+    saveBlocked = false; $('#busy').classList.remove('on');
+    toast('Не получилось открыть проект');
+  }
+}
+function pickProject(){ $('#projPick').click(); }
+$('#projPick').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) openProject(f); });
+function openFileMenu(){
+  const r = $('#bFile').getBoundingClientRect();
+  openCtx(r.left, r.bottom + 4, [
+    { label: 'Сохранить проект  ⌘S', fn: saveProject },
+    { label: 'Открыть проект…  ⌘O', fn: pickProject },
+    '-',
+    { label: 'Экспорт PNG  ⌘E', fn: exportPNG },
+    { label: 'Запись видео (REC)', fn: toggleRec },
+  ]);
+}
+async function updateStoreInfo(){
+  const el = $('#storeInfo'); if (!el) return;
+  let txt = `${lib.size} файлов в библиотеке`;
+  try { const est = await navigator.storage.estimate(); if (est && est.usage != null) txt += ` · ${fmtMB(est.usage)} занято`; } catch (e) {}
+  el.textContent = txt + '. Всё хранится только в этом браузере — сохраняй проект файлом.';
+}
+
+/* ============================================================
    APPEARANCE
    ============================================================ */
 const root = document.documentElement;
@@ -1795,7 +1902,7 @@ function applyTexts(){
 function applyToggles(){
   stage.classList.toggle('nobars', !S.bars);
   stage.classList.toggle('nobadge', !S.badge);
-  $$('.tg').forEach(t => t.classList.toggle('on', !!S[t.dataset.tg]));
+  $$('.tg').forEach(t => { t.classList.toggle('on', !!S[t.dataset.tg]); t.setAttribute('aria-checked', String(!!S[t.dataset.tg])); });
 }
 function setBar(on){
   S.bar = on; document.body.classList.toggle('nobar', !on);
@@ -1847,11 +1954,11 @@ function dragDock(e, onClick){
 }
 
 /* drawer */
-function openDrawer(){ $('#drawer').classList.add('open'); }
+function openDrawer(){ $('#drawer').classList.add('open'); updateStoreInfo(); }
 function closeDrawer(){ $('#drawer').classList.remove('open'); }
 function buildDrawer(){
   $('#skinGrid').innerHTML = SKINS.map(s => `<button class="skin-chip" data-skin="${s.id}"><i style="background:${s.prev}"></i>${s.name}</button>`).join('');
-  $('#accRow').innerHTML = `<button class="ub" data-c="auto" style="height:24px;font-size:9px">АВТО</button>` +
+  $('#accRow').innerHTML = `<button class="ub" data-c="auto" style="height:24px;font-size:10px">АВТО</button>` +
     ACCENTS.map(c => `<button class="sw" data-c="${c}" style="background:${c}" title="${c}"></button>`).join('') +
     `<input type="color" id="accPick" title="Свой цвет">`;
   $('#bgRow').innerHTML = BGS.map(([id, l]) => `<button class="ub" data-bg="${id}">${l}</button>`).join('');
@@ -1866,8 +1973,13 @@ function buildDrawer(){
     S.bg = b.dataset.bg; applyBg(); save();
   });
   $('#curRow').addEventListener('click', e => { const b = e.target.closest('[data-cur]'); if (!b) return; S.cursor = b.dataset.cur; applyCursor(); save(); });
-  $$('.tg').forEach(t => t.addEventListener('click', () => { S[t.dataset.tg] = !S[t.dataset.tg]; applyToggles(); save(); }));
+  $$('.tg').forEach(t => {
+    t.addEventListener('click', () => { S[t.dataset.tg] = !S[t.dataset.tg]; applyToggles(); save(); });
+    t.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t.click(); } });
+  });
   $('#drClose').addEventListener('click', closeDrawer);
+  $('#bSaveProj').addEventListener('click', saveProject);
+  $('#bOpenProj').addEventListener('click', pickProject);
   $('#bReseed').addEventListener('click', () => {
     if (!confirm('Убрать все окна и разложить стартовый набор заново? Файлы в библиотеке останутся.')) return;
     winEls.forEach(el => el.remove()); winEls.clear(); iconEls.forEach(el => el.remove()); iconEls.clear();
@@ -1890,6 +2002,7 @@ $('#ratioSeg').addEventListener('click', e => { const b = e.target.closest('[dat
 $('#bUndo').addEventListener('click', undo);
 $('#bRedo').addEventListener('click', redo);
 $('#bPng').addEventListener('click', exportPNG);
+$('#bFile').addEventListener('click', e => { e.stopPropagation(); ctx.classList.contains('open') ? closeCtx() : openFileMenu(); });
 $('#bRec').addEventListener('click', toggleRec);
 $('#bFull').addEventListener('click', () => { document.fullscreenElement ? document.exitFullscreen() : root.requestFullscreen && root.requestFullscreen().catch(() => {}); });
 $('#bSet').addEventListener('click', () => $('#drawer').classList.contains('open') ? closeDrawer() : openDrawer());
@@ -1956,7 +2069,10 @@ function seed(){
   layoutStage();
   try {
     const recs = await DB.all();
-    (recs || []).sort((a, b) => a.t - b.t).forEach(r => lib.set(r.id, { ...r, url: URL.createObjectURL(r.blob) }));
+    (recs || []).sort((a, b) => a.t - b.t).forEach(r => {
+      const it = { ...r, url: URL.createObjectURL(r.blob), thumbUrl: r.thumb ? URL.createObjectURL(r.thumb) : null };
+      lib.set(r.id, it); if (!it.thumbUrl) queueThumb(it);
+    });
   } catch (e) {}
   $('#sbCount').textContent = lib.size + (lib.size === 1 ? ' ITEM' : ' ITEMS');
   applyBg();
