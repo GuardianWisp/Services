@@ -245,11 +245,10 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 .demo:first-of-type{padding-top:56px}
 .demo.flip{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
 .demo.flip .info{order:2}
-.extra-h{padding-top:clamp(110px,18vh,200px);margin-bottom:-24px}
+.extra-h{padding-top:clamp(90px,16vh,180px)}
 .extra-h .big-say{margin-top:14px;max-width:24ch}
 .extra-h .big-say span{color:var(--mute)}
 @media (max-width:520px){.extra-h .big-say{font-size:1.375rem}}
-.demo.ext .stage{min-height:clamp(380px,50vh,520px)}
 .info .num{display:flex;align-items:baseline;gap:14px;margin-bottom:18px}
 .info .num b{font-weight:400;font-size:clamp(2rem,4vw,3rem);letter-spacing:-.04em;color:var(--blk);line-height:1}
 .info h3{font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.08;letter-spacing:-.03em;color:var(--blk)}
@@ -881,7 +880,7 @@ html.fwait .hero>:not(.mark){visibility:hidden}   /* the wordmark has its own bu
         <h2 id="sigT">Сайт и визуал в одном стиле. <span>Разбираемся в бизнесе, собираем стиль и делаем в нём всё — от сайта до рекламы.</span></h2>
         <div class="sig-tabs" role="tablist" aria-label="Как это работает">
           <button class="sig-tab on" type="button" role="tab" aria-selected="true"><b><i>01</i>Разбираемся в бизнесе</b><span><em>Кто ваши клиенты, чем вы отличаетесь и что уже есть: фото, соцсети, отзывы, конкуренты.</em></span></button>
-          <button class="sig-tab" type="button" role="tab" aria-selected="false"><b><i>02</i>Собираем стиль</b><span><em>Цвета, шрифты, подача фото и 3D — один визуальный язык для всего, что видит клиент.</em></span></button>
+          <button class="sig-tab" type="button" role="tab" aria-selected="false"><b><i>02</i>Бот отвечает сразу</b><span><em>На частые вопросы — за секунды, днём и ночью. Вам не нужно сидеть в переписке.</em></span></button>
           <button class="sig-tab" type="button" role="tab" aria-selected="false"><b><i>03</i>Запускаем</b><span><em>Сайт, визуал и реклама выходят в одном стиле — вас узнают с первого взгляда.</em></span></button>
         </div>
       </div>
@@ -1732,10 +1731,10 @@ const well=(()=>{ const SRC=['Клиенты','Конкуренты','Фото',
     pill(bx,by+38,'Бриф',k,true); }};
 })();
 
-/* 2 — a router: pieces of the style come in on the left, run through «Стиль», and each lands where it is used */
-const router=(()=>{ const OUT=[['Сайт'],['Соцсети'],['Реклама']];
-  const Q=[['Цвета',0,'Главный экран'],['Шрифты',1,'Обложки сторис'],['3D-модель',2,'Баннер для Авито'],
-           ['Фото работ',0,'Блок «Работы»'],['Ролик',1,'Reels · 15 с'],['Логотип',2,'Карточка товара']];
+/* 2 — a router: questions come in on the left, run to the bot, and each takes its own branch to a ready answer */
+const router=(()=>{ const OUT=[['Цены'],['Запись'],['Адрес']];
+  const Q=[['Сколько стоит?',0,'Маникюр — от 1 500 ₽'],['Есть время в пятницу?',1,'Пт: 12:00, 14:00, 17:30'],['Где вы находитесь?',2,'ул. Мира, 12 · карта'],
+           ['Можно записаться?',1,'Записала: пт, 14:00'],['Сколько по времени?',0,'Около 1,5 часа'],['Как к вам проехать?',2,'Вход со двора, 2 этаж']];
   let M=[], qi=0, next=0, lit=[0,0,0], hit=0;
   const geo=()=>{ const mob=W<500, bx=W*(mob?.5:.48), by=H*.5, bend=(ptr.y-.5)*H*.22;
     return {mob,bx,by,bend,inX:W*(mob?.14:.1),outX:W*(mob?.86:.8),lane:i=>H*(.2+i*.2),out:i=>H*(mob?.3+i*.2:.26+i*.24)}; };
@@ -1765,7 +1764,7 @@ const router=(()=>{ const OUT=[['Сайт'],['Соцсети'],['Реклама'
     for(let i=0;i<4;i++){ ctx.beginPath(); ctx.arc(g.inX,g.lane(i),2,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,'+.35*k+')'; ctx.fill(); }
     ctx.beginPath(); ctx.arc(g.bx,g.by,18+hit*8,0,Math.PI*2); ctx.fillStyle='rgba('+LIME+','+(.08+hit*.15)*k+')'; ctx.fill();
     ctx.beginPath(); ctx.arc(g.bx,g.by,5,0,Math.PI*2); ctx.fillStyle='rgba('+LIME+','+k+')'; ctx.fill();
-    pill(g.bx,g.by+38,'Стиль',k*.95,false); }};
+    pill(g.bx,g.by+38,'Бот',k*.95,false); }};
 })();
 /* 3 — dots gather into the launch card; the pointer pushes them apart */
 const card=(()=>{ let P=[];
