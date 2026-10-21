@@ -16,7 +16,7 @@ export const siteConfig = {
   url: "https://tetsab.ru",
   year: 2026,
   description:
-    "Сайты, Telegram- и MAX-боты, визуал и онлайн-заказы для малого бизнеса. Красноярск и онлайн.",
+    "Дизайн и создание сайтов, 3D и визуал для рекламы. Боты и онлайн-заказы — дополнительно. Красноярск и онлайн.",
 } as const;
 
 export const navLinks = [

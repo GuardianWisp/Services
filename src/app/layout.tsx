@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "TETSAB — сайты, боты и визуал для малого бизнеса",
+    default: "TETSAB — дизайн, сайты и визуал для бизнеса",
     template: "%s — TETSAB",
   },
   description: siteConfig.description,
@@ -37,12 +37,12 @@ export const metadata: Metadata = {
     locale: "ru_RU",
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: "TETSAB — сайты, боты и визуал для малого бизнеса",
+    title: "TETSAB — дизайн, сайты и визуал для бизнеса",
     description: siteConfig.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "TETSAB — сайты, боты и визуал для малого бизнеса",
+    title: "TETSAB — дизайн, сайты и визуал для бизнеса",
     description: siteConfig.description,
   },
   robots: {
