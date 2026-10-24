@@ -1,0 +1,3 @@
+# Лаунчеры: .bat с CRLF для Windows, .command с LF для Mac
+*.bat text eol=crlf
+*.command text eol=lf

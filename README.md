@@ -86,3 +86,52 @@ ssh root@<сервер> "/var/www/tetsab/scripts/deploy.sh"
 
 `scripts/deploy.sh` делает `git pull --ff-only` → `npm ci` → `npm run build`
 → `pm2 restart tetsab --update-env`.
+
+<!-- BEGIN: как вернуться к проекту -->
+## Как вернуться к проекту
+
+**Что это:** сайт-визитка студии на домене [tetsab.ru](https://tetsab.ru): дизайн, сайты и Telegram-боты
+под ключ, с формой заявки, которая уходит в Telegram. На `/os` лежит отдельный инструмент OS·STUDIO
+(не индексируется).
+
+**Склонировать** (репозиторий на GitHub называется `Services`, локальная папка — `Tetsab`):
+
+```bash
+git clone https://github.com/GuardianWisp/Services.git Tetsab
+```
+
+**Запустить:** двойной клик по `start.command` на Mac или `start.bat` на Windows. Лаунчер сделает `git pull`,
+при необходимости `npm install`, запустит `npm run dev` и откроет http://localhost:3000.
+Вручную:
+
+```bash
+npm install
+npm run dev
+```
+
+**Переменные окружения** (только имена; значения в `.env.local` на компьютере и в `/var/www/tetsab/.env` на сервере,
+шаблон — `.env.example`): `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `NEXT_PUBLIC_GA_MEASUREMENT_ID`,
+`NEXT_PUBLIC_YANDEX_METRIKA_ID`. Для локальной разработки они не обязательны: без них не работает только
+отправка формы и счётчики.
+
+**Деплой:** не Vercel, а VPS Beget (PM2 + nginx, порт 3001). После `git push` в `main` деплой запускается вручную:
+
+```bash
+ssh root@<сервер> "/var/www/tetsab/scripts/deploy.sh"
+```
+
+Адрес сервера: TODO: уточнить у Никиты. Подробности — раздел «Деплой на Beget (VPS)» выше.
+
+**Откатить:** сделайте `git revert <коммит>`, `git push` и снова запустите `deploy.sh`. Срочный откат прямо на сервере:
+`cd /var/www/tetsab && git checkout <коммит> && npm ci && npm run build && pm2 restart tetsab --update-env`.
+Потом верните сервер на `main` (`git checkout main`), иначе следующий `deploy.sh` не сработает.
+
+**Работа между Mac и Windows:**
+
+```bash
+git pull                      # перед работой (лаунчер делает сам)
+git add -A
+git commit -m "что сделано"
+git push                      # после работы
+```
+<!-- END: как вернуться к проекту -->
