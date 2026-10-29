@@ -1417,7 +1417,7 @@ function streamCase(w,c){ const q=c.stream, d=q.dir;
     '<div class="cs-cover run st-cover" style="background:'+c.cover+'"><div class="st-head"><span>(Нарезки · TikTok)</span><a href="'+q.tt+'" target="_blank" rel="noopener">@c_a_k_e.clips ↗</a></div><div class="st-clips">'+q.clips.map(clip).join('')+'</div></div>'+
     '<section class="cs-sec st-tight"><span class="lab lab-b">(Отдельные ролики)</span><div class="stage dk st-solo">'+q.solo.map(clip).join('')+'</div></section>'+
     '<section class="cs-sec st-tight"><span class="lab lab-b">(Вотермарка)</span><div class="stage dk st-coin"><video class="coin" data-coin="intro" poster="'+d+'coin.webp" muted playsinline preload="none" aria-label="Монета со львом">'+coinSrc(d,'intro')+'</video></div></section>'+
-    '<section class="cs-sec st-tight"><span class="lab lab-b">(AR-ролики)</span><div class="st-ar">'+q.arv.map(f=>'<div class="stage dk"><video src="'+d+f+'.mp4" poster="'+d+f+'.webp" muted loop playsinline preload="none"></video></div>').join('')+'</div></section>'+
+    '<section class="cs-sec st-tight"><span class="lab lab-b">(AR-ролики · 500K+ просмотров в Instagram)</span><div class="st-ar">'+q.arv.map(f=>'<div class="stage dk"><video src="'+d+f+'.mp4" poster="'+d+f+'.webp" muted loop playsinline preload="none"></video></div>').join('')+'</div></section>'+
     '<section class="cs-cta st-end"><a class="big-say" href="'+q.tg[1]+'" target="_blank" rel="noopener">Telegram '+esc(q.tg[0])+' ↗</a></section>'; }
 function renderCase(slug){
   const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug];
