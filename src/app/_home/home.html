@@ -719,6 +719,38 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 #pv .pv-in .ekb-row img{aspect-ratio:auto;height:170px}
 #pv .pv-in .ekb-row figcaption{display:none}
 .cs-objs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* streamer pitch */
+.cs-cover.st-cover{min-height:0;display:block;padding-inline:0}
+.st-head{box-sizing:border-box;width:100%;display:flex;justify-content:space-between;gap:16px;padding:0 clamp(16px,4vw,56px);font-size:13px;color:rgba(255,255,255,.55)}
+.st-head{margin-bottom:16px}
+.st-head a{color:#fff}
+.st-clips{box-sizing:border-box;width:100%;display:flex;gap:clamp(10px,1.4vw,18px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-inline:clamp(16px,4vw,56px);scroll-padding-inline:clamp(16px,4vw,56px)}
+.st-clips::-webkit-scrollbar{display:none}
+.st-clip{margin:0;display:grid;gap:10px;flex:0 0 min(calc((100% - 3 * clamp(10px,1.4vw,18px)) / 4),calc((100svh - 230px) * .5625));scroll-snap-align:start}
+.st-clip figcaption{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:rgba(255,255,255,.55)}
+.st-clip figcaption a{flex:none;color:#fff}
+.st-v{position:relative;aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#000}
+.st-v video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.snd{position:absolute;right:10px;bottom:10px;z-index:2;font:500 13px/1 var(--f);color:#fff;background:rgba(0,0,0,.55);border:0;border-radius:999px;padding:9px 13px 9px 30px;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:background .3s}
+.snd::before{content:'';position:absolute;left:12px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #fff;transition:background .3s}
+.snd[aria-pressed="true"]{background:var(--lime);color:#000}
+.snd[aria-pressed="true"]::before{background:#000;box-shadow:none}
+.snd:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.cs-sec.st-tight{padding-top:40px}
+.st-solo{min-height:0;padding:clamp(16px,3vw,40px);display:flex;justify-content:center;gap:clamp(10px,2vw,24px)}
+.st-solo .st-clip{flex:0 1 min(320px,calc((100svh - 200px) * .5625))}
+.st-end{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+.st-end a{color:var(--blk);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.15em}
+.st-coin{min-height:0;padding:clamp(16px,3vw,32px);cursor:pointer}
+.st-coin video{width:min(200px,44vw);aspect-ratio:1}
+.st-ar{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.st-ar .stage{min-height:0;padding:clamp(12px,3vw,40px)}
+.st-ar video{width:min(100%,340px);aspect-ratio:9/16;border-radius:14px;object-fit:cover;background:#000}
+.cn-wrap.st-cn{padding-top:40px}
+@media (max-width:860px){.st-clip{flex-basis:min(calc((100% - 10px) / 2.3),calc((100svh - 230px) * .5625))}}
+@media (max-width:700px){.st-clip{flex-basis:min(68%,calc((100svh - 230px) * .5625))}
+  .st-ar{gap:8px}.st-ar .stage{padding:10px}
+  .st-solo{padding:10px}.st-solo .st-clip figcaption{flex-direction:column;gap:2px}}
 /* works page */
 .cs-sub span{color:var(--mute)}
 .wk-wrap{padding:0 var(--gut)}
@@ -1183,11 +1215,23 @@ const WORKS=[
   {slug:'niti',n:'Нити Судьбы',k:'Айдентика',w:'Key visual и анимация знака',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#ece8e2,#bfae8c)'},
   {slug:'moskva',n:'Моя Москва',k:'Образовательное приложение',w:'3D-визуализация приложения',s:'Готово',done:true,t:['visual'],bg:'linear-gradient(160deg,#f3efe6,#c9b28f)'},
   {slug:'vanil',n:'Ателье Ваниль',k:'Кондитерская',w:'Сайт с заказом и админкой',s:'Концепт',t:['site','order'],url:'https://vanil.tetsab.ru',concept:true,bg:'linear-gradient(160deg,#f3dcdc,#7a1f2e)'},
+  {slug:'biggeek',n:'BigGeek',k:'Магазин гаджетов',w:'Редизайн интернет-магазина',s:'Концепт',t:['site'],url:'https://biggeek.tetsab.ru',concept:true,bg:'linear-gradient(160deg,#f2ecff,#6b2bff)'},
   {slug:'burenie',n:'Бурение 124',k:'Бурение скважин',w:'Сайт мастера',s:'Запущен',t:['site'],url:'https://burenie124.ru',bg:'linear-gradient(160deg,#9fc3e6,#2f6fae)'},
   {slug:'lak',n:'Лак',k:'Маникюрная студия',w:'Сайт + бот записи',s:'В разработке',soon:true,t:['site','bot'],bg:'linear-gradient(160deg,#ddd0ee,#7e5fb8)'},
+  {slug:'cake',n:'Cake',k:'Стример · Twitch, Dota 2',w:'Клипы, вотермарка и AR',s:'Предложение',priv:true,t:['visual']},
   {slug:'ugli',n:'Угли',k:'Шаурма и шашлык',w:'Меню и заказ',s:'В разработке',soon:true,t:['order'],bg:'linear-gradient(160deg,#f6cfa4,#c4561c)'},
 ];
 const CASES={
+  /* a pitch page for one streamer: sent as a link, not listed anywhere */
+  cake:{city:'Удалённо',cover:'#121212',stream:{dir:'/img/cases/cake/',
+    tt:'https://www.tiktok.com/@c_a_k_e.clips',tg:['@wisplink','https://t.me/wisplink'],
+    /* the clips posted to the TikTok account, newest first: [file, TikTok title, video id] */
+    clips:[['tt01','Ааа я не поверил','7702040578061503777'],['tt02','Слабый фонарист','7701291625800043798'],['tt03','Банни хоп','7701291184970337558'],
+      ['tt04','Веномансер против Лансера','7700974395862322454'],['tt05','Sabrelight повержен','7700972881563356438'],['tt06','Лотус префом спасёт жизнь','7700972500720586006'],
+      ['tt07','Что делать?','7700446583929851158'],['tt08','Виновата она','7700246380563926294'],['tt09','Выкурил на пугне','7700245177708875030']],
+    /* cut by hand, not from the stream: [file, caption, TikTok video id or ''] */
+    solo:[['wow','В ожидании wow forever','7701637589018709270'],['balenci','TikTok-тренды · balenci balenci','7700444925116026134']],
+    arv:['ar1','ar2']}},
   burenie:{domain:'burenie124.ru',brand:'БУРЕНИЕ 124',nav:'Работы · Отзывы · Заявка',city:'Красноярск',
     pal:{sa:'#e3eef8',sb:'#a9c8e6',ink:'#16324f',soft:'#eef4f9',t1:'linear-gradient(160deg,#cddff0,#7fa7cf)',t2:'linear-gradient(160deg,#dfe6dc,#9aa98f)',t3:'linear-gradient(160deg,#e3e0d9,#a89e8b)'},cover:'linear-gradient(160deg,#d7e6f3,#6f9fcc)',
     head:'Бурение скважин на воду',sub:'Без посредников · своё оборудование',btn:'Оставить заявку',gT:'Уже пробурено',pT:'Как это происходит',rows:[['1 · Заявка','звонок или форма'],['2 · Выезд и оценка','на участке'],['3 · Бурение','своя установка'],['4 · Сдача','проверяем воду']],formT:'Оставьте номер — перезвоню',
@@ -1272,6 +1316,17 @@ const CASES={
       ['Оптоэлектроника','Светодиод','led'],
       ['Силовая электроника','Силовой транзистор','tr'],
       ['СВЧ ЭКБ','Микросхема','ic']]},
+  biggeek:{domain:'biggeek.tetsab.ru',city:'Москва',cover:'linear-gradient(160deg,#f2ecff,#cbb6ff)',
+    lead:'Неофициальный редизайн московского магазина гаджетов и гик-культуры: витрина в стиле ретро-ОС, пришелец из кубиков, который собирается в товар, и пиксельные переходы между страницами.',
+    note:'Это неофициальный концепт, мы не работаем с BigGeek. Товары, цены и фото — снимок biggeek.ru на 22 октября 2026. Сайт настоящий: его можно открыть и дойти до корзины.',
+    task:'BigGeek продаёт айфоны и макбуки рядом с утками TUBBZ, LEGO и играми для Switch 2. А выглядит как любой магазин электроники: баннеры и та же сетка карточек, что у всех. Покупатели выросли на приставках и старых операционках — магазин мог бы говорить с ними на их языке.',
+    solution:'Сделали рабочий прототип, а не набор макетов. Окна с заголовками и кнопками _ □ ×, жёсткие тени, пиксельные подписи. На первом экране пришелец из кубиков собирается в товар и рассыпается обратно, когда товар переключают. Каталог открывается как рабочий стол из девяти папок, поиск понимает неправильную раскладку, а между страницами экран закрывает 8-битная мозаика. Всё работает на настоящих данных: 71 товар, 182 варианта и 43 статьи блога.',
+    chips:['Редизайн','Арт-дирекшн','Дизайн-система','3D на первом экране','Каталог с фильтрами','Карточка товара','Поиск','Блог','Корзина','6 цветовых версий','Тёмная тема','Мобильная версия'],
+    was:'Обычная витрина электроники: баннеры, сетка карточек, ничего от гик-культуры.',now:'Магазин со своим характером — ретро-ОС, воксели и пиксели, — а все сценарии покупки на месте.',
+    gives:[['Магазин узнают с первого экрана','Пришелец и окна ретро-ОС запоминаются лучше, чем баннер со скидкой.'],['Каталог, который хочется листать','Папки, мега-меню и поиск, который понимает «fqajy» как «айфон».'],['Можно потрогать','Это не картинки, а рабочий сайт: каталог, карточки, блог и корзина на реальных товарах.']],
+    real:{desk:'/img/cases/biggeek/hero.jpg',pv:'/img/cases/biggeek/hero-pv.webp',mob:'/img/cases/biggeek/m_hero.jpg',
+      phones:[['Первый экран','/img/cases/biggeek/m_1.jpg'],['Каталог-папки','/img/cases/biggeek/m_2.jpg'],['Весь каталог','/img/cases/biggeek/m_3.jpg'],['Карточка товара','/img/cases/biggeek/m_4.jpg'],['Блог','/img/cases/biggeek/m_5.jpg']],
+      shots:[['Каталог как рабочий стол','/img/cases/biggeek/desktop.jpg'],['Карточка товара','/img/cases/biggeek/product.jpg'],['Каталог с фильтрами','/img/cases/biggeek/catalog.jpg'],['Блог','/img/cases/biggeek/blog.jpg']]}},
   vanil:{domain:'vanil.tetsab.ru',city:'Москва',cover:'linear-gradient(160deg,#f5ebe3,#e3c3c3)',
     lead:'Сайт авторской кондитерской: меню с ценами, конструктор торта, витрина с остатками и админка, где кондитер сам всё меняет с телефона.',
     task:'Домашний кондитер продаёт через Инстаграм. Цены спрашивают в директ, каждый заказ — длинная переписка, а про витрину готовых десертов узнают из сторис, когда половину уже разобрали.',
@@ -1352,10 +1407,23 @@ function galCover(c,still){ const g=c.gal; return '<img class="gal-cv'+(still?' 
 function galScreens(c){ const g=c.gal;
   return '<section class="cs-sec"><span class="lab lab-b">(03) Сцены</span><div class="cs-gal'+(g.light?' gal-light':'')+'">'+g.rows.map((r,k)=>'<div class="gal-row'+(r.length===1?' one':k===g.rows.length-1?' tall':'')+'">'+
     r.map(([cap,f,ar])=>'<div class="stage gl'+(ar?' fit':'')+'"'+(ar?' style="aspect-ratio:'+ar+'"':'')+'><span class="cap">('+esc(cap)+')</span><img src="'+g.dir+f+'.webp" alt="" loading="lazy" decoding="async"></div>').join('')+'</div>').join('')+'</div></section>'; }
+/* the streamer pitch: examples only — the clips already on TikTok (sound on tap), standalone clips, the watermark, AR, and a Telegram link */
+const sndBtn='<button type="button" class="snd" aria-pressed="false">Звук</button>';
+const coinSrc=(d,k)=>'<source src="'+d+'coin-'+k+'-p.mp4" type=\'video/quicktime; codecs="hvc1"\'><source src="'+d+'coin-'+k+'.webm" type="video/webm">';
+function streamCase(w,c){ const q=c.stream, d=q.dir;
+  const clip=([f,cap,id])=>'<figure class="st-clip"><div class="st-v"><video src="'+d+f+'.mp4" poster="'+d+f+'.webp" muted loop playsinline preload="none"></video>'+sndBtn+'</div><figcaption><span>'+esc(cap)+'</span>'+(id?'<a href="'+q.tt+'/video/'+id+'" target="_blank" rel="noopener">TikTok ↗</a>':'')+'</figcaption></figure>';
+  return '<header class="cs-hero"><h2 id="caseT">Cake</h2><p class="big-say cs-sub">Примеры и портфолио</p></header>'+
+    '<div class="cs-cover run st-cover" style="background:'+c.cover+'"><div class="st-head"><span>(Нарезки · TikTok)</span><a href="'+q.tt+'" target="_blank" rel="noopener">@c_a_k_e.clips ↗</a></div><div class="st-clips">'+q.clips.map(clip).join('')+'</div></div>'+
+    '<section class="cs-sec st-tight"><span class="lab lab-b">(Отдельные ролики)</span><div class="stage dk st-solo">'+q.solo.map(clip).join('')+'</div></section>'+
+    '<section class="cs-sec st-tight"><span class="lab lab-b">(Вотермарка)</span><div class="stage dk st-coin"><video class="coin" data-coin="intro" poster="'+d+'coin.webp" muted playsinline preload="none" aria-label="Монета со львом">'+coinSrc(d,'intro')+'</video></div></section>'+
+    '<section class="cs-sec st-tight"><span class="lab lab-b">(AR-ролики)</span><div class="st-ar">'+q.arv.map(f=>'<div class="stage dk"><video src="'+d+f+'.mp4" poster="'+d+f+'.webp" muted loop playsinline preload="none"></video></div>').join('')+'</div></section>'+
+    '<section class="cs-cta st-end"><a class="big-say" href="'+q.tg[1]+'" target="_blank" rel="noopener">Telegram '+esc(q.tg[0])+' ↗</a></section>'; }
 function renderCase(slug){
-  const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug], nx=WORKS[(i+1)%WORKS.length], demo=(!w.url&&!w.done)||w.concept;
+  const i=WORKS.findIndex(w=>w.slug===slug), w=WORKS[i], c=CASES[slug];
+  if(c.stream) return streamCase(w,c);
+  const pub=WORKS.filter(x=>!x.priv), nx=pub[(pub.indexOf(w)+1)%pub.length], demo=(!w.url&&!w.done)||w.concept;
   const two=n=>String(n).padStart(2,'0');
-  return '<header class="cs-hero"><span class="lab lab-b">('+(w.soon?'Кейс в разработке':w.concept?'Концепт':demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(w.concept?'<p class="cs-demo">Это концепт: бренд придуман, а сайт настоящий — его можно открыть и собрать заказ.</p>':w.soon?'<p class="cs-demo cs-soon"><b>В разработке</b>Кейс ещё в работе: показываем идею и первые экраны, финальная версия появится позже.</p>':demo?'<p class="cs-demo">Это демо: пример того, как мы сделали бы сайт для такого бизнеса.</p>':'')+
+  return '<header class="cs-hero"><span class="lab lab-b">('+(w.soon?'Кейс в разработке':w.concept?'Концепт':demo?'Демо-кейс':'Кейс')+' · '+esc(w.k)+')</span><h2 id="caseT">'+esc(w.n)+'</h2><p class="big-say cs-sub">'+esc(c.lead)+'</p>'+(w.concept?'<p class="cs-demo">'+esc(c.note||'Это концепт: бренд придуман, а сайт настоящий — его можно открыть и собрать заказ.')+'</p>':w.soon?'<p class="cs-demo cs-soon"><b>В разработке</b>Кейс ещё в работе: показываем идею и первые экраны, финальная версия появится позже.</p>':demo?'<p class="cs-demo">Это демо: пример того, как мы сделали бы сайт для такого бизнеса.</p>':'')+
     '<div class="cs-meta"><div><small>Ниша</small>'+esc(w.k)+'</div><div><small>Что сделали</small>'+esc(w.w)+'</div><div><small>Город</small>'+esc(c.city)+'</div><div><small>Статус</small>'+esc(w.s)+'</div></div></header>'+
     '<div class="cs-cover run'+(c.gal?' gal':c.seq?' seq':'')+'" style="background:'+c.cover+'">'+(c.objs?ekbCover(c):c.gal?galCover(c):c.seq?seqCover(c):c.film?filmSite(c):c.real?realShot(c,c.real.desk):siteMock(c))+'</div>'+
     '<section class="cs-sec half"><span class="lab">(01) Задача</span><p class="r cs-txt">'+esc(c.task)+'</p></section>'+
@@ -1378,7 +1446,7 @@ function workThumb(c){
   if(c.film) return '<img src="'+c.film.poster+'" alt="" loading="lazy" decoding="async">';
   if(c.real) return '<img class="sh" src="'+(c.real.pv||c.real.desk)+'" alt="" loading="lazy" decoding="async">';
   return ''; }
-function renderWorks(){ const ready=WORKS.filter(w=>!w.soon), soon=WORKS.filter(w=>w.soon);
+function renderWorks(){ const ready=WORKS.filter(w=>!w.soon&&!w.priv), soon=WORKS.filter(w=>w.soon);
   const T=[['all','Все'],['visual','Визуал'],['site','Сайты'],['bot','Боты'],['order','Заказы']].filter(([t])=>t==='all'||ready.some(w=>w.t.includes(t)));
   return '<header class="cs-hero"><span class="lab lab-b">(Работы · '+ready.length+')</span><h2 id="caseT">Работы</h2><p class="big-say cs-sub">3D, визуал и сайты для бизнеса — от заводов и застройщиков до кондитерских. <span>Каждую работу можно открыть.</span></p></header>'+
     '<div class="wk-wrap"><div class="filters wk-f" role="group" aria-label="Фильтр работ">'+T.map(([t,l],i)=>'<button type="button" aria-pressed="'+(i===0)+'" data-t="'+t+'">'+l+'</button>').join('')+'</div>'+
@@ -1393,7 +1461,7 @@ function renderContacts(){
     '<div class="cn-side"><div class="place"><div>Красноярск<small>(56.01° N, 92.87° E · <span data-clock>—</span>)</small></div><div>По всей России<small>(онлайн)</small></div></div>'+
     '<div class="cta"><a class="pill" href="#contact">Оставить заявку</a><a class="pill ghost" href="https://t.me/tetsab" target="_blank" rel="noopener">Наш Telegram ↗</a></div></div></div>'+
     '<a class="cs-next" href="'+pageHref('cases')+'"><span class="lab">(Посмотреть)</span><span class="nm">Работы →</span></a>'; }
-function renderStudio(){ const ready=WORKS.filter(w=>!w.soon);
+function renderStudio(){ const ready=WORKS.filter(w=>!w.soon&&!w.priv);
   const DO=[['3D и визуал','Секвенции для сайтов, 3D-модели продукции вместо фото, key visual'],['Сайты','Дизайн и разработка: свой стиль, услуги, цены и примеры работ на одном экране'],['Боты и онлайн-заказы','Дополнительно к сайту: запись клиентов и заказы в Telegram']];
   const HOW=[['Напрямую с тем, кто делает','Без менеджеров и испорченного телефона: вопросы решаются в одной переписке.'],['Цена до старта','Называем стоимость и сроки сразу, до предоплаты. Без доплат в конце.'],['Результат по этапам','Показываем работу по ходу, а не в последний день. Правки вносим сразу.'],['От кондитерской до завода','Делаем и для частных мастеров, и для застройщиков и производств.']];
   return '<header class="cs-hero"><span class="lab lab-b">(О студии)</span><h2 id="caseT">Студия</h2><p class="big-say cs-sub">TETSAB — студия контента и сайтов. Делаем 3D, визуал и сайты, чтобы бизнес выглядел так же хорошо, как работает. <span>Красноярск · работаем по всей России онлайн.</span></p></header>'+
@@ -1403,7 +1471,7 @@ function renderStudio(){ const ready=WORKS.filter(w=>!w.soon);
     '<section class="st-sec"><span class="lab">(Над чем работали)</span><div class="st-who">'+ready.map(w=>'<a href="'+caseHref(w.slug)+'">'+esc(w.n)+'<small>'+esc(w.k)+'</small></a>').join('')+'</div></section>'+
     '<section class="cs-cta"><p class="big-say">Расскажите о задаче — подскажем, с чего начать и сколько это стоит.</p><div class="cta"><a class="pill" href="#contact">Обсудить проект</a></div></section>'+
     '<a class="cs-next" href="'+pageHref('cases')+'"><span class="lab">(Посмотреть)</span><span class="nm">Работы →</span></a>'; }
-const caseCnt=slug=>{ const i=WORKS.findIndex(w=>w.slug===slug); return 'Кейс '+String(i+1).padStart(2,'0')+' / '+String(WORKS.length).padStart(2,'0'); };
+const caseCnt=slug=>{ const pub=WORKS.filter(w=>!w.priv), i=pub.findIndex(w=>w.slug===slug); return i<0?'Для '+WORKS.find(w=>w.slug===slug).n:'Кейс '+String(i+1).padStart(2,'0')+' / '+String(pub.length).padStart(2,'0'); };
 </script>
 <script>
 (function(){
@@ -1576,14 +1644,14 @@ $('#cartGo').addEventListener('click',()=>{ const s=cart(); orderNo++; $('#shopT
 q[0]=1; q[3]=1; cart();
 
 /* works + filter */
-$('#wlist').innerHTML=WORKS.map((w,i)=>{ if(w.soon) return '';
+$('#wlist').innerHTML=WORKS.map((w,i)=>{ if(w.soon||w.priv) return '';
   const nm='<span class="roll"><span data-t="'+esc(w.n)+' →">'+esc(w.n)+'</span></span>';
   const inner='<span class="nm">'+nm+'</span><span class="ct"><span>'+esc(w.k)+' · '+esc(w.w)+'</span><span>('+w.s+')</span></span>';
   return '<a class="wrow'+(w.url||w.done?'':' demo-w')+'" href="'+caseHref(w.slug)+'" data-i="'+i+'">'+inner+'</a>';
 }).join('');
 $('#wlist').insertAdjacentHTML('afterend','<div class="wk-more"><a class="pill ghost" href="'+pageHref('cases')+'">Все работы →</a></div>');
 /* a filter with nothing finished behind it stays hidden here; the works page still shows the work in progress */
-$$('#filters button').forEach(b=>{ const t=b.dataset.t; if(t!=='all'&&!WORKS.some(w=>!w.soon&&w.t.includes(t))) b.hidden=true; });
+$$('#filters button').forEach(b=>{ const t=b.dataset.t; if(t!=='all'&&!WORKS.some(w=>!w.soon&&!w.priv&&w.t.includes(t))) b.hidden=true; });
 $('#filters').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; pressGroup(b.parentElement,b); const t=b.dataset.t; $$('.wrow').forEach(r=>r.hidden=!(t==='all'||WORKS[+r.dataset.i].t.includes(t))); });
 const pv=$('#pv'); let pvOn=false, px=0, py=0, tx=0, ty=0;
 if(fine){
@@ -1624,7 +1692,7 @@ function openCase(slug){
   fillSheet(renderCase(slug),caseCnt(slug),'← Все работы'); sheetPage=null; $$('.mi').forEach(m=>m.classList.remove('cur'));
   pv.classList.remove('on'); pvOn=false;
   if(!caseEl.classList.contains('open')){ caseEl.classList.add('open'); caseEl.removeAttribute('inert'); lock(true); }
-  document.title=WORKS.find(w=>w.slug===slug).n+' — кейс TETSAB';
+  document.title=WORKS.find(w=>w.slug===slug).n+' — кейс TETSAB'; clock();
   setTimeout(()=>$('#caseBack').focus({preventScroll:true}),60);
   return true;
 }
@@ -1639,6 +1707,13 @@ function route(){ let m=location.hash.match(/^#case\/([\w-]+)/), k=pageKey(locat
 /* back: from a page to the homepage; from a case to wherever it was opened from, or to the works page */
 $('#caseBack').addEventListener('click',()=>{ if(sheetPage||(PATHS&&history.state&&history.state.tsCase)){ toList(true); return; }
   try{ history.replaceState(null,'',pageHref('cases')); }catch(_){} openPage('cases'); });
+/* streamer pitch: case videos start muted; «Звук» unmutes one clip and mutes the rest */
+caseBody.addEventListener('click',e=>{ const b=e.target.closest('.snd'); if(!b) return; const v=b.parentElement.querySelector('video'), on=v.muted;
+  caseBody.querySelectorAll('.snd').forEach(o=>{ o.setAttribute('aria-pressed','false'); o.parentElement.querySelector('video').muted=true; });
+  if(on){ v.muted=false; b.setAttribute('aria-pressed','true'); v.play().catch(()=>{}); } });
+const coinTo=(v,k)=>{ v.dataset.coin=k; v.loop=k==='idle'; v.innerHTML=coinSrc(v.poster.replace(/coin\.webp$/,''),k); v.load(); v.play().catch(()=>{}); };
+caseBody.addEventListener('ended',e=>{ const v=e.target; if(v.dataset&&v.dataset.coin==='intro') coinTo(v,'idle'); },true);
+caseBody.addEventListener('click',e=>{ const st=e.target.closest('.st-coin'); if(!st||reduce) return; coinTo(st.querySelector('video'),'intro'); });
 /* works page: filters, and the sequences play while the pointer is on their card */
 caseBody.addEventListener('click',e=>{ const b=e.target.closest('.wk-f button'); if(!b) return; pressGroup(b.parentElement,b); const t=b.dataset.t;
   $$('.wk',caseBody).forEach(c=>c.hidden=!(t==='all'||c.dataset.t.split(' ').includes(t))); });

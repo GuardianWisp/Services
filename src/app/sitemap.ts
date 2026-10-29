@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
-import { caseSlugs } from "./_home/render";
+import { listedCaseSlugs } from "./_home/render";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -22,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
-    ...caseSlugs().map((slug) => ({
+    ...listedCaseSlugs().map((slug) => ({
       url: `${siteConfig.url}/cases/${slug}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,

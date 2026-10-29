@@ -14,7 +14,7 @@ const SITE = "https://tetsab.ru";
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const YANDEX_METRIKA_ID = process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID;
 
-type Work = { slug: string; n: string; k: string; url?: string };
+type Work = { slug: string; n: string; k: string; url?: string; priv?: boolean };
 type Case = { lead: string; real?: { desk: string } };
 type Data = {
   renderCase: (slug: string) => string;
@@ -69,6 +69,8 @@ function swap(html: string, from: string, to: string) {
 }
 
 export const caseSlugs = () => data.WORKS.filter((w) => data.CASES[w.slug]).map((w) => w.slug);
+// private cases (a pitch sent as a link) have a page but stay out of the sitemap and search
+export const listedCaseSlugs = () => data.WORKS.filter((w) => data.CASES[w.slug] && !w.priv).map((w) => w.slug);
 
 export function homePage() {
   return homeHtml;
@@ -89,6 +91,7 @@ export function casePage(slug: string): string | null {
     back: "← Все работы",
     body: data.renderCase(slug),
     article: true,
+    hidden: !!work.priv,
   });
 }
 
