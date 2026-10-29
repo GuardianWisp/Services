@@ -722,8 +722,15 @@ a:hover .roll>span,a:focus-visible .roll>span{transform:translateY(-50%)}
 /* streamer pitch */
 .cs-cover.st-cover{min-height:0;display:block;padding-inline:0}
 .st-head{box-sizing:border-box;width:100%;display:flex;justify-content:space-between;gap:16px;padding:0 clamp(16px,4vw,56px);font-size:13px;color:rgba(255,255,255,.55)}
-.st-head{margin-bottom:16px}
+.st-head{margin-bottom:16px;align-items:center}
 .st-head a{color:#fff}
+.st-r{display:flex;align-items:center;gap:16px}
+.st-nav{display:flex;gap:6px}
+.st-nav button{width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font:400 16px/1 var(--f);cursor:pointer;transition:background .3s,opacity .3s}
+.st-nav button:hover:not(:disabled){background:rgba(255,255,255,.24)}
+.st-nav button:disabled{opacity:.3;cursor:default}
+.st-nav button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+@media (hover:none),(pointer:coarse){.st-nav{display:none}}   /* phones swipe the strip */
 .st-clips{box-sizing:border-box;width:100%;display:flex;gap:clamp(10px,1.4vw,18px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-inline:clamp(16px,4vw,56px);scroll-padding-inline:clamp(16px,4vw,56px)}
 .st-clips::-webkit-scrollbar{display:none}
 .st-clip{margin:0;display:grid;gap:10px;flex:0 0 min(calc((100% - 3 * clamp(10px,1.4vw,18px)) / 4),calc((100svh - 230px) * .5625));scroll-snap-align:start}
@@ -1414,7 +1421,7 @@ const coinSrc=(d,k)=>'<source src="'+d+'coin-'+k+'-p.mp4" type=\'video/quicktime
 function streamCase(w,c){ const q=c.stream, d=q.dir;
   const clip=([f,cap,id])=>'<figure class="st-clip"><div class="st-v"><video src="'+d+f+'.mp4" poster="'+d+f+'.webp" muted loop playsinline preload="none"></video>'+sndBtn+'</div><figcaption><span>'+esc(cap)+'</span>'+(id?'<a href="'+q.tt+'/video/'+id+'" target="_blank" rel="noopener">TikTok ↗</a>':'')+'</figcaption></figure>';
   return '<header class="cs-hero"><h2 id="caseT">Cake</h2><p class="big-say cs-sub">Примеры и портфолио</p></header>'+
-    '<div class="cs-cover run st-cover" style="background:'+c.cover+'"><div class="st-head"><span>(Нарезки · TikTok)</span><a href="'+q.tt+'" target="_blank" rel="noopener">@c_a_k_e.clips ↗</a></div><div class="st-clips">'+q.clips.map(clip).join('')+'</div></div>'+
+    '<div class="cs-cover run st-cover" style="background:'+c.cover+'"><div class="st-head"><span>(Нарезки · TikTok)</span><span class="st-r"><a href="'+q.tt+'" target="_blank" rel="noopener">@c_a_k_e.clips ↗</a><span class="st-nav"><button type="button" data-dir="-1" aria-label="Предыдущие клипы" disabled>←</button><button type="button" data-dir="1" aria-label="Следующие клипы">→</button></span></span></div><div class="st-clips">'+q.clips.map(clip).join('')+'</div></div>'+
     '<section class="cs-sec st-tight"><span class="lab lab-b">(Отдельные ролики)</span><div class="stage dk st-solo">'+q.solo.map(clip).join('')+'</div></section>'+
     '<section class="cs-sec st-tight"><span class="lab lab-b">(Вотермарка)</span><div class="stage dk st-coin"><video class="coin" data-coin="intro" poster="'+d+'coin.webp" muted playsinline preload="none" aria-label="Монета со львом">'+coinSrc(d,'intro')+'</video></div></section>'+
     '<section class="cs-sec st-tight"><span class="lab lab-b">(AR-ролики · 500K+ просмотров в Instagram)</span><div class="st-ar">'+q.arv.map(f=>'<div class="stage dk"><video src="'+d+f+'.mp4" poster="'+d+f+'.webp" muted loop playsinline preload="none"></video></div>').join('')+'</div></section>'+
@@ -1712,6 +1719,18 @@ $('#caseBack').addEventListener('click',()=>{ if(sheetPage||(PATHS&&history.stat
 caseBody.addEventListener('click',e=>{ const b=e.target.closest('.snd'); if(!b) return; const v=b.parentElement.querySelector('video'), on=v.muted;
   caseBody.querySelectorAll('.snd').forEach(o=>{ o.setAttribute('aria-pressed','false'); o.parentElement.querySelector('video').muted=true; });
   if(on){ v.muted=false; b.setAttribute('aria-pressed','true'); v.play().catch(()=>{}); } });
+/* the clip strip: on a mouse there is no swipe, so the arrows page it by what fits on screen */
+const stripNav=st=>{ const n=st.closest('.st-cover').querySelectorAll('.st-nav button'); if(!n.length) return;
+  n[0].disabled=st.scrollLeft<4; n[1].disabled=st.scrollLeft+st.clientWidth>=st.scrollWidth-4; };
+caseBody.addEventListener('click',e=>{ const b=e.target.closest('.st-nav button'); if(!b) return; const st=b.closest('.st-cover').querySelector('.st-clips'), c=st.querySelector('.st-clip');
+  const step=c.getBoundingClientRect().width+parseFloat(getComputedStyle(st).columnGap||0), fit=Math.max(1,Math.floor((st.clientWidth+1)/step));
+  const from=st.scrollLeft, to=Math.max(0,Math.min(st.scrollWidth-st.clientWidth,from+(+b.dataset.dir)*step*fit));
+  /* our own easing: smooth scrollBy stalls against scroll-snap in some browsers, so snap is off while it moves */
+  if(reduce){ st.scrollLeft=to; stripNav(st); return; } st.style.scrollSnapType='none'; const t0=performance.now(), D=420;
+  let done=false; const end=()=>{ if(done) return; done=true; st.scrollLeft=to; st.style.scrollSnapType=''; stripNav(st); };
+  const tick=t=>{ if(done) return; const k=Math.min(1,(t-t0)/D); st.scrollLeft=from+(to-from)*(1-Math.pow(1-k,3)); if(k<1) requestAnimationFrame(tick); else end(); };
+  requestAnimationFrame(tick); setTimeout(end,D+150); });   /* a hidden tab gets no frames: land anyway */
+caseBody.addEventListener('scroll',e=>{ if(e.target.classList&&e.target.classList.contains('st-clips')) stripNav(e.target); },true);
 const coinTo=(v,k)=>{ v.dataset.coin=k; v.loop=k==='idle'; v.innerHTML=coinSrc(v.poster.replace(/coin\.webp$/,''),k); v.load(); v.play().catch(()=>{}); };
 caseBody.addEventListener('ended',e=>{ const v=e.target; if(v.dataset&&v.dataset.coin==='intro') coinTo(v,'idle'); },true);
 caseBody.addEventListener('click',e=>{ const st=e.target.closest('.st-coin'); if(!st||reduce) return; coinTo(st.querySelector('video'),'intro'); });
